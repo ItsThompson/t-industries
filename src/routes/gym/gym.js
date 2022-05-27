@@ -5,7 +5,7 @@ import Footer from "../../components/footer/footer";
 
 export default function Gym() {
     return (
-        <>
+        <div className="page">
             <Topbar/>
             <div className="text-table">
                     <p> <pre>| Day | Exercise                        | Muscle                    | Reps       | Sets            | Weight (kg) |</pre> </p>
@@ -65,6 +65,6 @@ export default function Gym() {
                     <p> <pre>|-----|---------------------------------|---------------------------|------------|-----------------|-------------|</pre> </p>
             </div>
             <Footer/>
-        </>
+        </div>
     );
 }

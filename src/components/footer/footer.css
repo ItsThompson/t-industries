@@ -1,4 +1,7 @@
 .center-text {
     padding-top: 5rem;
+    padding-bottom: 2rem;
     text-align: center;
+    color: #e3e3e3;
+    background-color: #1c1c1c;
 }

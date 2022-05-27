@@ -3,12 +3,13 @@ h3 {
     font-weight: bolder;
 }
 
-#folder-image {
+.folder-image {
     max-width: 5rem;
 }
 
 .box {
     float: left;
+    margin: 2rem;
 }
 
 .folder-content {
@@ -35,6 +36,9 @@ img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    text-align: center;
 }
 
 .container {

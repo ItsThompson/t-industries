@@ -5,12 +5,12 @@
 }
 
 .topbar-link {
-    color: black;
+    color: #e3e3e3;
     text-decoration: none;
 }
 
 .topbar-link:hover {
-    color: black;
+    color: #e3e3e3;
     text-decoration: underline;
 }
 

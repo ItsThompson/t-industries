@@ -4,6 +4,8 @@ import "./programming.css";
 export default function Programming() {
     
     return (
-        <p>Programming</p>
+        <div className="page">
+            <p>Music</p>
+        </div>
     );
 }

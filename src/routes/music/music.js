@@ -4,6 +4,8 @@ import "./music.css";
 export default function Music() {
     
     return (
-        <p>Music</p>
+        <div className="page">
+            <p>Music</p>
+        </div>
     );
 }

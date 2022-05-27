@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./home.css";
 import Draggable from "react-draggable";
 import folder from "../../images/folder.png";
@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     // const { height, width } = useWindowDimensions();
+
+    const [selected, setSelected] = useState(null);
 
     let navigate = useNavigate();
 
@@ -28,6 +30,13 @@ export default function Home() {
             text: "programming",
         },
     ];
+
+    document.addEventListener("mousedown", (event) => {
+        if (!event.target.classList.contains("box")) {
+            selected.style.borderStyle = "none";
+        }
+    });
+
     return (
         <div className="container">
             <div className="folder-container">
@@ -36,26 +45,40 @@ export default function Home() {
                         <Draggable
                             grid={[gridConstant, gridConstant]}
                             key={key}
+                            handle="img"
                         >
                             <div className="box">
                                 <div className="folder-content">
                                     <img
-                                        id="folder-image"
+                                        class="folder-image"
                                         src={folder}
-                                        onDoubleClick={(event) => {
-                                            navigate(obj.text);
-                                            console.log(
-                                                "doubleclicked " + obj.text
-                                            );
+                                        onClick={(event) => {
+                                            if (selected == event.target) {
+                                                navigate(obj.text);
+                                            } else {
+                                                if (selected != null) {
+                                                    selected.style.borderStyle =
+                                                        "none";
+                                                }
+                                                setSelected(event.target);
+                                                event.target.style.borderStyle =
+                                                    "dotted";
+                                            }
                                         }}
-                                        onMouseDown={(event) => {
-                                            event.target.style.borderStyle =
-                                                "dotted";
-                                        }}
-                                        onMouseUp={(event) => {
-                                            event.target.style.borderStyle =
-                                                "none";
-                                        }}
+                                        // onDoubleClick={(event) => {
+                                        //     navigate(obj.text);
+                                        //     console.log(
+                                        //         "doubleclicked " + obj.text
+                                        //     );
+                                        // }}
+                                        // onMouseDown={(event) => {
+                                        //     event.target.style.borderStyle =
+                                        //         "dotted";
+                                        // }}
+                                        // onMouseUp={(event) => {
+                                        //     event.target.style.borderStyle =
+                                        //         "none";
+                                        // }}
                                     />
                                     <p>{obj.text}</p>
                                 </div>
@@ -65,7 +88,7 @@ export default function Home() {
                 })}
             </div>
 
-            <div className="center-text footer-container">
+            <div className="footer-container">
                 <p>
                     t-industries [ti] is not an organization. no rights
                     reserved.
