@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/www.t-industri.es/static/css/main.db792cab.css",
-    "main.js": "/www.t-industri.es/static/js/main.e91b8887.js",
-    "static/js/787.3523c6ad.chunk.js": "/www.t-industri.es/static/js/787.3523c6ad.chunk.js",
-    "index.html": "/www.t-industri.es/index.html",
-    "main.db792cab.css.map": "/www.t-industri.es/static/css/main.db792cab.css.map",
-    "main.e91b8887.js.map": "/www.t-industri.es/static/js/main.e91b8887.js.map",
-    "787.3523c6ad.chunk.js.map": "/www.t-industri.es/static/js/787.3523c6ad.chunk.js.map"
+    "main.css": "/t-industries/static/css/main.db792cab.css",
+    "main.js": "/t-industries/static/js/main.3fc11dca.js",
+    "static/js/787.3523c6ad.chunk.js": "/t-industries/static/js/787.3523c6ad.chunk.js",
+    "index.html": "/t-industries/index.html",
+    "main.db792cab.css.map": "/t-industries/static/css/main.db792cab.css.map",
+    "main.3fc11dca.js.map": "/t-industries/static/js/main.3fc11dca.js.map",
+    "787.3523c6ad.chunk.js.map": "/t-industries/static/js/787.3523c6ad.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.db792cab.css",
-    "static/js/main.e91b8887.js"
+    "static/js/main.3fc11dca.js"
   ]
 }
