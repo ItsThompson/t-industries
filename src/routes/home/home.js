@@ -65,7 +65,7 @@ export default function Home() {
                 })}
             </div>
 
-            <div className="center-text">
+            <div className="center-text footer-container">
                 <p>
                     t-industries [ti] is not an organization. no rights
                     reserved.

@@ -31,6 +31,11 @@ img {
     transform: translate(-50%, -50%);
 }
 
+.footer-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .container {
     overflow: hidden;
