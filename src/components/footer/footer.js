@@ -1,10 +1,9 @@
 import React from "react";
-import "./footer.css";
 
 export default function Footer() {
     return (
         <>
-            <div className="center-text">
+            <div className="footer-text">
                 <p>
                     t-industries [ti] is not an organization. no rights
                     reserved.

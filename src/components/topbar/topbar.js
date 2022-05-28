@@ -1,13 +1,30 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
-import "./topbar.css";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export default function Topbar() {
+export default function Topbar({ path, mode, text }) {
+
+    let cssClass = "";
+
+    if(mode == "light"){
+        cssClass = "topbar-link-light";
+    }
+
+    if(mode == "dark"){
+        cssClass = "topbar-link";
+    }
+    
     return (
         <div className="topbar">
-            <Link to="/" className="topbar-link">
-                <h6 className="topbar-h6">← Home</h6>
+            <Link to={path} className={cssClass}>
+                <h6 className="topbar-h6">← {text}</h6>
             </Link>
         </div>
     );
 }
+
+Topbar.propTypes = {
+    path: PropTypes.string.isRequired,
+    mode: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+};

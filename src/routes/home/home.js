@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./home.css";
 import Draggable from "react-draggable";
 import folder from "../../images/folder.png";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +49,7 @@ export default function Home() {
                             <div className="box">
                                 <div className="folder-content">
                                     <img
-                                        class="folder-image"
+                                        class="draggable-image"
                                         src={folder}
                                         onClick={(event) => {
                                             if (selected == event.target) {

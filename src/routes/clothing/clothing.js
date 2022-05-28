@@ -1,10 +1,15 @@
 import React from "react";
-import "./clothing.css";
+import Topbar from "../../components/topbar/topbar";
+import Footer from "../../components/footer/footer";
 
 export default function Clothing() {
     return (
         <div className="page">
-            <p>Clothing</p>
+            <Topbar path="/" mode="dark" text="home" />
+            <div className="text-container">
+                <p>no swag yet</p>
+            </div>
+            <Footer />
         </div>
     );
 }
