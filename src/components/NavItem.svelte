@@ -1,14 +1,18 @@
 <script lang="ts">
+    import { page } from "$app/stores";
+
     export let href: string;
-    export let isThisPage: boolean = false;
     export let text: string;
 
-    $: textColor = isThisPage ? "text-primary" : "";
+    $: textColor = href == $page.url.pathname ? "text-primary" : "";
 </script>
+
 <li>
-    <a
-        href="{href}"
-        class="block py-2 px-3 rounded {textColor} hover:text-primary"
-        >{text}</a
-    >
+    {#key textColor}
+        <a
+            {href}
+            class="block py-2 px-3 rounded {textColor} hover:text-primary text-sm"
+            >{text}</a
+        >
+    {/key}
 </li>
