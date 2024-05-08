@@ -1,4 +1,6 @@
 <script lang="ts">
 </script>
 
-<p class="text-sm">Contact Page</p>
+<div class="w-4/5 border p-5 flex flex-col items-center gap-5">
+    <p class="text-sm">Contact Page</p>
+</div>
