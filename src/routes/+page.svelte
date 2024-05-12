@@ -14,10 +14,7 @@ border p-5 flex flex-col items-center gap-5"
         </h4>
         <p class="text-sm">
             Software Developer
-            <!-- <span class="text-xs invisible"> -->
-            <!--     Kind of offensive to tie me down to a single role... I'll let it -->
-            <!--     slide.</span -->
-            <!-- > -->
+            <!-- Kind of offensive to tie me down to a single role... I'll let it slide. -->
         </p>
         <p class="text-sm">First Year at the University of Bath</p>
     </div>

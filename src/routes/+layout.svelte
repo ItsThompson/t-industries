@@ -4,7 +4,7 @@
 </script>
 
 <div
-    class="h-screen w-screen flex flex-col justify-center items-center m-auto bg-black"
+    class="min-h-screen min-w-screen bg-black flex flex-col justify-start md:justify-center items-center m-auto py-8 overflow-auto"
 >
     <slot />
     <Navbar />
