@@ -41,4 +41,9 @@ border p-5 flex flex-col items-center gap-5"
     <div>
         <Link href="https://github.com/ItsThompson" name="GitHub" />
     </div>
+    <div class="mt-5">
+        <p class="text-xs text-gray-300">
+        {now.getTime()}
+        </p>
+    </div>
 </div>
