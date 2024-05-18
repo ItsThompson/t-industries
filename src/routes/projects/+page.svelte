@@ -10,9 +10,7 @@ border p-5 flex flex-col items-center gap-5"
         <h4 class="text-xl font-bold underline">Featured Projects</h4>
     </div>
 
-    <div
-        class="grid grid-cols-1 md:grid-cols-2 items-start gap-8"
-    >
+    <div class="grid grid-cols-1 md:grid-cols-2 items-start gap-8">
         <Project
             href="https://github.com/ItsThompson/currency-converter"
             name="Currency Converter"
@@ -27,11 +25,6 @@ border p-5 flex flex-col items-center gap-5"
             href="https://github.com/ItsThompson/neo_delta"
             name="NeoDelta"
             desc="A multi-platform habit tracker mobile app building optimizing building new habits whilst maintaining old habits."
-        />
-        <Project
-            href="https://github.com/ItsThompson/airline-database"
-            name="Airline Database"
-            desc="Airline Information Terminal (Python, SQL)"
         />
         <Project
             href="https://github.com/ItsThompson/t-industries"
