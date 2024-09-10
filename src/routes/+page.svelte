@@ -32,8 +32,8 @@ border p-5 flex flex-col items-center gap-5"
         <div class="mt-5 text-sm">
             Currently, my main areas of personal R&D is:
             <ul class="list-disc list-inside">
-                <li class="underline">Linear Algebra</li>
-                <li class="underline">Multivariable Calculus</li>
+                <li class="underline">Data Structures and Algorithms</li>
+                <li class="underline">Neural Networks</li>
                 <li class="underline">RAG and Knowledge Graphs</li>
             </ul>
         </div>
