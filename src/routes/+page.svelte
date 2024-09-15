@@ -1,9 +1,39 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+    import { writable } from "svelte/store";
     import Age from "../components/Age.svelte";
     import Link from "../components/Link.svelte";
+    import Loading from "../components/Loading.svelte";
 
     let now: Date = new Date();
     let yearsInExperience: number = now.getFullYear() - 2019;
+
+    let rndApi: string =
+        "https://script.google.com/macros/s/AKfycbyOG-6A1DXH_87UUl0G4zmhNbUZg8w5drdFpkJw-ZNR6E-SmvHcqHomJfStnjoqQU0ehA/exec";
+    // Query String:
+    // ?data=prev: It reads the 'Previous RND' data from the Google Sheet.
+    // Anything else: It reads the 'Current RND' data from the Google Sheet.
+
+    // Endpoint is only used for read operations.
+    // Data is stored in Google Sheets 't-industri.es - Personal R&D List'
+
+    /** Store for your data. 
+    This assumes the data you're pulling back will be an array.
+    If it's going to be an object, default this to an empty object.
+    **/
+    let rndList = writable([]);
+
+    onMount(async () => {
+        fetch(rndApi)
+            .then((response) => response.json())
+            .then((data) => {
+                rndList.set(data);
+            })
+            .catch((error) => {
+                console.log(error);
+                return [];
+            });
+    });
 </script>
 
 <div
@@ -17,7 +47,6 @@ border p-5 flex flex-col items-center gap-5"
         </h4>
         <p class="text-sm">
             Software Developer + Student
-            <!-- Kind of offensive to tie me down to a single role... I'll let it slide. -->
         </p>
         <p class="text-sm">First Year at the University of Bath</p>
         <p class="mt-5 text-sm">
@@ -31,11 +60,17 @@ border p-5 flex flex-col items-center gap-5"
         </p>
         <div class="mt-5 text-sm">
             Currently, my main areas of personal R&D is:
-            <ul class="list-disc list-inside">
-                <li class="underline">Data Structures and Algorithms</li>
-                <li class="underline">Neural Networks</li>
-                <li class="underline">RAG and Knowledge Graphs</li>
-            </ul>
+            {#if $rndList.length > 0}
+                <ul class="list-disc list-inside">
+                    {#each $rndList as item}
+                        <li class="underline">{item}</li>
+                    {/each}
+                </ul>
+            {:else}
+                <div class="text-center p-5">
+                    <Loading />
+                </div>
+            {/if}
         </div>
     </div>
 
@@ -44,7 +79,7 @@ border p-5 flex flex-col items-center gap-5"
     </div>
     <div class="mt-5">
         <p class="text-xs text-gray-300">
-        {now.getTime()}
+            {now.getTime()}
         </p>
     </div>
 </div>
