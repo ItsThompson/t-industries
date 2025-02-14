@@ -48,14 +48,14 @@ border p-5 flex flex-col items-center gap-5"
         <p class="text-sm">
             Software Developer + Student
         </p>
-        <p class="text-sm">First Year at the University of Bath</p>
+        <p class="text-sm">Second Year at the University of Bath</p>
         <p class="mt-5 text-sm">
             Hi, I am Thompson, a <Age floored={true} /> year old software developer
             with {yearsInExperience}
             years of experience in developing and leading software projects with
             social impact. I have lived in seven different cities across three continents
             where I have gained a
-            <span class="underline">multicultural diverse perspective</span>
+            <span class="underline">multicultural perspective</span>
             and a deep understanding of working with people from various backgrounds.
         </p>
         <div class="mt-5 text-sm">
