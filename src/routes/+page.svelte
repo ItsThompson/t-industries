@@ -48,12 +48,12 @@ border p-5 flex flex-col items-center gap-5"
         <p class="text-sm">
             Software Developer + Student
         </p>
-        <p class="text-sm">Second Year at the University of Bath</p>
+        <p class="text-sm">Third Year at the University of Bath (Placement @ Amazon Sep 2025 - Oct 2026)</p>
         <p class="mt-5 text-sm">
             Hi, I am Thompson, a <Age floored={true} /> year old software developer
-            with {yearsInExperience}
-            years of experience in developing and leading software projects with
-            social impact. I have lived in seven different cities across three continents
+            with <span class="underline">{yearsInExperience}
+            years of experience</span> in developing and leading software projects with
+            social impact. I have lived in <span class="underline">7 different cities across 3 continents</span>
             where I have gained a
             <span class="underline">multicultural perspective</span>
             and a deep understanding of working with people from various backgrounds.
@@ -69,6 +69,9 @@ border p-5 flex flex-col items-center gap-5"
             {:else}
                 <div class="text-center p-5">
                     <Loading />
+                    <p class="text-xs text-gray-300">
+                    Note: May take a second—fetching (My backend is a Google Sheet 😁).
+                        </p>
                 </div>
             {/if}
         </div>

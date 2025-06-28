@@ -1,5 +1,6 @@
 <script lang="ts">
-    export let href: string;
+    export let github: string;
+    export let website: string = "";
     export let name: string;
     export let desc: string = "";
 
@@ -8,7 +9,10 @@
 
 <div>
     <h5 class="text-lg font-bold">{name}</h5>
-    <Badge {href} name="GitHub"/>
+    <Badge href={github} name="GitHub"/>
+    {#if website}
+        <Badge href={website} name="Website"/>
+    {/if}
     <p class="text-sm">
         {desc}
     </p>

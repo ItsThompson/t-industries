@@ -12,22 +12,23 @@ border p-5 flex flex-col items-center gap-5"
 
     <div class="grid grid-cols-1 md:grid-cols-2 items-start gap-8">
         <Project
-            href="https://github.com/ItsThompson/currency-converter"
+            github="https://github.com/ItsThompson/keep-in-memory"
+            website="https://keep-in-memory.vercel.app"
+            name="KIM: keep-in-memory"
+            desc="Full-stack web app built on Next.js, React and AWS to train short-term memory. Memorize a board of items, then recall as many as you can once it disappears."
+        />
+        <Project
+            github="https://github.com/ItsThompson/currency-converter"
             name="Currency Converter"
             desc="Currency Converter CLI program written in Go with natural-language interpretation."
         />
         <Project
-            href="https://github.com/ItsThompson/tictactoe"
+            github="https://github.com/ItsThompson/tictactoe"
             name="TicTacToe"
             desc="A tictactoe CLI game where you play against a computer player with a minimax algorithm implementation."
         />
         <Project
-            href="https://github.com/ItsThompson/neo_delta"
-            name="NeoDelta"
-            desc="A multi-platform habit tracker mobile app building optimizing building new habits whilst maintaining old habits."
-        />
-        <Project
-            href="https://github.com/ItsThompson/t-industries"
+            github="https://github.com/ItsThompson/t-industries"
             name="t-industries"
             desc="Personal website built with SvelteKit and TailwindCSS."
         />
