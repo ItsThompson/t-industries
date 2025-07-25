@@ -80,9 +80,12 @@ border p-5 flex flex-col items-center gap-5"
     <div>
         <Link href="https://github.com/ItsThompson" name="GitHub" />
     </div>
-    <div class="mt-5">
+    <div class="flex flex-col items-center gap-2">
         <p class="text-xs text-gray-300">
             {now.getTime()}
+        </p>
+        <p class="text-center text-xs text-gray-300">
+            t-industries (<span class="text-yellow-400 font-bold">ti</span>) is not an organization. no rights reserved.
         </p>
     </div>
 </div>
