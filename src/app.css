@@ -4,7 +4,10 @@
   html {
     @apply text-white;
     @apply font-mono;
-  } 
+  }
+  body {
+    @apply bg-black;
+  }
 }
 
 @tailwind components;
