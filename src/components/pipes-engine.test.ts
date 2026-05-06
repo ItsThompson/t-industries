@@ -201,22 +201,23 @@ describe('pipes-engine', () => {
 
 	describe('Pipe count formula', () => {
 		it('returns MIN_PIPES for very small grids', () => {
-			expect(calculatePipeCount(10, 10)).toBe(2);
+			// sqrt(10*10) = 10, /8 = 1.25, floor = 1, clamp to 4
+			expect(calculatePipeCount(10, 10)).toBe(4);
 		});
 
 		it('returns correct value for medium grid', () => {
-			// sqrt(80*40) = sqrt(3200) ≈ 56.57, /15 = 3.77, floor = 3
-			expect(calculatePipeCount(80, 40)).toBe(3);
+			// sqrt(80*40) = sqrt(3200) ≈ 56.57, /8 = 7.07, floor = 7
+			expect(calculatePipeCount(80, 40)).toBe(7);
 		});
 
 		it('returns MAX_PIPES for very large grid', () => {
-			// sqrt(500*500) = 500, /15 = 33.3, clamped to 12
-			expect(calculatePipeCount(500, 500)).toBe(12);
+			// sqrt(500*500) = 500, /8 = 62.5, clamped to 20
+			expect(calculatePipeCount(500, 500)).toBe(20);
 		});
 
 		it('clamps to MIN_PIPES when formula yields less', () => {
-			// sqrt(15*15) = 15, /15 = 1, clamp to 2
-			expect(calculatePipeCount(15, 15)).toBe(2);
+			// sqrt(15*15) = 15, /8 = 1.875, floor = 1, clamp to 4
+			expect(calculatePipeCount(15, 15)).toBe(4);
 		});
 
 		it('scales proportionally with viewport', () => {

@@ -3,7 +3,7 @@
 	import { createEngine, step, getVisibleSegments } from './pipes-engine';
 	import type { PipesState } from './pipes-engine';
 
-	const FONT_SIZE = 14;
+	const FONT_SIZE = 72;
 	const FRAME_INTERVAL = 50; // ms (~20 FPS)
 	const STRAIGHT_PROBABILITY = 0.7;
 	const MIN_TAIL_LENGTH = 30;
