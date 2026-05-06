@@ -39,9 +39,9 @@ export interface PipesState {
 }
 
 const MIN_GRID_SIZE = 10;
-const MIN_PIPES = 2;
-const MAX_PIPES = 12;
-const PIPE_COUNT_DIVISOR = 15;
+const MIN_PIPES = 4;
+const MAX_PIPES = 20;
+const PIPE_COUNT_DIVISOR = 8;
 
 /**
  * Character map indexed by [prevDirection][nextDirection].
