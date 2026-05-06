@@ -1,4 +1,4 @@
-<div class="w-4/5 border p-5 flex flex-col items-center gap-5">
+<div class="w-4/5 border bg-black p-5 flex flex-col items-center gap-5">
     <div class="flex flex-col items-center gap-2">
         <h1 class="font-bold text-2xl underline">Ethos</h1>
         <div class="grid grid-cols-12 items-center gap-3">

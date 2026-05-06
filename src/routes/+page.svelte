@@ -38,7 +38,7 @@
 
 <div
     class="w-11/12 md:w-1/2 lg:w-2/5 2xl:w-1/3
-border p-5 flex flex-col items-center gap-5"
+border bg-black p-5 flex flex-col items-center gap-5"
 >
     <div class="self-start">
         <h4 class="text-xl">
