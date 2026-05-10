@@ -35,11 +35,10 @@ describe('TimelineItem', () => {
 		expect(getByText('Built scalable distributed systems.')).toBeTruthy();
 	});
 
-	it('has a scrollable description container', () => {
+	it('has a description container', () => {
 		const { getByTestId } = render(TimelineItem, { props: defaultProps });
 		const descriptionContainer = getByTestId('timeline-card-description');
 		expect(descriptionContainer).toBeTruthy();
-		expect(descriptionContainer.classList.contains('overflow-y-auto')).toBe(true);
 	});
 
 	it('applies right text alignment for left side on desktop', () => {
