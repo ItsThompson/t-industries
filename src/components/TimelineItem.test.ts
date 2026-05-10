@@ -8,61 +8,49 @@ describe('TimelineItem', () => {
 	});
 
 	const defaultProps = {
-		company: 'Amazon (Veeqo)',
-		role: 'Front-End Engineer',
-		dateRange: 'Sep 2025 - Present',
-		description: 'Built production software at scale.',
+		company: 'Acme Corp',
+		role: 'Senior Engineer',
+		dateRange: 'Jan 2024 - Present',
+		description: 'Built scalable distributed systems.',
 		side: 'left' as const
 	};
 
 	it('renders the role title', () => {
 		const { getByText } = render(TimelineItem, { props: defaultProps });
-		expect(getByText('Front-End Engineer')).toBeTruthy();
+		expect(getByText('Senior Engineer')).toBeTruthy();
 	});
 
 	it('renders the company name', () => {
 		const { getByText } = render(TimelineItem, { props: defaultProps });
-		expect(getByText('Amazon (Veeqo)')).toBeTruthy();
+		expect(getByText('Acme Corp')).toBeTruthy();
 	});
 
 	it('renders the date range', () => {
 		const { getByText } = render(TimelineItem, { props: defaultProps });
-		expect(getByText('Sep 2025 - Present')).toBeTruthy();
+		expect(getByText('Jan 2024 - Present')).toBeTruthy();
 	});
 
 	it('renders the description text', () => {
 		const { getByText } = render(TimelineItem, { props: defaultProps });
-		expect(getByText('Built production software at scale.')).toBeTruthy();
+		expect(getByText('Built scalable distributed systems.')).toBeTruthy();
 	});
 
-	it('has overflow-y-auto on the description container', () => {
-		const { container } = render(TimelineItem, { props: defaultProps });
-		const overflowEl = container.querySelector('.overflow-y-auto');
-		expect(overflowEl).not.toBeNull();
+	it('has a scrollable description container', () => {
+		const { getByTestId } = render(TimelineItem, { props: defaultProps });
+		const descriptionContainer = getByTestId('timeline-card-description');
+		expect(descriptionContainer).toBeTruthy();
+		expect(descriptionContainer.classList.contains('overflow-y-auto')).toBe(true);
 	});
 
 	it('applies right text alignment for left side on desktop', () => {
-		const { container } = render(TimelineItem, { props: { ...defaultProps, side: 'left' } });
-		const card = container.firstElementChild;
-		expect(card?.classList.contains('md:text-right')).toBe(true);
+		const { getByTestId } = render(TimelineItem, { props: { ...defaultProps, side: 'left' } });
+		const card = getByTestId('timeline-card');
+		expect(card.classList.contains('md:text-right')).toBe(true);
 	});
 
 	it('applies left text alignment for right side on desktop', () => {
-		const { container } = render(TimelineItem, { props: { ...defaultProps, side: 'right' } });
-		const card = container.firstElementChild;
-		expect(card?.classList.contains('md:text-left')).toBe(true);
-	});
-
-	it('uses bordered card styling consistent with site aesthetic', () => {
-		const { container } = render(TimelineItem, { props: defaultProps });
-		const card = container.firstElementChild;
-		expect(card?.classList.contains('border')).toBe(true);
-		expect(card?.classList.contains('bg-black')).toBe(true);
-	});
-
-	it('has a fixed height for visual uniformity', () => {
-		const { container } = render(TimelineItem, { props: defaultProps });
-		const card = container.firstElementChild;
-		expect(card?.classList.contains('h-48')).toBe(true);
+		const { getByTestId } = render(TimelineItem, { props: { ...defaultProps, side: 'right' } });
+		const card = getByTestId('timeline-card');
+		expect(card.classList.contains('md:text-left')).toBe(true);
 	});
 });

@@ -1,7 +1,31 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
 import Timeline from './Timeline.svelte';
-import { experiences } from '$lib/experiences';
+import type { Experience } from '$lib/experiences';
+
+const mockExperiences: Experience[] = [
+	{
+		company: 'Acme Corp',
+		role: 'Senior Engineer',
+		startDate: 'Jan 2024',
+		endDate: 'Present',
+		description: 'Built distributed systems at scale.'
+	},
+	{
+		company: 'StartupCo',
+		role: 'Full-Stack Developer',
+		startDate: 'Mar 2022',
+		endDate: 'Dec 2023',
+		description: 'Shipped product features to 10k users.'
+	},
+	{
+		company: 'University Lab',
+		role: 'Research Assistant',
+		startDate: 'Sep 2021',
+		endDate: 'Feb 2022',
+		description: 'Published 2 papers on machine learning.'
+	}
+];
 
 describe('Timeline', () => {
 	afterEach(() => {
@@ -9,59 +33,55 @@ describe('Timeline', () => {
 	});
 
 	it('renders the correct number of timeline entries', () => {
-		const { container } = render(Timeline, { props: { experiences } });
-		const cards = container.querySelectorAll('.h-48');
-		// Desktop cards (hidden on mobile) + mobile cards = 5 desktop + 5 mobile
-		// On jsdom (no responsive), both md:block and md:hidden render
-		// Each experience renders cards in both desktop and mobile containers
-		expect(cards.length).toBeGreaterThanOrEqual(5);
+		const { getAllByTestId } = render(Timeline, { props: { experiences: mockExperiences } });
+		const entries = getAllByTestId('timeline-entry');
+		expect(entries).toHaveLength(3);
 	});
 
 	it('renders all company names', () => {
-		const { getAllByText } = render(Timeline, { props: { experiences } });
-		experiences.forEach((experience) => {
-			// Both desktop and mobile versions render in jsdom
+		const { getAllByText } = render(Timeline, { props: { experiences: mockExperiences } });
+		mockExperiences.forEach((experience) => {
 			const elements = getAllByText(experience.company);
 			expect(elements.length).toBeGreaterThanOrEqual(1);
 		});
 	});
 
 	it('renders the vertical timeline line', () => {
-		const { container } = render(Timeline, { props: { experiences } });
-		const line = container.querySelector('.bg-gray-500.w-px');
-		expect(line).not.toBeNull();
+		const { getByTestId } = render(Timeline, { props: { experiences: mockExperiences } });
+		expect(getByTestId('timeline-line')).toBeTruthy();
 	});
 
-	it('renders dot markers for each entry on desktop', () => {
-		const { container } = render(Timeline, { props: { experiences } });
-		const dots = container.querySelectorAll('.rounded-full.bg-white');
-		// 5 desktop dots + 5 mobile dots
-		expect(dots.length).toBe(10);
+	it('renders dot markers for each entry', () => {
+		const { getAllByTestId } = render(Timeline, { props: { experiences: mockExperiences } });
+		const desktopDots = getAllByTestId('timeline-dot');
+		const mobileDots = getAllByTestId('timeline-dot-mobile');
+		expect(desktopDots).toHaveLength(3);
+		expect(mobileDots).toHaveLength(3);
 	});
 
-	it('renders with a subset of experiences', () => {
-		const subset = experiences.slice(0, 2);
-		const { container } = render(Timeline, { props: { experiences: subset } });
-		const dots = container.querySelectorAll('.rounded-full.bg-white');
-		// 2 desktop + 2 mobile
-		expect(dots.length).toBe(4);
+	it('renders with a single experience entry', () => {
+		const subset = mockExperiences.slice(0, 1);
+		const { getAllByTestId } = render(Timeline, { props: { experiences: subset } });
+		expect(getAllByTestId('timeline-entry')).toHaveLength(1);
+		expect(getAllByTestId('timeline-dot')).toHaveLength(1);
 	});
 
 	it('applies alternating side logic to desktop cards', () => {
-		const { container } = render(Timeline, { props: { experiences } });
-		// The grid rows are direct children of the flex column container
-		const gridRows = container.querySelectorAll('.grid');
+		const { getAllByTestId } = render(Timeline, { props: { experiences: mockExperiences } });
+		const entries = getAllByTestId('timeline-entry');
 
-		gridRows.forEach((row, index) => {
-			const desktopCells = row.querySelectorAll(':scope > .hidden.md\\:block');
-			// First cell (left) should have content for even indexes
-			// Second cell (right, after the dot) should have content for odd indexes
+		entries.forEach((entry, index) => {
+			const leftCell = entry.querySelector('[data-testid="timeline-desktop-left"]');
+			const rightCell = entry.querySelector('[data-testid="timeline-desktop-right"]');
+
 			if (index % 2 === 0) {
-				// Even: left card visible, right invisible
-				expect(desktopCells[0]?.classList.contains('invisible')).toBe(false);
+				// Even: left card has content, right is invisible
+				expect(leftCell?.classList.contains('invisible')).toBe(false);
+				expect(rightCell?.classList.contains('invisible')).toBe(true);
 			} else {
-				// Odd: left invisible, right card visible
-				expect(desktopCells[1]?.classList.contains('invisible')).toBe(false);
+				// Odd: left is invisible, right card has content
+				expect(leftCell?.classList.contains('invisible')).toBe(true);
+				expect(rightCell?.classList.contains('invisible')).toBe(false);
 			}
 		});
 	});
