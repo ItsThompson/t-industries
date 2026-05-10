@@ -69,9 +69,6 @@ border bg-black p-5 flex flex-col items-center gap-5"
             {:else}
                 <div class="text-center p-5">
                     <Loading />
-                    <p class="text-xs text-gray-300">
-                    Note: May take a second—fetching (My backend is a Google Sheet 😁).
-                        </p>
                 </div>
             {/if}
         </div>
