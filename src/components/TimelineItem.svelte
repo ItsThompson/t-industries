@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="border bg-black p-4 h-48 flex flex-col gap-1 {side === 'left'
+	class="border bg-black p-4 flex flex-col gap-1 {side === 'left'
 		? 'md:text-right'
 		: 'md:text-left'}"
 	data-testid="timeline-card"
