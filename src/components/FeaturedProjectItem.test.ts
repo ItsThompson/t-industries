@@ -73,7 +73,8 @@ describe('FeaturedProjectItem', () => {
 
 		const dot = container.querySelector('span[style*="background-color"]');
 		expect(dot).not.toBeNull();
-		expect(dot?.getAttribute('style')).toMatch(/background-color/);
+		// jsdom normalizes hex #3178c6 to rgb(49, 120, 198)
+		expect(dot?.getAttribute('style')).toContain('rgb(49, 120, 198)');
 	});
 
 	it('does not render a language indicator when language is empty', () => {
