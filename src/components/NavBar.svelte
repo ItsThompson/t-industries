@@ -7,7 +7,6 @@
     <ul class="flex sm:flex-row flex-col p-2 sm:space-x-8 items-center">
         <NavItem href="{base}/" text="Home" />
         <NavItem href="{base}/projects" text="Projects" />
-        <NavItem href="https://blog.t-industri.es" text="Blog" />
         <NavItem href="{base}/ethos" text="&et" />
     </ul>
 </div>
