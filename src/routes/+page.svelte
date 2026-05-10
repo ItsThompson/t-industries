@@ -46,17 +46,16 @@ border bg-black p-5 flex flex-col items-center gap-5"
             <span class="text-xs">(<Age /> years old)</span>
         </h4>
         <p class="text-sm">
-            Software Developer + Student
+            Software Engineer + Student
         </p>
-        <p class="text-sm">Third Year at the University of Bath (Placement @ Amazon Sep 2025 - Oct 2026)</p>
         <p class="mt-5 text-sm">
-            Hi, I am Thompson, a <Age floored={true} /> year old software developer
+            Hi, I am Thompson, a <Age floored={true} /> year old software engineer
             with <span class="underline">{yearsInExperience}
-            years of experience</span> in developing and leading software projects with
-            social impact. I have lived in <span class="underline">7 different cities across 3 continents</span>
-            where I have gained a
-            <span class="underline">multicultural perspective</span>
-            and a deep understanding of working with people from various backgrounds.
+            years of experience</span> building and shipping production software at scale.
+            I have lived in <span class="underline">7 different cities across 3 continents</span>,
+            bringing a <span class="underline">multicultural perspective</span>
+            to every team I work on. Currently on placement at Amazon, previously
+            building GenAI pipelines at MSD and research software at the University of Bath.
         </p>
         <div class="mt-5 text-sm">
             Currently, my main areas of personal R&D is:
@@ -74,8 +73,9 @@ border bg-black p-5 flex flex-col items-center gap-5"
         </div>
     </div>
 
-    <div>
+    <div class="flex gap-4">
         <Link href="https://github.com/ItsThompson" name="GitHub" />
+        <Link href="https://linkedin.com/in/thompsontong" name="LinkedIn" />
     </div>
     <div class="flex flex-col items-center gap-2">
         <p class="text-xs text-gray-300">
