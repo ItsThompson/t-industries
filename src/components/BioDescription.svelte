@@ -1,10 +1,11 @@
 <script lang="ts">
     import Age from './Age.svelte';
+    import { yearsOfExperience } from '$lib/identity';
 
     let className: string = 'text-sm';
     export { className as class };
 
-    $: yearsInExperience = new Date().getFullYear() - 2019;
+    $: yearsInExperience = yearsOfExperience();
 </script>
 
 <p class={className}>

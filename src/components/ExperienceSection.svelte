@@ -4,7 +4,7 @@
     import MetadataBar from './industrial/MetadataBar.svelte';
     import SectionHeading from './industrial/SectionHeading.svelte';
     import { experiences } from '$lib/experiences';
-    import { getExperienceCycles } from '$lib/metadata';
+    import { getExperienceCycles } from '$lib/terminal-display';
 
     const experienceCycles = getExperienceCycles();
     const orgCount = experiences.length;

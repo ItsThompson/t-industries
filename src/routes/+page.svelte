@@ -6,22 +6,15 @@
     import MetadataBar from '../components/industrial/MetadataBar.svelte';
     import BioDescription from '../components/BioDescription.svelte';
     import RndList from '../components/RndList.svelte';
-    import {
-        getUnitSerial,
-        getUptime,
-        getExperienceCycles,
-        getSystemTime
-    } from '$lib/metadata';
+    import { identity } from '$lib/identity';
+    import { getUptime, getExperienceCycles, getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
 
-    const unitSerial = getUnitSerial();
-
     let systemTime = getSystemTime();
-    let systemTimeInterval: ReturnType<typeof setInterval>;
 
     onMount(() => {
-        systemTimeInterval = setInterval(() => {
+        const systemTimeInterval = setInterval(() => {
             systemTime = getSystemTime();
         }, 1000);
 
@@ -31,7 +24,7 @@
 
 <div class="w-full max-w-5xl px-4">
     <MetadataBar position="top">
-        <span>{unitSerial}</span>
+        <span>{identity.unitSerial}</span>
         <span>STATUS: ACTIVE</span>
         <span>{systemTime}</span>
     </MetadataBar>
