@@ -228,7 +228,9 @@
     <!-- ═══════ END PROJECTS SECTION ═══════ -->
 
     <!-- ═══════ ETHOS SECTION ═══════ -->
-    <EthosSection />
+    <div class="mt-12">
+        <EthosSection />
+    </div>
     <!-- ═══════ END ETHOS SECTION ═══════ -->
 
     <!-- ═══════ PAGE FOOTER ═══════ -->
