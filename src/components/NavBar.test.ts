@@ -7,20 +7,27 @@ describe('NavBar', () => {
 		cleanup();
 	});
 
-	it('renders a Manifest nav item linking to /manifest', () => {
+	it('renders all four navigation items', () => {
 		const { container } = render(NavBar);
 		const links = container.querySelectorAll('a');
-		const manifestLink = Array.from(links).find(
-			(link) => link.textContent?.trim() === 'Manifest'
-		);
-		expect(manifestLink).not.toBeUndefined();
-		expect(manifestLink?.getAttribute('href')).toBe('/manifest');
+		expect(links.length).toBe(4);
 	});
 
-	it('renders all five navigation items', () => {
+	it('renders home, experience, projects, and &et links', () => {
 		const { container } = render(NavBar);
 		const links = container.querySelectorAll('a');
-		expect(links.length).toBe(5);
+		const texts = Array.from(links).map((link) => link.textContent?.trim());
+		expect(texts).toContain('home');
+		expect(texts).toContain('experience');
+		expect(texts).toContain('projects');
+		expect(texts).toContain('&et');
+	});
+
+	it('does not render a manifest link', () => {
+		const { container } = render(NavBar);
+		const links = container.querySelectorAll('a');
+		const texts = Array.from(links).map((link) => link.textContent?.trim());
+		expect(texts).not.toContain('manifest');
 	});
 
 	it('uses border-secondary-200 on the container', () => {
@@ -33,17 +40,6 @@ describe('NavBar', () => {
 		const { container } = render(NavBar);
 		const ul = container.querySelector('ul');
 		expect(ul?.classList.contains('flex-wrap')).toBe(true);
-	});
-
-	it('renders Home, Experience, Projects, &et, and Manifest links', () => {
-		const { container } = render(NavBar);
-		const links = container.querySelectorAll('a');
-		const texts = Array.from(links).map((link) => link.textContent?.trim());
-		expect(texts).toContain('Home');
-		expect(texts).toContain('Experience');
-		expect(texts).toContain('Projects');
-		expect(texts).toContain('&et');
-		expect(texts).toContain('Manifest');
 	});
 
 	it('does not use position: fixed', () => {

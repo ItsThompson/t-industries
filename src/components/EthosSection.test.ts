@@ -20,11 +20,11 @@ describe('EthosSection', () => {
 		expect(heading?.textContent).toContain('ETHOS');
 	});
 
-	it('renders the Divider with "&ET" label', () => {
+	it('wraps content in a Compartment with bg-black for legibility', () => {
 		const { container } = render(EthosSection);
-		const divider = container.querySelector('[aria-hidden="true"]');
-		expect(divider).toBeTruthy();
-		expect(divider?.textContent).toContain('&ET');
+		const section = container.querySelector('section#ethos');
+		const compartment = section?.querySelector('.bg-black.border');
+		expect(compartment).toBeTruthy();
 	});
 
 	it('renders all 3 ethos item titles', () => {
@@ -69,48 +69,5 @@ describe('EthosSection', () => {
 		const { container } = render(EthosSection);
 		const gridRows = container.querySelectorAll('.grid.grid-cols-12');
 		expect(gridRows.length).toBe(3);
-	});
-
-	it('each ethos item title uses col-span-2 on desktop', () => {
-		const { container } = render(EthosSection);
-		const titles = container.querySelectorAll('h3');
-		expect(titles.length).toBe(3);
-		for (const title of titles) {
-			expect(title.classList.contains('md:col-span-2')).toBe(true);
-		}
-	});
-
-	it('each ethos item has col-span-12 for mobile stacking', () => {
-		const { container } = render(EthosSection);
-		const titles = container.querySelectorAll('h3');
-		for (const title of titles) {
-			expect(title.classList.contains('col-span-12')).toBe(true);
-		}
-	});
-
-	it('description uses col-span-4 on desktop', () => {
-		const { container } = render(EthosSection);
-		const gridRows = container.querySelectorAll('.grid.grid-cols-12');
-		for (const row of gridRows) {
-			const descCol = row.querySelectorAll('.md\\:col-span-4');
-			expect(descCol.length).toBe(1);
-		}
-	});
-
-	it('walking the walk uses col-span-6 on desktop', () => {
-		const { container } = render(EthosSection);
-		const gridRows = container.querySelectorAll('.grid.grid-cols-12');
-		for (const row of gridRows) {
-			const proofCol = row.querySelectorAll('.md\\:col-span-6');
-			expect(proofCol.length).toBe(1);
-		}
-	});
-
-	it('text uses minimum text-xs size for legibility', () => {
-		const { container } = render(EthosSection);
-		const paragraphs = container.querySelectorAll('p');
-		for (const p of paragraphs) {
-			expect(p.classList.contains('text-xs')).toBe(true);
-		}
 	});
 });

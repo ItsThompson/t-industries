@@ -11,7 +11,7 @@ describe('MetadataBar', () => {
         const { container } = render(MetadataBar);
         const div = container.querySelector('div');
         expect(div?.classList.contains('flex')).toBe(true);
-        expect(div?.classList.contains('justify-between')).toBe(true);
+        expect(div?.classList.contains('sm:justify-between')).toBe(true);
     });
 
     it('applies label-sm class for typography', () => {

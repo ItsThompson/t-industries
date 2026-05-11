@@ -7,32 +7,33 @@ describe('ExperienceSection', () => {
         cleanup();
     });
 
-    it('renders the section with id="experience"', () => {
+    it('renders a section with id="experience"', () => {
         const { container } = render(ExperienceSection);
         const section = container.querySelector('section#experience');
         expect(section).toBeTruthy();
     });
 
-    it('renders a Divider with label "EXPERIENCE"', () => {
-        const { container } = render(ExperienceSection);
-        const divider = container.querySelector('[aria-hidden="true"]');
-        expect(divider?.textContent).toContain('EXPERIENCE');
-    });
-
-    it('renders SectionHeading with "EXPERIENCE LOG" as h2', () => {
+    it('renders SectionHeading with "EXPERIENCE" as h2', () => {
         const { container } = render(ExperienceSection);
         const heading = container.querySelector('h2');
         expect(heading).toBeTruthy();
-        expect(heading?.textContent).toContain('EXPERIENCE LOG');
+        expect(heading?.textContent).toContain('EXPERIENCE');
     });
 
-    it('renders all 5 experience entries', () => {
+    it('renders a vertical timeline line', () => {
         const { container } = render(ExperienceSection);
-        const compartments = container.querySelectorAll('.border.border-secondary-200.bg-black');
-        expect(compartments.length).toBe(5);
+        const line = container.querySelector('.bg-secondary-200.w-px');
+        expect(line).toBeTruthy();
     });
 
-    it('displays company name in each compartment title', () => {
+    it('renders coral dot markers for each experience entry', () => {
+        const { container } = render(ExperienceSection);
+        const dots = container.querySelectorAll('.bg-primary.rounded-full');
+        // Each experience has a desktop dot + mobile dot = 2 per entry, 5 entries = 10
+        expect(dots.length).toBe(10);
+    });
+
+    it('renders all 5 experience entries with company names', () => {
         const { container } = render(ExperienceSection);
         const text = container.textContent ?? '';
         expect(text).toContain('Amazon (Veeqo)');
@@ -72,11 +73,18 @@ describe('ExperienceSection', () => {
         expect(text).toContain('Led a team of 6 engineers');
     });
 
-    it('renders a 2-column grid on desktop', () => {
+    it('alternates cards left and right on desktop', () => {
         const { container } = render(ExperienceSection);
-        const grid = container.querySelector('.grid');
-        expect(grid?.classList.contains('grid-cols-1')).toBe(true);
-        expect(grid?.classList.contains('md:grid-cols-2')).toBe(true);
+        // Each entry uses a 3-column grid (1fr auto 1fr) for alternating layout
+        const section = container.querySelector('section#experience');
+        const gridEntries = section?.querySelectorAll('[class*="grid-cols-"][class*="1fr"]');
+        expect(gridEntries?.length).toBe(5);
+    });
+
+    it('renders mobile cards with left padding for timeline offset', () => {
+        const { container } = render(ExperienceSection);
+        const mobileCards = container.querySelectorAll('.md\\:hidden.pl-8');
+        expect(mobileCards.length).toBe(5);
     });
 
     it('renders MetadataBar with experience cycles and org count', () => {
@@ -88,17 +96,7 @@ describe('ExperienceSection', () => {
 
     it('renders crosshair markers at section corners', () => {
         const { container } = render(ExperienceSection);
-        const crosshairs = container.querySelectorAll('[aria-hidden="true"].text-secondary-200.font-mono');
-        // Filter for just the + crosshairs (not the divider)
-        const plusMarkers = Array.from(crosshairs).filter(
-            (element) => element.textContent?.trim() === '+'
-        );
-        expect(plusMarkers.length).toBe(4);
-    });
-
-    it('hides crosshair markers on mobile (hidden md:block)', () => {
-        const { container } = render(ExperienceSection);
-        const crosshairWrappers = container.querySelectorAll('.hidden.md\\:block');
+        const crosshairWrappers = container.querySelectorAll('.hidden.md\\:block.absolute');
         expect(crosshairWrappers.length).toBe(4);
     });
 

@@ -1,31 +1,35 @@
 <script lang="ts">
-    import Project from "../../components/FeaturedProjectItem.svelte";
+    import SectionHeading from '../../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../../components/industrial/MetadataBar.svelte';
+    import Compartment from '../../components/industrial/Compartment.svelte';
+    import ProjectCard from '../../components/ProjectCard.svelte';
     import type { PageData } from './$types';
 
     export let data: PageData;
 </script>
 
-<div
-    class="w-11/12 md:w-1/2 lg:w-2/5 2xl:w-1/3
-border bg-black p-5 flex flex-col items-center gap-5"
->
-    <div class="self-start">
-        <h4 class="text-xl font-bold underline">Featured Projects</h4>
+<div class="w-full max-w-5xl px-4">
+    <MetadataBar position="top">
+        <span>PINNED: {data.projects.length}</span>
+        <span>SOURCE: github.com/ItsThompson</span>
+    </MetadataBar>
+
+    <div class="mt-4">
+        <SectionHeading level={2} text="PROJECTS" prefix=">>>>" />
     </div>
 
     {#if data.projects.length === 0}
-        <p class="text-sm text-gray-400">No pinned projects found.</p>
+        <div class="mt-6">
+            <Compartment>
+                <p class="text-secondary-200 font-mono text-sm text-center">
+                    No pinned projects found.
+                </p>
+            </Compartment>
+        </div>
     {:else}
-        <div class="grid grid-cols-1 md:grid-cols-2 items-start gap-8">
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {#each data.projects as project}
-                <Project
-                    github={project.githubUrl}
-                    website={project.homepageUrl}
-                    name={project.name}
-                    desc={project.description}
-                    language={project.primaryLanguage?.name ?? ""}
-                    languageColor={project.primaryLanguage?.color ?? ""}
-                />
+                <ProjectCard {project} />
             {/each}
         </div>
     {/if}

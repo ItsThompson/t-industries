@@ -19,10 +19,10 @@ describe('NavItem', () => {
 		expect(link?.textContent?.trim()).toBe('Test Page');
 	});
 
-	it('applies uppercase class to the anchor', () => {
+	it('applies lowercase class to the anchor', () => {
 		const { container } = render(NavItem, { props: { href: '/test', text: 'Test' } });
 		const link = container.querySelector('a');
-		expect(link?.classList.contains('uppercase')).toBe(true);
+		expect(link?.classList.contains('lowercase')).toBe(true);
 	});
 
 	it('applies tracking-wider class to the anchor', () => {

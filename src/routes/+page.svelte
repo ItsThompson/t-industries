@@ -1,88 +1,97 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { writable } from "svelte/store";
-    import Age from "../components/Age.svelte";
-    import Link from "../components/Link.svelte";
-    import Loading from "../components/Loading.svelte";
+    import Age from '../components/Age.svelte';
+    import Link from '../components/Link.svelte';
+    import Compartment from '../components/industrial/Compartment.svelte';
+    import SectionHeading from '../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../components/industrial/MetadataBar.svelte';
+    import BioDescription from '../components/BioDescription.svelte';
+    import RndList from '../components/RndList.svelte';
+    import {
+        getUnitSerial,
+        getUptime,
+        getExperienceCycles,
+        getSystemTime
+    } from '$lib/metadata';
+    import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
+    import { onMount } from 'svelte';
 
-    let now: Date = new Date();
-    let yearsInExperience: number = now.getFullYear() - 2019;
+    const unitSerial = getUnitSerial();
 
-    let rndApi: string =
-        "https://script.google.com/macros/s/AKfycbyOG-6A1DXH_87UUl0G4zmhNbUZg8w5drdFpkJw-ZNR6E-SmvHcqHomJfStnjoqQU0ehA/exec";
-    // Query String:
-    // ?data=prev: It reads the 'Previous RND' data from the Google Sheet.
-    // Anything else: It reads the 'Current RND' data from the Google Sheet.
+    let systemTime = getSystemTime();
+    let systemTimeInterval: ReturnType<typeof setInterval>;
 
-    // Endpoint is only used for read operations.
-    // Data is stored in Google Sheets 't-industri.es - Personal R&D List'
+    onMount(() => {
+        systemTimeInterval = setInterval(() => {
+            systemTime = getSystemTime();
+        }, 1000);
 
-    /** Store for your data. 
-    This assumes the data you're pulling back will be an array.
-    If it's going to be an object, default this to an empty object.
-    **/
-    let rndList = writable([]);
-
-    onMount(async () => {
-        fetch(rndApi)
-            .then((response) => response.json())
-            .then((data) => {
-                rndList.set(data);
-            })
-            .catch((error) => {
-                console.log(error);
-                return [];
-            });
+        return () => clearInterval(systemTimeInterval);
     });
 </script>
 
-<div
-    class="w-11/12 md:w-1/2 lg:w-2/5 2xl:w-1/3
-border bg-black p-5 flex flex-col items-center gap-5"
->
-    <div class="self-start">
-        <h4 class="text-xl">
-            <span class="font-bold">Thompson Tong</span>
-            <span class="text-xs">(<Age /> years old)</span>
-        </h4>
-        <p class="text-sm">
-            Software Engineer + Student
-        </p>
-        <p class="mt-5 text-sm">
-            Hi, I am Thompson, a <Age floored={true} /> year old software engineer
-            with <span class="underline">{yearsInExperience}
-            years of experience</span> building and shipping production software at scale.
-            I have lived in <span class="underline">7 different cities across 3 continents</span>,
-            bringing a <span class="underline">multicultural perspective</span>
-            to every team I work on. Currently on placement at Amazon, previously
-            building GenAI pipelines at MSD and research software at the University of Bath.
-        </p>
-        <div class="mt-5 text-sm">
-            Currently, my main areas of personal R&D is:
-            {#if $rndList.length > 0}
-                <ul class="list-disc list-inside">
-                    {#each $rndList as item}
-                        <li class="underline">{item}</li>
-                    {/each}
-                </ul>
-            {:else}
-                <div class="text-center p-5">
-                    <Loading />
-                </div>
-            {/if}
-        </div>
+<div class="w-full max-w-5xl px-4">
+    <MetadataBar position="top">
+        <span>{unitSerial}</span>
+        <span>STATUS: ACTIVE</span>
+        <span>{systemTime}</span>
+    </MetadataBar>
+
+    <div class="mt-4 mb-6">
+        <SectionHeading level={2} text="IDENTITY" prefix=">>>>" />
     </div>
 
-    <div class="flex gap-4">
-        <Link href="https://github.com/ItsThompson" name="GitHub" />
-        <Link href="https://linkedin.com/in/thompsontong" name="LinkedIn" />
-    </div>
-    <div class="flex flex-col items-center gap-2">
-        <p class="text-xs text-gray-300">
-            {now.getTime()}
-        </p>
-        <p class="text-center text-xs text-gray-300">
-            t-industries (<span class="text-yellow-400 font-bold">ti</span>) is not an organization. no rights reserved.
-        </p>
+    <div class="grid grid-cols-12 gap-4">
+        <!-- Bio: span 8 on desktop, full width on mobile -->
+        <div class="col-span-12 md:col-span-8">
+            <Compartment title="BIO">
+                <div class="space-y-3">
+                    <h3 class="text-lg font-bold text-white">{BIO_NAME}</h3>
+                    <p class="text-sm font-mono text-secondary-100">
+                        {BIO_TITLE}
+                    </p>
+                    <BioDescription class="text-sm font-mono text-secondary-100 leading-relaxed" />
+                    <p class="label-xs text-secondary-200 pt-2">
+                        AGE: <Age /> YRS
+                    </p>
+                </div>
+            </Compartment>
+        </div>
+
+        <!-- Sidebar: STATUS + CONNECTIONS stacked, span 4 -->
+        <div class="col-span-12 md:col-span-4 flex flex-col gap-4">
+            <Compartment title="STATUS">
+                <div class="space-y-3">
+                    <p class="text-sm font-mono text-white">
+                        <span class="text-primary">●</span> ACTIVE
+                    </p>
+                    <p class="label-sm text-secondary-200">
+                        UPTIME: {getUptime()}
+                    </p>
+                    <p class="label-sm text-secondary-200">
+                        {getExperienceCycles()}
+                    </p>
+                    <p class="label-sm text-secondary-200">
+                        LOC: LON
+                    </p>
+                </div>
+            </Compartment>
+
+            <Compartment title="CONNECTIONS">
+                <div class="space-y-3">
+                    {#each SOCIAL_LINKS as link}
+                        <div>
+                            <Link href={link.href} name={link.name} />
+                        </div>
+                    {/each}
+                </div>
+            </Compartment>
+        </div>
+
+        <!-- R&D: full width -->
+        <div class="col-span-12">
+            <Compartment title="CURRENT R&D OPS">
+                <RndList />
+            </Compartment>
+        </div>
     </div>
 </div>
