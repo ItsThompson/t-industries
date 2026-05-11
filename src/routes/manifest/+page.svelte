@@ -17,6 +17,7 @@
     import Chevrons from '../../components/industrial/Chevrons.svelte';
     import ExperienceSection from '../../components/manifest/ExperienceSection.svelte';
     import EthosSection from '../../components/manifest/EthosSection.svelte';
+    import SectionNav from '../../components/manifest/SectionNav.svelte';
     import ManifestFooter from './ManifestFooter.svelte';
     import type { PageData } from './$types';
 
@@ -33,6 +34,10 @@
     let rndList = writable<string[]>([]);
     let rndError = writable(false);
 
+    let activeSection = '';
+
+    const SECTION_IDS = ['identity', 'experience', 'projects', 'ethos'];
+
     onMount(() => {
         fetch(RND_API_ENDPOINT)
             .then((response) => response.json())
@@ -48,8 +53,52 @@
             systemTime = getSystemTime();
         }, 1000);
 
+        // IntersectionObserver to track the currently visible section
+        let observer: IntersectionObserver | undefined;
+
+        if (typeof IntersectionObserver !== 'undefined') {
+            const sectionElements = SECTION_IDS
+                .map((id) => document.getElementById(id))
+                .filter((el): el is HTMLElement => el !== null);
+
+            const visibilityMap = new Map<string, number>();
+
+            observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        visibilityMap.set(entry.target.id, entry.intersectionRatio);
+                    });
+
+                    // Pick the section closest to the top that meets threshold
+                    let topSection = '';
+                    let topPosition = Infinity;
+
+                    visibilityMap.forEach((ratio, id) => {
+                        if (ratio > 0) {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                const rect = el.getBoundingClientRect();
+                                if (rect.top < topPosition) {
+                                    topPosition = rect.top;
+                                    topSection = id;
+                                }
+                            }
+                        }
+                    });
+
+                    if (topSection) {
+                        activeSection = topSection;
+                    }
+                },
+                { threshold: [0, 0.3, 0.6, 1.0] }
+            );
+
+            sectionElements.forEach((el) => observer!.observe(el));
+        }
+
         return () => {
             clearInterval(systemTimeInterval);
+            observer?.disconnect();
         };
     });
 </script>
@@ -59,6 +108,9 @@
 </svelte:head>
 
 <div class="w-full max-w-5xl px-4">
+    <!-- Section Navigation -->
+    <SectionNav {activeSection} />
+
     <!-- ═══════ IDENTITY SECTION ═══════ -->
     <section id="identity">
         <MetadataBar position="top">
