@@ -10,6 +10,9 @@ export default {
                 200: '#888883',
             }
         },
+        fontFamily: {
+            display: ['VT323', 'monospace'],
+        },
     },
   },
   plugins: [],
