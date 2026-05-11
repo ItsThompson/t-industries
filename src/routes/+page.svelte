@@ -63,7 +63,7 @@
                     {getExperienceCycles()}
                 </p>
                 <p class="label-sm text-secondary-200">
-                    LOC: LON
+                    LOC: ???
                 </p>
             </div>
         </Compartment>
