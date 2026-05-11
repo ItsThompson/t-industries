@@ -1,9 +1,11 @@
 <script lang="ts">
     import "../app.css";
     import Navbar from "../components/NavBar.svelte";
+    import CRTBackground from "../components/shader/CRTBackground.svelte";
     import PipesBackground from "../components/PipesBackground.svelte";
 </script>
 
+<CRTBackground />
 <PipesBackground />
 
 <div

@@ -76,6 +76,15 @@
 		ctx.globalAlpha = 1;
 	}
 
+	function renderStaticFrame(): void {
+		const dimensions = initCanvas();
+		if (!dimensions || !state?.canAnimate) return;
+
+		const { cellWidth, cellHeight } = dimensions;
+		step(state);
+		render(cellWidth, cellHeight);
+	}
+
 	function startAnimation(): void {
 		const dimensions = initCanvas();
 		if (!dimensions || !state?.canAnimate) return;
@@ -98,18 +107,52 @@
 	function handleResize(): void {
 		if (animationFrameId) {
 			cancelAnimationFrame(animationFrameId);
+			animationFrameId = 0;
 		}
-		startAnimation();
+		if (prefersReducedMotion) {
+			renderStaticFrame();
+		} else {
+			startAnimation();
+		}
+	}
+
+	let prefersReducedMotion = false;
+
+	function applyMotionPreference(prefersReduced: boolean): void {
+		prefersReducedMotion = prefersReduced;
+		if (animationFrameId) {
+			cancelAnimationFrame(animationFrameId);
+			animationFrameId = 0;
+		}
+		if (prefersReduced) {
+			renderStaticFrame();
+		} else {
+			startAnimation();
+		}
 	}
 
 	onMount(() => {
-		startAnimation();
+		const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+		prefersReducedMotion = reducedMotionQuery.matches;
+
+		if (prefersReducedMotion) {
+			renderStaticFrame();
+		} else {
+			startAnimation();
+		}
+
+		function handleMotionChange(event: MediaQueryListEvent): void {
+			applyMotionPreference(event.matches);
+		}
+
+		reducedMotionQuery.addEventListener('change', handleMotionChange);
 		window.addEventListener('resize', handleResize);
 
 		return () => {
 			if (animationFrameId) {
 				cancelAnimationFrame(animationFrameId);
 			}
+			reducedMotionQuery.removeEventListener('change', handleMotionChange);
 			window.removeEventListener('resize', handleResize);
 		};
 	});
@@ -117,6 +160,6 @@
 
 <canvas
 	bind:this={canvas}
-	class="fixed inset-0 z-0"
+	class="fixed inset-0 z-[1] opacity-60 pointer-events-none"
 	aria-hidden="true"
 />
