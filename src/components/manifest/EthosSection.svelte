@@ -1,10 +1,10 @@
 <script lang="ts">
-    import Divider from '../../components/industrial/Divider.svelte';
-    import SectionHeading from '../../components/industrial/SectionHeading.svelte';
+    import Divider from '../industrial/Divider.svelte';
+    import SectionHeading from '../industrial/SectionHeading.svelte';
     import { ETHOS_ITEMS } from '$lib/ethos';
 </script>
 
-<section id="ethos" class="col-span-12">
+<section id="ethos">
     <Divider label="&ET" />
 
     <div class="mt-4">

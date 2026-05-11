@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onDestroy } from 'svelte';
     import MetadataBar from '../../components/industrial/MetadataBar.svelte';
     import { ARCHIVE_REF, getManufacturingDate } from '$lib/metadata';
 
@@ -11,12 +12,14 @@
         timestamp = Date.now();
     }, 1000);
 
-    import { onDestroy } from 'svelte';
     onDestroy(() => clearInterval(interval));
 </script>
 
-<footer class="col-span-12 mt-8">
+<footer class="mt-8">
     <MetadataBar position="bottom">
-        <span>{ARCHIVE_REF} // {mfgDate} // {timestamp} // t-industries (ti) no rights reserved.</span>
+        <span>{ARCHIVE_REF}</span>
+        <span>{mfgDate}</span>
+        <span>{timestamp}</span>
+        <span>t-industries (ti) no rights reserved.</span>
     </MetadataBar>
 </footer>

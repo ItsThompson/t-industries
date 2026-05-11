@@ -16,7 +16,7 @@
     import Divider from '../../components/industrial/Divider.svelte';
     import Chevrons from '../../components/industrial/Chevrons.svelte';
     import ExperienceSection from '../../components/manifest/ExperienceSection.svelte';
-    import EthosSection from './EthosSection.svelte';
+    import EthosSection from '../../components/manifest/EthosSection.svelte';
     import ManifestFooter from './ManifestFooter.svelte';
     import type { PageData } from './$types';
 
