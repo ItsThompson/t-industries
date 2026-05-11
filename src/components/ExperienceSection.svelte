@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Compartment from './industrial/Compartment.svelte';
     import Crosshair from './industrial/Crosshair.svelte';
     import MetadataBar from './industrial/MetadataBar.svelte';
     import SectionHeading from './industrial/SectionHeading.svelte';
+    import ExperienceCard from './ExperienceCard.svelte';
     import { experiences } from '$lib/experiences';
     import { getExperienceCycles } from '$lib/terminal-display';
 
@@ -48,17 +48,7 @@
                         <!-- Left card (desktop only for even index) -->
                         <div class="hidden md:block {side === 'left' ? '' : 'invisible'}">
                             {#if side === 'left'}
-                                <Compartment title={experience.company}>
-                                    <div class="space-y-2 md:text-right">
-                                        <p class="text-sm font-mono text-white font-bold">{experience.role}</p>
-                                        <p class="label-sm text-secondary-200">
-                                            {experience.startDate} - {experience.endDate}
-                                        </p>
-                                        <p class="text-sm font-mono text-secondary-100 leading-relaxed">
-                                            {experience.description}
-                                        </p>
-                                    </div>
-                                </Compartment>
+                                <ExperienceCard {experience} alignment="left" />
                             {/if}
                         </div>
 
@@ -70,17 +60,7 @@
                         <!-- Right card (desktop only for odd index) -->
                         <div class="hidden md:block {side === 'right' ? '' : 'invisible'}">
                             {#if side === 'right'}
-                                <Compartment title={experience.company}>
-                                    <div class="space-y-2">
-                                        <p class="text-sm font-mono text-white font-bold">{experience.role}</p>
-                                        <p class="label-sm text-secondary-200">
-                                            {experience.startDate} - {experience.endDate}
-                                        </p>
-                                        <p class="text-sm font-mono text-secondary-100 leading-relaxed">
-                                            {experience.description}
-                                        </p>
-                                    </div>
-                                </Compartment>
+                                <ExperienceCard {experience} alignment="right" />
                             {/if}
                         </div>
 
@@ -89,17 +69,7 @@
                             <div
                                 class="absolute left-[9px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary border border-primary z-10"
                             ></div>
-                            <Compartment title={experience.company}>
-                                <div class="space-y-2">
-                                    <p class="text-sm font-mono text-white font-bold">{experience.role}</p>
-                                    <p class="label-sm text-secondary-200">
-                                        {experience.startDate} - {experience.endDate}
-                                    </p>
-                                    <p class="text-sm font-mono text-secondary-100 leading-relaxed">
-                                        {experience.description}
-                                    </p>
-                                </div>
-                            </Compartment>
+                            <ExperienceCard {experience} alignment="right" />
                         </div>
                     </div>
                 {/each}
