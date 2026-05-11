@@ -20,6 +20,4 @@
     });
 </script>
 
-{#key loadingText}
-    <p class="font-bold">{loadingText}</p>
-{/key}
+<p class="font-bold">{loadingText}</p>
