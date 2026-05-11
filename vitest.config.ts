@@ -9,7 +9,8 @@ export default defineConfig({
 	resolve: {
 		conditions: ['browser'],
 		alias: {
-			$lib: path.resolve(__dirname, 'src/lib')
+			$lib: path.resolve(__dirname, 'src/lib'),
+			'$env/static/private': path.resolve(__dirname, 'src/lib/__mocks__/env-static-private.ts')
 		}
 	},
 	test: {
