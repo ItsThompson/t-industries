@@ -13,9 +13,14 @@
         getExperienceCycles,
         getSystemTime
     } from '$lib/metadata';
+    import Divider from '../../components/industrial/Divider.svelte';
+    import Chevrons from '../../components/industrial/Chevrons.svelte';
     import ExperienceSection from '../../components/manifest/ExperienceSection.svelte';
     import EthosSection from './EthosSection.svelte';
     import ManifestFooter from './ManifestFooter.svelte';
+    import type { PageData } from './$types';
+
+    export let data: PageData;
 
     const unitSerial = getUnitSerial();
 
@@ -156,6 +161,71 @@
         <ExperienceSection />
     </div>
     <!-- ═══════ END EXPERIENCE SECTION ═══════ -->
+
+    <!-- ═══════ PROJECTS SECTION ═══════ -->
+    <section id="projects" class="mt-12">
+        <Divider label="PROJECTS" />
+
+        <div class="my-4 text-center">
+            <Chevrons count={4} color="accent" />
+            <span class="text-secondary-200 font-mono mx-2">────</span>
+            <span class="text-secondary-200 font-mono">PROJECTS</span>
+            <span class="text-secondary-200 font-mono mx-2">────</span>
+            <Chevrons count={4} color="accent" />
+        </div>
+
+        <SectionHeading level={2} text="PINNED REPOSITORIES" />
+
+        {#if data.projectsError && data.projects.length === 0}
+            <div class="mt-6">
+                <Compartment>
+                    <p class="text-secondary-200 font-mono text-sm text-center">
+                        Unable to load projects
+                    </p>
+                </Compartment>
+            </div>
+        {:else}
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {#each data.projects as project}
+                    <Compartment>
+                        <div class="space-y-2">
+                            <a
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="display-md text-white hover:text-primary transition-colors"
+                            >
+                                {project.name}
+                            </a>
+                            {#if project.description}
+                                <p class="text-sm font-mono text-secondary-100 leading-relaxed">
+                                    {project.description}
+                                </p>
+                            {/if}
+                            {#if project.primaryLanguage}
+                                <div class="flex items-center gap-2 pt-2">
+                                    <span
+                                        class="inline-block w-3 h-3 rounded-full"
+                                        style="background-color: {project.primaryLanguage.color}"
+                                    ></span>
+                                    <span class="label-sm text-secondary-200">
+                                        {project.primaryLanguage.name}
+                                    </span>
+                                </div>
+                            {/if}
+                        </div>
+                    </Compartment>
+                {/each}
+            </div>
+        {/if}
+
+        <div class="mt-6">
+            <MetadataBar position="bottom">
+                <span>PINNED: {data.projects.length} // SOURCE: github.com/ItsThompson</span>
+            </MetadataBar>
+        </div>
+    </section>
+    <!-- ═══════ END PROJECTS SECTION ═══════ -->
 
     <!-- ═══════ ETHOS SECTION ═══════ -->
     <EthosSection />
