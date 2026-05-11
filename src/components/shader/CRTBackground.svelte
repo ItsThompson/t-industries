@@ -39,6 +39,8 @@
 			if (!shader) return;
 			if (prefersReduced) {
 				shader.stop();
+				// Render a single static frame so the effect is visible without animation
+				shader.resize(canvas.width, canvas.height);
 			} else {
 				shader.start();
 			}
