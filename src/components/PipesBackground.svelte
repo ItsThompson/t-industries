@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { createEngine, step, getVisibleSegments } from './pipes-engine';
+	import { observeMotionPreference } from '$lib/motion-preference';
 	import type { PipesState } from './pipes-engine';
 
 	const FONT_SIZE = 72;
@@ -104,11 +105,15 @@
 		animationFrameId = requestAnimationFrame(animate);
 	}
 
-	function handleResize(): void {
+	function stopAnimation(): void {
 		if (animationFrameId) {
 			cancelAnimationFrame(animationFrameId);
 			animationFrameId = 0;
 		}
+	}
+
+	function handleResize(): void {
+		stopAnimation();
 		if (prefersReducedMotion) {
 			renderStaticFrame();
 		} else {
@@ -118,41 +123,25 @@
 
 	let prefersReducedMotion = false;
 
-	function applyMotionPreference(prefersReduced: boolean): void {
-		prefersReducedMotion = prefersReduced;
-		if (animationFrameId) {
-			cancelAnimationFrame(animationFrameId);
-			animationFrameId = 0;
-		}
-		if (prefersReduced) {
-			renderStaticFrame();
-		} else {
-			startAnimation();
-		}
-	}
-
 	onMount(() => {
-		const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-		prefersReducedMotion = reducedMotionQuery.matches;
+		const cleanupMotion = observeMotionPreference({
+			onReduce: () => {
+				prefersReducedMotion = true;
+				stopAnimation();
+				renderStaticFrame();
+			},
+			onAnimate: () => {
+				prefersReducedMotion = false;
+				stopAnimation();
+				startAnimation();
+			}
+		});
 
-		if (prefersReducedMotion) {
-			renderStaticFrame();
-		} else {
-			startAnimation();
-		}
-
-		function handleMotionChange(event: MediaQueryListEvent): void {
-			applyMotionPreference(event.matches);
-		}
-
-		reducedMotionQuery.addEventListener('change', handleMotionChange);
 		window.addEventListener('resize', handleResize);
 
 		return () => {
-			if (animationFrameId) {
-				cancelAnimationFrame(animationFrameId);
-			}
-			reducedMotionQuery.removeEventListener('change', handleMotionChange);
+			stopAnimation();
+			cleanupMotion();
 			window.removeEventListener('resize', handleResize);
 		};
 	});

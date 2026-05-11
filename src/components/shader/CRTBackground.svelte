@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { createCRTShader, getMobileScale, DEFAULT_CRT_CONFIG } from './crt-shader';
+	import { observeMotionPreference } from '$lib/motion-preference';
 	import type { CRTShader } from './crt-shader';
 
 	let canvas: HTMLCanvasElement;
@@ -33,30 +34,22 @@
 			return;
 		}
 
-		const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-		function applyMotionPreference(prefersReduced: boolean): void {
-			if (!shader) return;
-			if (prefersReduced) {
+		const cleanupMotion = observeMotionPreference({
+			onReduce: () => {
+				if (!shader) return;
 				shader.stop();
-				// Render a single static frame so the effect is visible without animation
 				shader.resize(canvas.width, canvas.height);
-			} else {
+			},
+			onAnimate: () => {
+				if (!shader) return;
 				shader.start();
 			}
-		}
+		});
 
-		applyMotionPreference(reducedMotionQuery.matches);
-
-		function handleMotionChange(event: MediaQueryListEvent): void {
-			applyMotionPreference(event.matches);
-		}
-
-		reducedMotionQuery.addEventListener('change', handleMotionChange);
 		window.addEventListener('resize', handleResize);
 
 		return () => {
-			reducedMotionQuery.removeEventListener('change', handleMotionChange);
+			cleanupMotion();
 			window.removeEventListener('resize', handleResize);
 			if (shader) {
 				shader.destroy();
