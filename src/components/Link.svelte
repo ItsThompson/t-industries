@@ -5,9 +5,8 @@
 </script>
 
 <a
-    class="underline hover:no-underline {classes}"
+    class="label-sm text-white hover:text-primary transition-colors duration-150 {classes}"
     {href}
     target="_blank"
     rel="noopener noreferrer"
-    >{name} &#128279;
-</a>
+>{name} <span class="text-secondary-200">&#8599;</span></a>
