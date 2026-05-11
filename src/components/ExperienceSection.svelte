@@ -32,7 +32,7 @@
         </MetadataBar>
 
         <div class="mt-4">
-            <SectionHeading level={2} text="EXPERIENCE" prefix=">>>>" />
+            <SectionHeading level={2} text="EXPERIENCE" />
         </div>
 
         <div class="relative mt-4">

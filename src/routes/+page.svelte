@@ -30,7 +30,7 @@
     </MetadataBar>
 
     <div class="mt-4 mb-6">
-        <SectionHeading level={2} text="IDENTITY" prefix=">>>>" />
+        <SectionHeading level={2} text="IDENTITY" />
     </div>
 
     <div class="grid grid-cols-12 gap-4">

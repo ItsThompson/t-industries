@@ -41,32 +41,28 @@ describe('SectionHeading', () => {
         expect(heading?.classList.contains('tracking-wider')).toBe(true);
     });
 
-    it('renders optional prefix before heading text', () => {
-        const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE', prefix: '>>>>' } });
+    it('renders 4 chevrons by default before heading text', () => {
+        const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE' } });
         const heading = container.querySelector('h2');
         const content = heading?.textContent;
         expect(content).toContain('>>>>');
         expect(content).toContain('TITLE');
-        const prefixIndex = content?.indexOf('>>>>') ?? -1;
+        const chevronIndex = content?.indexOf('>>>>') ?? -1;
         const titleIndex = content?.indexOf('TITLE') ?? -1;
-        expect(prefixIndex).toBeLessThan(titleIndex);
+        expect(chevronIndex).toBeLessThan(titleIndex);
     });
 
-    it('renders optional suffix after heading text', () => {
-        const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE', suffix: 'TI-0510' } });
+    it('renders custom chevron count when specified', () => {
+        const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE', chevronCount: 6 } });
         const heading = container.querySelector('h2');
         const content = heading?.textContent;
-        expect(content).toContain('TITLE');
-        expect(content).toContain('TI-0510');
-        const titleIndex = content?.indexOf('TITLE') ?? -1;
-        const suffixIndex = content?.indexOf('TI-0510') ?? -1;
-        expect(titleIndex).toBeLessThan(suffixIndex);
+        expect(content).toContain('>>>>>>');
     });
 
-    it('renders without prefix or suffix when not provided', () => {
-        const { container } = render(SectionHeading, { props: { level: 2, text: 'SIMPLE' } });
-        const heading = container.querySelector('h2');
-        expect(heading?.textContent?.trim()).toBe('SIMPLE');
+    it('renders Chevrons component with muted color', () => {
+        const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE' } });
+        const chevronSpan = container.querySelector('[aria-hidden="true"]');
+        expect(chevronSpan?.classList.contains('text-secondary-200')).toBe(true);
     });
 
     it('uses display-lg for level 2', () => {

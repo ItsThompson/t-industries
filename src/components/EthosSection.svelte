@@ -12,7 +12,7 @@
     </MetadataBar>
 
     <div class="mt-4">
-        <SectionHeading level={2} text="ETHOS" prefix=">>>>" />
+        <SectionHeading level={2} text="ETHOS" />
     </div>
 
     <div class="mt-6">
