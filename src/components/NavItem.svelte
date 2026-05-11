@@ -11,7 +11,7 @@
     {#key textColor}
         <a
             {href}
-            class="block py-2 px-3 rounded {textColor} hover:text-primary text-sm"
+            class="block py-2 px-3 rounded {textColor} hover:text-primary text-sm uppercase tracking-wider"
             >{text}</a
         >
     {/key}
