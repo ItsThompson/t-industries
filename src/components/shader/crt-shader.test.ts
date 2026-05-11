@@ -45,6 +45,8 @@ describe('crt-shader', () => {
 			expect(result.intensity).toBe(0.5);
 			expect(result.color).toEqual(DEFAULT_CRT_CONFIG.color);
 			expect(result.scanlineDensity).toBe(DEFAULT_CRT_CONFIG.scanlineDensity);
+			expect(result.aberrationStrength).toBe(DEFAULT_CRT_CONFIG.aberrationStrength);
+			expect(result.glitchSpeed).toBe(DEFAULT_CRT_CONFIG.glitchSpeed);
 		});
 
 		it('clamps intensity to [0, 1]', () => {
@@ -72,13 +74,31 @@ describe('crt-shader', () => {
 			expect(validateConfig({ vignetteStrength: 1.5 }).vignetteStrength).toBe(1);
 		});
 
+		it('clamps aberrationStrength to [0, 0.02]', () => {
+			expect(validateConfig({ aberrationStrength: -0.01 }).aberrationStrength).toBe(0);
+			expect(validateConfig({ aberrationStrength: 0.05 }).aberrationStrength).toBe(0.02);
+		});
+
+		it('clamps glitchSpeed to [0, 5]', () => {
+			expect(validateConfig({ glitchSpeed: -1 }).glitchSpeed).toBe(0);
+			expect(validateConfig({ glitchSpeed: 10 }).glitchSpeed).toBe(5);
+		});
+
+		it('clamps glitchIntensity to [0, 1]', () => {
+			expect(validateConfig({ glitchIntensity: -0.5 }).glitchIntensity).toBe(0);
+			expect(validateConfig({ glitchIntensity: 2.0 }).glitchIntensity).toBe(1);
+		});
+
 		it('preserves valid config values unchanged', () => {
 			const config: CRTConfig = {
 				color: [0.8, 0.2, 0.4],
 				intensity: 0.3,
 				scanlineDensity: 2.0,
 				flickerSpeed: 3.0,
-				vignetteStrength: 0.5
+				vignetteStrength: 0.5,
+				aberrationStrength: 0.005,
+				glitchSpeed: 1.0,
+				glitchIntensity: 0.4
 			};
 			expect(validateConfig(config)).toEqual(config);
 		});
