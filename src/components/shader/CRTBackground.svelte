@@ -61,7 +61,7 @@
 
 <canvas
 	bind:this={canvas}
-	class="fixed inset-0 z-0 pointer-events-none"
+	class="fixed inset-0 w-full h-full z-0 pointer-events-none"
 	class:hidden={useFallback}
 	aria-hidden="true"
 />
