@@ -12,7 +12,9 @@
 <div
     class="relative z-10 min-h-screen min-w-screen flex flex-col justify-start md:justify-center items-center m-auto py-8 overflow-auto"
 >
-    <slot />
-    <Footer />
+    <div class="w-full max-w-5xl px-4">
+        <slot />
+        <Footer />
+    </div>
     <Navbar />
 </div>

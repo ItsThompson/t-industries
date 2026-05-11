@@ -14,7 +14,7 @@
     });
 </script>
 
-<footer class="mt-8 w-full max-w-5xl px-4">
+<footer class="mt-8">
     <MetadataBar position="bottom">
         <span>{identity.archiveRef}</span>
         <span>{identity.manufacturingDate}</span>
