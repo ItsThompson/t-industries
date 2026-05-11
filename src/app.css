@@ -11,4 +11,37 @@
 }
 
 @tailwind components;
+
+@layer components {
+  .display-xl {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .display-lg {
+    font-family: 'VT323', monospace;
+    font-size: 2.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .display-md {
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .label-sm {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .label-xs {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.5625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}
 @tailwind utilities;
