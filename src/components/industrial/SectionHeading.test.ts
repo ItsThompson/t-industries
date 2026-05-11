@@ -80,4 +80,10 @@ describe('SectionHeading', () => {
         const heading = container.querySelector('h3');
         expect(heading?.classList.contains('display-md')).toBe(true);
     });
+
+    it('uses display-md for level 4', () => {
+        const { container } = render(SectionHeading, { props: { level: 4, text: 'TEST' } });
+        const heading = container.querySelector('h4');
+        expect(heading?.classList.contains('display-md')).toBe(true);
+    });
 });
