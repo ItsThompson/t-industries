@@ -9,11 +9,16 @@
 </script>
 
 <p class={className}>
-    Hi, I am Thompson, a <Age floored={true} /> year old software engineer
+    Hi, I'm Thompson, a <Age floored={true} /> year old software engineer
     with <span class="underline">{yearsInExperience}
     years of experience</span> building and shipping production software at scale.
-    I have lived in <span class="underline">8 different cities across 3 continents</span>,
-    bringing a <span class="underline">multicultural perspective</span>
-    to every team I work on. Currently on placement at Amazon, previously
-    building GenAI pipelines at MSD and research software at the University of Bath.
+    I've lived in <span class="underline">8 different cities across 3 continents</span>,
+    which has given me a broad perspective on technology and problem-solving.
+    I'm currently on placement at Amazon, and previously I worked on GenAI pipelines
+    at MSD and research software at the University of Bath.
+</p>
+<p class={className}>
+    I'm deeply curious about how systems work from first principles, whether that's
+    foundational technology or bleeding-edge tooling. Understanding what's happening
+    under the hood means I get far more out of AI-assisted development than most.
 </p>
