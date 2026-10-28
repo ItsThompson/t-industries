@@ -1,19 +1,41 @@
 <script lang="ts">
+    import { afterNavigate } from "$app/navigation";
     import "../app.css";
     import Navbar from "../components/NavBar.svelte";
     import Footer from "../components/Footer.svelte";
     import CRTBackground from "../components/shader/CRTBackground.svelte";
     import PipesBackground from "../components/PipesBackground.svelte";
+
+    let scrollRegion: HTMLDivElement;
+
+    // This layout stays mounted across navigations, so its scroll offset carries
+    // over from the previous route unless it is reset.
+    afterNavigate(() => {
+        scrollRegion.scrollTop = 0;
+    });
 </script>
 
 <CRTBackground />
 <PipesBackground />
 
 <div
-    class="relative z-10 min-h-screen min-w-screen flex flex-col justify-start md:justify-center items-center m-auto py-8 overflow-auto"
+    class="relative z-10 h-dvh w-full flex flex-col items-center overflow-hidden py-8"
 >
-    <div class="w-full max-w-5xl px-4">
-        <slot />
+    <div
+        bind:this={scrollRegion}
+        class="flex flex-col w-full min-h-0 flex-1 overflow-y-auto overscroll-none"
+    >
+        <div
+            class="w-full max-w-5xl px-4 pb-8 mx-auto flex flex-col flex-1 justify-start md:justify-center"
+        >
+            <slot />
+        </div>
+        <!-- Scrolls with the content on mobile; the desktop copy below is pinned instead. -->
+        <div class="w-full max-w-5xl px-4 mx-auto md:hidden">
+            <Footer />
+        </div>
+    </div>
+    <div class="w-full max-w-5xl px-4 mx-auto hidden md:block">
         <Footer />
     </div>
     <Navbar />

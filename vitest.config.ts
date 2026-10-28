@@ -12,7 +12,8 @@ export default defineConfig({
 			$lib: path.resolve(__dirname, 'src/lib'),
 			'$env/static/private': path.resolve(__dirname, 'src/lib/__mocks__/env-static-private.ts'),
 			'$app/stores': path.resolve(__dirname, 'src/lib/__mocks__/app-stores.ts'),
-			'$app/paths': path.resolve(__dirname, 'src/lib/__mocks__/app-paths.ts')
+			'$app/paths': path.resolve(__dirname, 'src/lib/__mocks__/app-paths.ts'),
+			'$app/navigation': path.resolve(__dirname, 'src/lib/__mocks__/app-navigation.ts')
 		}
 	},
 	test: {
