@@ -90,13 +90,13 @@ describe('+layout', () => {
 		expect(root.classList.contains('overflow-hidden')).toBe(true);
 	});
 
-	it('lets the scroll region grow to the space the navbar leaves', async () => {
+	it('hugs its content so the page centers while it fits, and shrinks to scroll when it does not', async () => {
 		const { container } = render(Layout);
 		await act();
 
 		const region = getScrollRegion(container);
-		expect(region.classList.contains('flex-1')).toBe(true);
 		expect(region.classList.contains('min-h-0')).toBe(true);
+		expect(region.classList.contains('flex-1')).toBe(false);
 	});
 
 	it('stops scroll chaining so the pinned chrome cannot bounce', async () => {
@@ -141,13 +141,13 @@ describe('+layout', () => {
 		expect(getRoot(container).contains(navbar)).toBe(true);
 	});
 
-	it('centers short content on desktop and keeps overflowing content top-aligned', async () => {
+	it('centers the whole page on desktop and leaves overflowing content top-aligned', async () => {
 		const { container } = render(Layout);
 		await act();
 
-		const content = getScrollRegion(container).firstElementChild;
-		expect(content?.classList.contains('justify-start')).toBe(true);
-		expect(content?.classList.contains('md:justify-center')).toBe(true);
+		const root = getRoot(container);
+		expect(root.classList.contains('justify-start')).toBe(true);
+		expect(root.classList.contains('md:justify-center')).toBe(true);
 	});
 
 	it('resets the scroll region when a navigation completes', async () => {

@@ -19,15 +19,15 @@
 <PipesBackground />
 
 <div
-    class="relative z-10 h-dvh w-full flex flex-col items-center overflow-hidden py-8"
+    class="relative z-10 h-dvh w-full flex flex-col justify-start md:justify-center items-center overflow-hidden py-8"
 >
+    <!-- No flex-1: the region hugs its content, so the root can center the whole
+         stack while the content fits, and the region shrinks to scroll when it does not. -->
     <div
         bind:this={scrollRegion}
-        class="flex flex-col w-full min-h-0 flex-1 overflow-y-auto overscroll-none"
+        class="flex flex-col w-full min-h-0 overflow-y-auto overscroll-none"
     >
-        <div
-            class="w-full max-w-5xl px-4 pb-8 mx-auto flex flex-col flex-1 justify-start md:justify-center"
-        >
+        <div class="w-full max-w-5xl px-4 pb-8 mx-auto">
             <slot />
         </div>
         <!-- Scrolls with the content on mobile; the desktop copy below is pinned instead. -->
