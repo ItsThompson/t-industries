@@ -1,11 +1,15 @@
 import type { RequestHandler } from './$types';
-import { canonicalUrl, PAGES } from '$lib/seo';
+import { canonicalUrl, routePathFromFile } from '$lib/seo';
 
 export const prerender = true;
 
+const PAGE_FILES = import.meta.glob('/src/routes/**/+page.svelte');
+
 export const GET: RequestHandler = () => {
-	const urls = Object.values(PAGES)
-		.map((page) => `  <url>\n    <loc>${canonicalUrl(page.path)}</loc>\n  </url>`)
+	const urls = Object.keys(PAGE_FILES)
+		.map(routePathFromFile)
+		.sort()
+		.map((path) => `  <url>\n    <loc>${canonicalUrl(path)}</loc>\n  </url>`)
 		.join('\n');
 
 	const body = `<?xml version="1.0" encoding="UTF-8"?>

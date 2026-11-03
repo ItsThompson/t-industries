@@ -1,9 +1,11 @@
 <script lang="ts">
     import EthosSection from '../../components/EthosSection.svelte';
     import Seo from '../../components/Seo.svelte';
-    import { PAGES } from '$lib/seo';
 </script>
 
-<Seo page={PAGES.ethos} />
+<Seo
+    title="Ethos | Thompson Tong"
+    description="The three principles Thompson Tong works by, with the evidence behind each one: global perspective, continuous learning, and impactful purpose."
+/>
 
 <EthosSection />

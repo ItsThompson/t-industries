@@ -1,9 +1,11 @@
 <script lang="ts">
     import ExperienceSection from '../../components/ExperienceSection.svelte';
     import Seo from '../../components/Seo.svelte';
-    import { PAGES } from '$lib/seo';
 </script>
 
-<Seo page={PAGES.experience} />
+<Seo
+    title="Experience | Thompson Tong"
+    description="Roles and results from Thompson Tong's career: Amazon, the University of Bath CRIISP group, MSD, and two education nonprofits."
+/>
 
 <ExperienceSection />

@@ -8,7 +8,6 @@
     import RndList from '../components/RndList.svelte';
     import Seo from '../components/Seo.svelte';
     import { identity } from '$lib/identity';
-    import { PAGES } from '$lib/seo';
     import { getUptime, getExperienceCycles, getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
@@ -24,7 +23,11 @@
     });
 </script>
 
-<Seo page={PAGES.home} profilePage />
+<Seo
+    title="Thompson Tong | Software Engineer"
+    description="Thompson Tong is a software engineer and CS + AI student at the University of Bath. Experience at Amazon, MSD, and the CRIISP research group."
+    profilePage
+/>
 
 <MetadataBar position="top">
     <span>{identity.unitSerial}</span>
