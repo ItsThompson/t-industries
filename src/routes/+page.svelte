@@ -6,7 +6,9 @@
     import MetadataBar from '../components/industrial/MetadataBar.svelte';
     import BioDescription from '../components/BioDescription.svelte';
     import RndList from '../components/RndList.svelte';
+    import Seo from '../components/Seo.svelte';
     import { identity } from '$lib/identity';
+    import { PAGES } from '$lib/seo';
     import { getUptime, getExperienceCycles, getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
@@ -21,6 +23,8 @@
         return () => clearInterval(systemTimeInterval);
     });
 </script>
+
+<Seo page={PAGES.home} profilePage />
 
 <MetadataBar position="top">
     <span>{identity.unitSerial}</span>

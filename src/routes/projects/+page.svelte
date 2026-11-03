@@ -3,10 +3,14 @@
     import MetadataBar from '../../components/industrial/MetadataBar.svelte';
     import Compartment from '../../components/industrial/Compartment.svelte';
     import ProjectCard from '../../components/ProjectCard.svelte';
+    import Seo from '../../components/Seo.svelte';
+    import { PAGES } from '$lib/seo';
     import type { PageData } from './$types';
 
     export let data: PageData;
 </script>
+
+<Seo page={PAGES.projects} />
 
 <MetadataBar position="top">
     <span>PINNED: {data.projects.length}</span>
