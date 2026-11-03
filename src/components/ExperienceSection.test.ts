@@ -13,9 +13,9 @@ describe('ExperienceSection', () => {
         expect(section).toBeTruthy();
     });
 
-    it('renders SectionHeading with "EXPERIENCE" as h2', () => {
+    it('renders SectionHeading with "EXPERIENCE" as h1', () => {
         const { container } = render(ExperienceSection);
-        const heading = container.querySelector('h2');
+        const heading = container.querySelector('h1');
         expect(heading).toBeTruthy();
         expect(heading?.textContent).toContain('EXPERIENCE');
     });

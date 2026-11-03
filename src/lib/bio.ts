@@ -8,7 +8,7 @@ export const BIO_TITLE = 'Software Engineer + Student';
 
 export const SOCIAL_LINKS: SocialLink[] = [
 	{ href: 'https://github.com/ItsThompson', name: 'GitHub' },
-	{ href: 'https://linkedin.com/in/thompsontong', name: 'LinkedIn' }
+	{ href: 'https://www.linkedin.com/in/thompsontong', name: 'LinkedIn' }
 ];
 
 export const RND_API_ENDPOINT =

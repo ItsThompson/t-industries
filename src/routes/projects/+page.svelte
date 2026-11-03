@@ -3,10 +3,16 @@
     import MetadataBar from '../../components/industrial/MetadataBar.svelte';
     import Compartment from '../../components/industrial/Compartment.svelte';
     import ProjectCard from '../../components/ProjectCard.svelte';
+    import Seo from '../../components/Seo.svelte';
     import type { PageData } from './$types';
 
     export let data: PageData;
 </script>
+
+<Seo
+    title="Projects | Thompson Tong"
+    description="Pinned open-source projects by Thompson Tong, pulled from GitHub, with each repository's primary language and source link."
+/>
 
 <MetadataBar position="top">
     <span>PINNED: {data.projects.length}</span>
@@ -14,7 +20,7 @@
 </MetadataBar>
 
 <div class="mt-4">
-    <SectionHeading level={2} text="PROJECTS" />
+    <SectionHeading level={1} text="PROJECTS" />
 </div>
 
 {#if data.projects.length === 0}
