@@ -1,5 +1,5 @@
 import { BIO_NAME, SOCIAL_LINKS } from './bio';
-import { canonicalUrl, PAGES, SITE_ORIGIN } from './seo';
+import { canonicalUrl, SITE_ORIGIN } from './seo';
 
 export interface JsonLdNode {
 	'@type': string;
@@ -27,6 +27,9 @@ const EMPLOYERS: JsonLdNode[] = [
 	{ '@type': 'Organization', name: 'MSD', url: 'https://www.msd.com' }
 ];
 
+const PERSON_DESCRIPTION =
+	'Software engineer and CS + AI student at the University of Bath, building production software at scale.';
+
 export function buildProfileGraph(): JsonLdGraph {
 	return {
 		'@context': 'https://schema.org',
@@ -43,7 +46,6 @@ export function buildProfileGraph(): JsonLdGraph {
 				'@type': 'ProfilePage',
 				'@id': PROFILE_PAGE_ID,
 				url: canonicalUrl('/'),
-				name: PAGES.home.title,
 				isPartOf: { '@id': WEBSITE_ID },
 				mainEntity: { '@id': PERSON_ID }
 			},
@@ -53,7 +55,7 @@ export function buildProfileGraph(): JsonLdGraph {
 				name: BIO_NAME,
 				alternateName: 'ItsThompson',
 				jobTitle: 'Software Engineer',
-				description: PAGES.home.description,
+				description: PERSON_DESCRIPTION,
 				url: canonicalUrl('/'),
 				sameAs: SOCIAL_LINKS.map((link) => link.href),
 				alumniOf: ALMA_MATER,
