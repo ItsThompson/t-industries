@@ -12,7 +12,7 @@
     </MetadataBar>
 
     <div class="mt-4">
-        <SectionHeading level={2} text="ETHOS" />
+        <SectionHeading level={1} text="ETHOS" />
     </div>
 
     <div class="mt-6">
@@ -20,9 +20,9 @@
             <div class="space-y-6">
                 {#each ETHOS_ITEMS as item}
                     <div class="grid grid-cols-12 gap-3 items-start">
-                        <h3 class="col-span-12 md:col-span-2 text-sm font-bold font-mono text-white">
+                        <h2 class="col-span-12 md:col-span-2 text-sm font-bold font-mono text-white">
                             {item.title}
-                        </h3>
+                        </h2>
                         <p class="col-span-12 md:col-span-4 text-xs font-mono text-secondary-100 leading-relaxed">
                             {item.description}
                         </p>

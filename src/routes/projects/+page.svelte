@@ -14,7 +14,7 @@
 </MetadataBar>
 
 <div class="mt-4">
-    <SectionHeading level={2} text="PROJECTS" />
+    <SectionHeading level={1} text="PROJECTS" />
 </div>
 
 {#if data.projects.length === 0}

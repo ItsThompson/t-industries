@@ -1,12 +1,12 @@
 <script lang="ts">
     import Chevrons from './Chevrons.svelte';
 
-    export let level: 2 | 3 | 4 = 2;
+    export let level: 1 | 2 | 3 | 4 = 2;
     export let text: string;
     export let chevronCount: number = 4;
 
-    $: tag = `h${level}` as 'h2' | 'h3' | 'h4';
-    $: sizeClass = level === 2 ? 'display-lg' : 'display-md';
+    $: tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4';
+    $: sizeClass = level <= 2 ? 'display-lg' : 'display-md';
 </script>
 
 <svelte:element this={tag} class="font-display uppercase tracking-wider {sizeClass}">

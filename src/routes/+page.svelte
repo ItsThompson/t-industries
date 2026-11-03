@@ -37,7 +37,7 @@
     <div class="col-span-12 md:col-span-8">
         <Compartment title="BIO">
             <div class="space-y-3">
-                <h3 class="text-lg font-bold text-white">{BIO_NAME}</h3>
+                <h1 class="text-lg font-bold text-white">{BIO_NAME}</h1>
                 <p class="text-sm font-mono text-secondary-100">
                     {BIO_TITLE}
                 </p>

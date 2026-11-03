@@ -7,6 +7,13 @@ describe('SectionHeading', () => {
         cleanup();
     });
 
+    it('renders an h1 when level is 1', () => {
+        const { container } = render(SectionHeading, { props: { level: 1, text: 'EXPERIENCE' } });
+        const heading = container.querySelector('h1');
+        expect(heading).toBeTruthy();
+        expect(heading?.textContent).toContain('EXPERIENCE');
+    });
+
     it('renders an h2 when level is 2', () => {
         const { container } = render(SectionHeading, { props: { level: 2, text: 'EXPERIENCE' } });
         const heading = container.querySelector('h2');
@@ -63,6 +70,12 @@ describe('SectionHeading', () => {
         const { container } = render(SectionHeading, { props: { level: 2, text: 'TITLE' } });
         const chevronSpan = container.querySelector('[aria-hidden="true"]');
         expect(chevronSpan?.classList.contains('text-secondary-200')).toBe(true);
+    });
+
+    it('uses display-lg for level 1', () => {
+        const { container } = render(SectionHeading, { props: { level: 1, text: 'TEST' } });
+        const heading = container.querySelector('h1');
+        expect(heading?.classList.contains('display-lg')).toBe(true);
     });
 
     it('uses display-lg for level 2', () => {

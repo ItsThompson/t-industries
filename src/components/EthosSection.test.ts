@@ -15,7 +15,7 @@ describe('EthosSection', () => {
 
 	it('renders SectionHeading with "ETHOS" text', () => {
 		const { container } = render(EthosSection);
-		const heading = container.querySelector('h2');
+		const heading = container.querySelector('h1');
 		expect(heading).toBeTruthy();
 		expect(heading?.textContent).toContain('ETHOS');
 	});
