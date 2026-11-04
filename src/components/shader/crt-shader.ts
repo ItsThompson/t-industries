@@ -112,15 +112,13 @@ void main() {
     float maskR = scanR * flicker * vignette + glitch;
     float maskG = scanG * flicker * vignette + glitch;
     float maskB = scanB * flicker * vignette + glitch;
-
-    // Output non-premultiplied RGBA for browser canvas compositing.
-    // Color carries the per-channel aberration; alpha controls overall visibility.
     float maxMask = max(max(maskR, maskG), maskB);
-    float alpha = uIntensity * maxMask;
-    vec3 color = maxMask > 0.001
-        ? vec3(uColor.r * maskR, uColor.g * maskG, uColor.b * maskB) / maxMask
-        : vec3(0.0);
-    gl_FragColor = vec4(color, alpha);
+
+    // Premultiplied output: the canvas is composited onto the page, and some
+    // engines always read the buffer as premultiplied regardless of the context
+    // flag. Carrying uIntensity in the color keeps that path dark instead of
+    // painting the raw uColor over the page.
+    gl_FragColor = vec4(uColor * vec3(maskR, maskG, maskB) * uIntensity, uIntensity * maxMask);
 }
 `;
 
@@ -166,15 +164,14 @@ function createProgram(
 function getWebGLContext(
   canvas: HTMLCanvasElement,
 ): WebGLRenderingContext | null {
+  const contextAttributes = { alpha: true, premultipliedAlpha: true };
   const gl =
-    (canvas.getContext("webgl2", {
-      alpha: true,
-      premultipliedAlpha: false,
-    }) as WebGLRenderingContext | null) ??
-    (canvas.getContext("webgl", {
-      alpha: true,
-      premultipliedAlpha: false,
-    }) as WebGLRenderingContext | null);
+    (canvas.getContext("webgl2", contextAttributes) as
+      | WebGLRenderingContext
+      | null) ??
+    (canvas.getContext("webgl", contextAttributes) as
+      | WebGLRenderingContext
+      | null);
   return gl;
 }
 
@@ -246,9 +243,8 @@ export function createCRTShader(
   gl.uniform1f(uGlitchSpeed, validatedConfig.glitchSpeed);
   gl.uniform1f(uGlitchIntensity, validatedConfig.glitchIntensity);
 
-  // No WebGL blending needed: we draw a single fullscreen quad onto a cleared
-  // canvas. The browser's own canvas compositing (premultipliedAlpha: false)
-  // handles alpha blending against the page background.
+  // The shader emits premultiplied color, so the browser composites the quad
+  // against the page background with no blend mode of its own.
 
   let animationFrameId: number | null = null;
   let startTime = 0;

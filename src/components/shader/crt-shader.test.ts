@@ -165,6 +165,21 @@ describe('crt-shader', () => {
 			expect(canvas.getContext).toHaveBeenCalledWith('webgl', expect.any(Object));
 		});
 
+		it('requests a premultiplied alpha canvas for page compositing', () => {
+			const canvas = {
+				getContext: vi.fn().mockReturnValue(mockGl),
+				width: 1024,
+				height: 768
+			} as unknown as HTMLCanvasElement;
+
+			createCRTShader(canvas);
+
+			expect(canvas.getContext).toHaveBeenCalledWith('webgl2', {
+				alpha: true,
+				premultipliedAlpha: true
+			});
+		});
+
 		it('returns CRTShader object with start, stop, resize, destroy methods', () => {
 			const shader = createCRTShader(mockCanvas);
 
