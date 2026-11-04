@@ -59,6 +59,38 @@ function getDesktopFooterWrapper(container: HTMLElement): HTMLElement {
 	return wrapper;
 }
 
+function stubViewportWidth(matches: boolean): { fireChange: (nextMatches: boolean) => void } {
+	const listeners: Array<(event: { matches: boolean }) => void> = [];
+
+	vi.stubGlobal(
+		'matchMedia',
+		vi.fn().mockImplementation((query: string) => ({
+			matches,
+			media: query,
+			addEventListener: vi.fn(
+				(event: string, listener: (event: { matches: boolean }) => void) => {
+					if (event === 'change') {
+						listeners.push(listener);
+					}
+				}
+			),
+			removeEventListener: vi.fn()
+		}))
+	);
+
+	return {
+		fireChange(nextMatches: boolean): void {
+			for (const listener of listeners) {
+				listener({ matches: nextMatches });
+			}
+		}
+	};
+}
+
+function getBackgroundCanvases(container: HTMLElement): HTMLCanvasElement[] {
+	return Array.from(container.querySelectorAll<HTMLCanvasElement>('canvas'));
+}
+
 describe('+layout', () => {
 	beforeEach(() => {
 		vi.stubGlobal(
@@ -165,5 +197,52 @@ describe('+layout', () => {
 		triggerAfterNavigate(buildAfterNavigate({ type: 'link' }));
 
 		expect(setScrollTop).toHaveBeenCalledWith(0);
+	});
+
+	describe('background effects', () => {
+		it('renders no background effects on a narrow viewport', async () => {
+			const { container } = render(Layout);
+			await act();
+
+			expect(getBackgroundCanvases(container)).toHaveLength(0);
+		});
+
+		it('renders both background effects on a wide viewport', async () => {
+			stubViewportWidth(true);
+
+			const { container } = render(Layout);
+			await act();
+
+			const canvases = getBackgroundCanvases(container);
+			expect(canvases).toHaveLength(2);
+			expect(canvases.some((canvas) => canvas.classList.contains('z-0'))).toBe(true);
+			expect(canvases.some((canvas) => canvas.classList.contains('z-[1]'))).toBe(true);
+		});
+
+		it('mounts the backgrounds when the viewport grows past the threshold', async () => {
+			const viewport = stubViewportWidth(false);
+
+			const { container } = render(Layout);
+			await act();
+			expect(getBackgroundCanvases(container)).toHaveLength(0);
+
+			viewport.fireChange(true);
+			await act();
+
+			expect(getBackgroundCanvases(container)).toHaveLength(2);
+		});
+
+		it('unmounts the backgrounds when the viewport shrinks below the threshold', async () => {
+			const viewport = stubViewportWidth(true);
+
+			const { container } = render(Layout);
+			await act();
+			expect(getBackgroundCanvases(container)).toHaveLength(2);
+
+			viewport.fireChange(false);
+			await act();
+
+			expect(getBackgroundCanvases(container)).toHaveLength(0);
+		});
 	});
 });
