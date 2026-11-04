@@ -27,19 +27,6 @@ export const DEFAULT_CRT_CONFIG: CRTConfig = {
   glitchIntensity: 0.3,
 };
 
-const MOBILE_BREAKPOINT = 640;
-const DESKTOP_BREAKPOINT = 1024;
-
-export function getMobileScale(viewportWidth: number): number {
-  if (viewportWidth <= MOBILE_BREAKPOINT) return 0.5;
-  if (viewportWidth > DESKTOP_BREAKPOINT) return 1.0;
-  // Linear interpolation between breakpoints
-  const ratio =
-    (viewportWidth - MOBILE_BREAKPOINT) /
-    (DESKTOP_BREAKPOINT - MOBILE_BREAKPOINT);
-  return 0.5 + ratio * 0.5;
-}
-
 export function validateConfig(config: Partial<CRTConfig>): CRTConfig {
   const merged = { ...DEFAULT_CRT_CONFIG, ...config };
 

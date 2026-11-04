@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
-	getMobileScale,
 	validateConfig,
 	createCRTShader,
 	DEFAULT_CRT_CONFIG
@@ -8,32 +7,6 @@ import {
 import type { CRTConfig } from './crt-shader';
 
 describe('crt-shader', () => {
-	describe('getMobileScale', () => {
-		it('returns 0.5 for widths <= 640px', () => {
-			expect(getMobileScale(320)).toBe(0.5);
-			expect(getMobileScale(640)).toBe(0.5);
-		});
-
-		it('returns 1.0 for widths > 1024px', () => {
-			expect(getMobileScale(1025)).toBe(1.0);
-			expect(getMobileScale(1920)).toBe(1.0);
-		});
-
-		it('returns interpolated value between 640 and 1024', () => {
-			// Midpoint: 832px → (832-640)/(1024-640) = 192/384 = 0.5 → 0.5 + 0.25 = 0.75
-			expect(getMobileScale(832)).toBe(0.75);
-		});
-
-		it('returns 0.5 at exact mobile breakpoint', () => {
-			expect(getMobileScale(640)).toBe(0.5);
-		});
-
-		it('returns value close to 1.0 just below desktop breakpoint', () => {
-			const scale = getMobileScale(1024);
-			expect(scale).toBeCloseTo(1.0, 5);
-		});
-	});
-
 	describe('validateConfig', () => {
 		it('returns default config when given empty object', () => {
 			const result = validateConfig({});

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { createCRTShader, getMobileScale, DEFAULT_CRT_CONFIG } from './crt-shader';
+	import { createCRTShader, DEFAULT_CRT_CONFIG } from './crt-shader';
 	import { observeMotionPreference } from '$lib/motion-preference';
 	import type { CRTShader } from './crt-shader';
 
@@ -8,24 +8,14 @@
 	let shader: CRTShader | null = null;
 	let useFallback = false;
 
-	function getCanvasDimensions(): { width: number; height: number } {
-		const scale = getMobileScale(window.innerWidth);
-		return {
-			width: Math.floor(window.innerWidth * scale),
-			height: Math.floor(window.innerHeight * scale)
-		};
-	}
-
-	function handleResize(): void {
+	function resizeToViewport(): void {
 		if (!shader) return;
-		const { width, height } = getCanvasDimensions();
-		shader.resize(width, height);
+		shader.resize(window.innerWidth, window.innerHeight);
 	}
 
 	onMount(() => {
-		const { width, height } = getCanvasDimensions();
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
 
 		shader = createCRTShader(canvas, DEFAULT_CRT_CONFIG);
 
@@ -46,11 +36,11 @@
 			}
 		});
 
-		window.addEventListener('resize', handleResize);
+		window.addEventListener('resize', resizeToViewport);
 
 		return () => {
 			cleanupMotion();
-			window.removeEventListener('resize', handleResize);
+			window.removeEventListener('resize', resizeToViewport);
 			if (shader) {
 				shader.destroy();
 				shader = null;
