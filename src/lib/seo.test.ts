@@ -3,15 +3,15 @@ import { canonicalUrl, routePathFromFile, SITE_ORIGIN } from './seo';
 
 describe('canonicalUrl', () => {
 	it('joins the origin and path with a single slash', () => {
-		expect(canonicalUrl('/experience')).toBe('https://t-industri.es/experience');
+		expect(canonicalUrl('/experience')).toBe('https://thompsontong.com/experience');
 	});
 
 	it('keeps the trailing slash for the home page', () => {
-		expect(canonicalUrl('/')).toBe('https://t-industri.es/');
+		expect(canonicalUrl('/')).toBe('https://thompsontong.com/');
 	});
 
 	it('serves from the domain declared in CNAME', () => {
-		expect(SITE_ORIGIN).toBe('https://t-industri.es');
+		expect(SITE_ORIGIN).toBe('https://thompsontong.com');
 	});
 });
 
