@@ -1,5 +1,5 @@
-/** Origin the site is publicly served from. `CNAME` maps t-industri.es here. */
-export const SITE_ORIGIN = 'https://t-industri.es';
+/** Origin the site is publicly served from. `CNAME` maps thompsontong.com here. */
+export const SITE_ORIGIN = 'https://thompsontong.com';
 
 export function canonicalUrl(path: string): string {
 	return `${SITE_ORIGIN}${path}`;
