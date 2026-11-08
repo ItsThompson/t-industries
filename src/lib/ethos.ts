@@ -13,7 +13,7 @@ export const ETHOS_ITEMS: EthosItem[] = [
 		description:
 			'The diversity of the world population drives innovation and change only if we can overcome language barriers and accept cultural differences.',
 		walkingTheWalk:
-			'7 cities, 6 countries, 3 continents. A multinational education. Multicultural, multidiciplinary work experience. The combination of these factors allows me to draw in different perspectives and experiences to drive innovation, and facilitate meaningful change.'
+			'8 cities, 6 countries, 3 continents. A multinational education. Multicultural, multidiciplinary work experience. The combination of these factors allows me to draw in different perspectives and experiences to drive innovation, and facilitate meaningful change.'
 	},
 	{
 		id: 'continuous-learning',

@@ -62,7 +62,7 @@ describe('EthosSection', () => {
 	it('renders Global Perspective walking the walk text', () => {
 		const { container } = render(EthosSection);
 		const text = container.textContent ?? '';
-		expect(text).toContain('7 cities, 6 countries, 3 continents');
+		expect(text).toContain('8 cities, 6 countries, 3 continents');
 	});
 
 	it('renders Continuous Learning description', () => {
