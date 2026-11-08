@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { experiences } from './experiences';
+import { experienceAnchorId, experiences } from './experiences';
 import type { Experience } from './experiences';
 
 describe('experiences', () => {
@@ -9,11 +9,13 @@ describe('experiences', () => {
 
 	it('each entry has all required fields', () => {
 		const requiredKeys: (keyof Experience)[] = [
+			'id',
 			'company',
 			'role',
 			'startDate',
 			'endDate',
-			'description'
+			'description',
+			'accent'
 		];
 
 		experiences.forEach((entry) => {
@@ -46,5 +48,22 @@ describe('experiences', () => {
 
 	it('last entry is Coding For Good as the earliest role', () => {
 		expect(experiences[experiences.length - 1].company).toBe('Coding For Good');
+	});
+
+	it('gives every entry a unique id, so a deep link can name exactly one entry', () => {
+		const ids = experiences.map((entry) => entry.id);
+		expect(new Set(ids).size).toBe(experiences.length);
+	});
+
+	it('builds anchor ids that cannot collide with another entry', () => {
+		const anchors = experiences.map((entry) => experienceAnchorId(entry.id));
+		expect(new Set(anchors).size).toBe(experiences.length);
+		expect(anchors).toContain('experience-amazon');
+	});
+
+	it('gives every entry an accent colour the highlight can render', () => {
+		experiences.forEach((entry) => {
+			expect(entry.accent).toMatch(/^#[0-9A-Fa-f]{6}$/);
+		});
 	});
 });
