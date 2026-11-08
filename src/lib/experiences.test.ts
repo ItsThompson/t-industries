@@ -61,7 +61,7 @@ describe('experiences', () => {
 		expect(anchors).toContain('experience-amazon');
 	});
 
-	it('gives every entry an accent colour the highlight can render', () => {
+	it('gives every entry an accent color the highlight can render', () => {
 		experiences.forEach((entry) => {
 			expect(entry.accent).toMatch(/^#[0-9A-Fa-f]{6}$/);
 		});

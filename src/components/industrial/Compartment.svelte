@@ -1,6 +1,6 @@
 <script lang="ts">
     export let title: string | undefined = undefined;
-    /** Brand colour that marks this compartment as the current target. */
+    /** Brand color that marks this compartment as the current target. */
     export let accent: string | null = null;
 </script>
 

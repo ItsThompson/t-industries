@@ -64,7 +64,7 @@ describe('BioDescription', () => {
 		expect(container.querySelectorAll('a')).toHaveLength(4);
 	});
 
-	it('colours each link with its organisation accent', () => {
+	it('colors each link with its organization accent', () => {
 		const { container } = render(BioDescription);
 
 		expect(findLink(container, 'placement at Amazon').style.color).toBe(

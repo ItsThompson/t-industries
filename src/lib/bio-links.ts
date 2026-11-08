@@ -33,7 +33,7 @@ export const BIO_LINKS = {
 	criisp: {
 		target: 'criisp',
 		label: 'University of Bath / CRIISP',
-		note: 'Aug 2024 to present. Cut SEM creation time by 30% for scientists modelling pain perception.',
+		note: 'Aug 2024 to present. Cut SEM creation time by 30% for scientists modeling pain perception.',
 		href: highlightHref('/experience', 'criisp'),
 		accent: ACCENTS.criisp
 	},

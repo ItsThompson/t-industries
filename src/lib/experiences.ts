@@ -8,7 +8,7 @@ export interface Experience {
 	startDate: string;
 	endDate: string;
 	description: string;
-	/** Brand colour used when a link from the bio reveals this entry. */
+	/** Brand color used when a link from the bio reveals this entry. */
 	accent: string;
 }
 

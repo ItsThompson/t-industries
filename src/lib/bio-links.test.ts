@@ -26,7 +26,7 @@ describe('bio links', () => {
 		expect(BIO_LINKS.continuousLearning.href).toBe('/ethos?highlight=continuous-learning');
 	});
 
-	it('uses each organisation brand colour as the accent', () => {
+	it('uses each organization brand color as the accent', () => {
 		expect(BIO_LINKS.amazon.accent).toBe(ACCENTS.amazon);
 		expect(BIO_LINKS.msd.accent).toBe(ACCENTS.msd);
 		expect(BIO_LINKS.criisp.accent).toBe(ACCENTS.criisp);
