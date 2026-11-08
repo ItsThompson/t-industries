@@ -19,6 +19,13 @@ function tooltipFor(link: HTMLAnchorElement): HTMLElement {
 	return tooltip;
 }
 
+/** Reads the paragraph text with the hover notes removed, as a reader sees it. */
+function proseWithoutNotes(container: HTMLElement): string {
+	const clone = container.cloneNode(true) as HTMLElement;
+	clone.querySelectorAll('[role="tooltip"]').forEach((note) => note.remove());
+	return (clone.textContent ?? '').replace(/\s+/g, ' ');
+}
+
 describe('BioDescription', () => {
 	beforeEach(() => {
 		// jsdom reports zero-sized boxes, which the note positioning must survive.
@@ -35,6 +42,16 @@ describe('BioDescription', () => {
 		expect(text).toContain('software engineer');
 		expect(text).toContain('8 different cities across 3 continents');
 		expect(text).toContain('University of Bath');
+	});
+
+	it('leaves no gap between a link and the punctuation after it', () => {
+		const { container } = render(BioDescription);
+		const prose = proseWithoutNotes(container);
+
+		expect(prose).toContain('3 continents, which');
+		expect(prose).toContain('placement at Amazon, and');
+		expect(prose).toContain('first principles, whether');
+		expect(prose).not.toMatch(/ [,.;:]/);
 	});
 
 	it('links each named role to the experience entry that proves it', () => {
