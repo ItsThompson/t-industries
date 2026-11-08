@@ -19,8 +19,5 @@
         <p class="text-sm font-mono text-secondary-100 leading-relaxed">
             {experience.description}
         </p>
-        {#if highlighted}
-            <p class="label-xs" style:color={experience.accent}>LINKED FROM BIO</p>
-        {/if}
     </div>
 </Compartment>

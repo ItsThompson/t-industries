@@ -171,7 +171,7 @@ describe('ExperienceSection', () => {
             expect(scrolledElement.id).toBe('experience-amazon');
         });
 
-        it('paints the requested entry in the organisation brand colour', () => {
+        it('paints the requested entry in the organization brand color', () => {
             setPageUrl('/experience', '?highlight=msd');
 
             const { container } = render(ExperienceSection);
@@ -179,7 +179,16 @@ describe('ExperienceSection', () => {
             const compartment = row?.querySelector('.border.bg-black');
 
             expect(compartment?.getAttribute('style')).toContain('border-color: rgb(0, 148, 132)');
-            expect(row?.textContent).toContain('LINKED FROM BIO');
+        });
+
+        it('leaves the entry text untouched, so the highlight is the only signal', () => {
+            setPageUrl('/experience', '?highlight=msd');
+
+            const { container } = render(ExperienceSection);
+            const row = container.querySelector('[data-experience-id="msd"]');
+
+            expect(row?.textContent).not.toContain('LINKED FROM BIO');
+            expect(row?.textContent).toContain('MLOps Intern, GenAI');
         });
 
         it('ignores a target that names no entry', async () => {
