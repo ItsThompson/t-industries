@@ -8,7 +8,6 @@
 <section id="ethos">
     <MetadataBar position="top">
         <span>PRINCIPLES: {ETHOS_ITEMS.length}</span>
-        <span>CLASSIFICATION: CORE</span>
     </MetadataBar>
 
     <div class="mt-4">

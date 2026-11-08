@@ -4,9 +4,7 @@
     import SectionHeading from './industrial/SectionHeading.svelte';
     import ExperienceCard from './ExperienceCard.svelte';
     import { experiences } from '$lib/experiences';
-    import { getExperienceCycles } from '$lib/terminal-display';
 
-    const experienceCycles = getExperienceCycles();
     const orgCount = experiences.length;
 </script>
 
@@ -27,7 +25,6 @@
 
     <div class="py-4 px-2">
         <MetadataBar position="top">
-            <span>{experienceCycles}</span>
             <span>ORGS: {orgCount}</span>
         </MetadataBar>
 

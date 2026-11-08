@@ -14,18 +14,6 @@ describe('identity', () => {
 		it('has careerStartYear set to 2019', () => {
 			expect(identity.careerStartYear).toBe(2019);
 		});
-
-		it('has unitSerial set to TI-0510', () => {
-			expect(identity.unitSerial).toBe('TI-0510');
-		});
-
-		it('has archiveRef set to ARC-2019-FWD', () => {
-			expect(identity.archiveRef).toBe('ARC-2019-FWD');
-		});
-
-		it('has manufacturingDate set to MFG: LOT-05-10', () => {
-			expect(identity.manufacturingDate).toBe('MFG: LOT-05-10');
-		});
 	});
 
 	describe('calculateAge', () => {
