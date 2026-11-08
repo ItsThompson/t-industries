@@ -75,7 +75,7 @@
         role="dialog"
         aria-modal="true"
         aria-labelledby="places-title"
-        class="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto overscroll-contain border border-secondary-200 bg-black"
+        class="relative w-full max-w-5xl max-h-[90dvh] overflow-y-auto overscroll-contain border border-secondary-200 bg-black"
     >
         <div class="flex items-start justify-between gap-4 border-b border-secondary-200 p-3">
             <div>
@@ -94,7 +94,7 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 p-3 md:grid-cols-[minmax(0,1fr)_13rem]">
+        <div class="grid grid-cols-1 gap-4 p-3 md:grid-cols-[minmax(0,1fr)_12rem]">
             <CityMap cities={CITIES} {activeId} />
 
             <div class="space-y-3">
