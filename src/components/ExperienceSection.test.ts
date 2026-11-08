@@ -87,11 +87,11 @@ describe('ExperienceSection', () => {
         expect(mobileCards.length).toBe(5);
     });
 
-    it('renders MetadataBar with experience cycles and org count', () => {
+    it('renders MetadataBar with org count', () => {
         const { container } = render(ExperienceSection);
         const text = container.textContent ?? '';
-        expect(text).toMatch(/EXP\.CYCLES: \d+/);
         expect(text).toContain('ORGS: 5');
+        expect(text).not.toContain('EXP.CYCLES');
     });
 
     it('renders crosshair markers at section corners', () => {

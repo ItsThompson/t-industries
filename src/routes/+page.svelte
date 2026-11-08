@@ -7,8 +7,7 @@
     import BioDescription from '../components/BioDescription.svelte';
     import RndList from '../components/RndList.svelte';
     import Seo from '../components/Seo.svelte';
-    import { identity } from '$lib/identity';
-    import { getUptime, getExperienceCycles, getSystemTime } from '$lib/terminal-display';
+    import { getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
 
@@ -30,8 +29,6 @@
 />
 
 <MetadataBar position="top">
-    <span>{identity.unitSerial}</span>
-    <span>STATUS: ACTIVE</span>
     <span>{systemTime}</span>
 </MetadataBar>
 
@@ -56,25 +53,8 @@
         </Compartment>
     </div>
 
-    <!-- Sidebar: STATUS + CONNECTIONS stacked, span 4 -->
+    <!-- Sidebar: CONNECTIONS + R&D stacked, span 4 -->
     <div class="col-span-12 md:col-span-4 flex flex-col gap-4">
-        <Compartment title="STATUS">
-            <div class="space-y-3">
-                <p class="text-sm font-mono text-white">
-                    <span class="text-primary">●</span> ACTIVE
-                </p>
-                <p class="label-sm text-secondary-200">
-                    UPTIME: {getUptime()}
-                </p>
-                <p class="label-sm text-secondary-200">
-                    {getExperienceCycles()}
-                </p>
-                <p class="label-sm text-secondary-200">
-                    LOC: ???
-                </p>
-            </div>
-        </Compartment>
-
         <Compartment title="CONNECTIONS">
             <div class="space-y-3">
                 {#each SOCIAL_LINKS as link}
@@ -84,10 +64,7 @@
                 {/each}
             </div>
         </Compartment>
-    </div>
 
-    <!-- R&D: full width -->
-    <div class="col-span-12">
         <Compartment title="CURRENT R&D OPS">
             <RndList />
         </Compartment>

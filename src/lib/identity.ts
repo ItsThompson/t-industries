@@ -1,17 +1,11 @@
 export interface Identity {
 	birthday: string;
 	careerStartYear: number;
-	unitSerial: string;
-	archiveRef: string;
-	manufacturingDate: string;
 }
 
 export const identity: Identity = {
 	birthday: '2005-05-10',
-	careerStartYear: 2019,
-	unitSerial: 'TI-0510',
-	archiveRef: 'ARC-2019-FWD',
-	manufacturingDate: 'MFG: LOT-05-10'
+	careerStartYear: 2019
 };
 
 export function calculateAge(options?: { floored: boolean }): number {
