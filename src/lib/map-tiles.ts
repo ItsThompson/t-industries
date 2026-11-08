@@ -21,7 +21,6 @@ export interface MapTile {
 
 export interface MapMarker {
 	id: string;
-	number: number;
 	name: string;
 	/** Where the marker is drawn, after collision nudging. */
 	left: number;
@@ -57,8 +56,8 @@ const DEFAULTS: Required<MapOptions> = {
 	padding: 48
 };
 
-/** Markers are 20px boxes, so anything closer than this would overlap. */
-const MIN_MARKER_GAP_PX = 22;
+/** Points are 8px wide, so anything closer than this would read as one dot. */
+const MIN_MARKER_GAP_PX = 14;
 
 /**
  * Projects a coordinate into Web Mercator world pixels at the given zoom.
@@ -149,9 +148,8 @@ function layoutAtZoom(cities: City[], zoom: number, padding: number): MapLayout 
 	}
 
 	const markers: MapMarker[] = separateMarkers(
-		projected.map((point, index) => ({
+		projected.map((point) => ({
 			id: point.city.id,
-			number: index + 1,
 			name: point.city.name,
 			left: ((point.x - originX) / width) * 100,
 			top: ((point.y - originY) / height) * 100,

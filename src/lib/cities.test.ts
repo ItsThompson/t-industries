@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CITIES, CITY_COUNT, citiesByContinent, continentCount, numberedCities } from './cities';
+import { CITIES, CITY_COUNT, citiesByContinent, continentCount } from './cities';
 import { ETHOS_ITEMS } from './ethos';
 
 describe('cities', () => {
@@ -49,22 +49,21 @@ describe('cities', () => {
 		});
 	});
 
-	it('numbers the places from 1 in list order, matching the markers', () => {
-		const numbered = numberedCities(CITIES);
-
-		expect(numbered.map((entry) => entry.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
-		expect(numbered[0].city.id).toBe('hong-kong');
-		expect(numbered[7].city.id).toBe('swansea');
-	});
-
 	it('groups places by continent without losing any', () => {
 		const groups = citiesByContinent(CITIES);
-		const grouped = groups.flatMap((group) => group.entries);
+		const grouped = groups.flatMap((group) => group.cities);
 
 		expect(groups).toHaveLength(3);
 		expect(grouped).toHaveLength(CITIES.length);
 		expect(groups[0].continent).toBe('Asia');
-		expect(groups[0].entries).toHaveLength(5);
+		expect(groups[0].cities).toHaveLength(5);
+		expect(groups[0].cities[0].id).toBe('hong-kong');
+	});
+
+	it('keeps the order of the city list inside each continent', () => {
+		const europe = citiesByContinent(CITIES).find((group) => group.continent === 'Europe');
+
+		expect(europe?.cities.map((city) => city.name)).toEqual(['Bath', 'Swansea']);
 	});
 
 	it('agrees with the count in the ethos page copy', () => {

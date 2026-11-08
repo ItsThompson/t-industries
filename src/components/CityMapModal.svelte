@@ -101,30 +101,23 @@
                 {#each groups as group}
                     <div>
                         <p class="label-xs mb-1 text-secondary-200">
-                            {group.continent.toUpperCase()} / {group.entries.length}
+                            {group.continent.toUpperCase()} / {group.cities.length}
                         </p>
                         <ul>
-                            {#each group.entries as entry (entry.city.id)}
+                            {#each group.cities as city (city.id)}
                                 <li>
                                     <button
                                         type="button"
-                                        class="flex w-full items-baseline gap-2 text-left transition-colors duration-150 hover:text-primary focus-visible:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
-                                        on:mouseenter={() => (activeId = entry.city.id)}
+                                        class="block w-full text-left transition-colors duration-150 hover:text-primary focus-visible:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+                                        on:mouseenter={() => (activeId = city.id)}
                                         on:mouseleave={() => (activeId = null)}
-                                        on:focus={() => (activeId = entry.city.id)}
+                                        on:focus={() => (activeId = city.id)}
                                         on:blur={() => (activeId = null)}
-                                        data-city-id={entry.city.id}
+                                        data-city-id={city.id}
                                     >
-                                        <span class="label-xs w-3 shrink-0 text-secondary-200">
-                                            {entry.number}
-                                        </span>
-                                        <span>
-                                            <span class="label-sm block text-white">
-                                                {entry.city.name}
-                                            </span>
-                                            <span class="label-xs block text-secondary-200">
-                                                {entry.city.region}
-                                            </span>
+                                        <span class="label-sm block text-white">{city.name}</span>
+                                        <span class="label-xs block text-secondary-200">
+                                            {city.region}
                                         </span>
                                     </button>
                                 </li>

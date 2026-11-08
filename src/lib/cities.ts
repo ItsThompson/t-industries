@@ -28,32 +28,22 @@ export const CITIES: City[] = [
 
 export const CITY_COUNT = CITIES.length;
 
-export interface NumberedCity {
-	/** 1-based position, matched by the map marker. */
-	number: number;
-	city: City;
-}
-
 export interface ContinentGroup {
 	continent: Continent;
-	entries: NumberedCity[];
-}
-
-export function numberedCities(cities: City[] = CITIES): NumberedCity[] {
-	return cities.map((city, index) => ({ number: index + 1, city }));
+	cities: City[];
 }
 
 /** Groups the places by continent, keeping the first-seen continent order. */
 export function citiesByContinent(cities: City[] = CITIES): ContinentGroup[] {
-	const groups = new Map<Continent, NumberedCity[]>();
+	const groups = new Map<Continent, City[]>();
 
-	for (const entry of numberedCities(cities)) {
-		const existing = groups.get(entry.city.continent) ?? [];
-		existing.push(entry);
-		groups.set(entry.city.continent, existing);
+	for (const city of cities) {
+		const existing = groups.get(city.continent) ?? [];
+		existing.push(city);
+		groups.set(city.continent, existing);
 	}
 
-	return Array.from(groups, ([continent, entries]) => ({ continent, entries }));
+	return Array.from(groups, ([continent, grouped]) => ({ continent, cities: grouped }));
 }
 
 export function continentCount(cities: City[] = CITIES): number {

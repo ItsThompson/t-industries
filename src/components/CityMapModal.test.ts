@@ -48,18 +48,29 @@ describe('CityMapModal', () => {
 		expect(container.textContent).toContain('NORTH AMERICA / 1');
 	});
 
-	it('numbers the legend rows to match the map markers', () => {
+	it('names every place in the legend, in city order within its continent', () => {
 		const { container } = renderModal();
-		const markers = container.querySelectorAll('[data-marker-id]');
 		const rows = Array.from(container.querySelectorAll('[data-city-id]'));
 
-		expect(markers).toHaveLength(CITIES.length);
-		expect(rows).toHaveLength(CITIES.length);
-		for (const row of rows) {
-			const id = row.getAttribute('data-city-id');
-			const number = CITIES.findIndex((city) => city.id === id) + 1;
+		expect(rows.map((row) => row.getAttribute('data-city-id'))).toEqual([
+			'hong-kong',
+			'taipei',
+			'chengdu',
+			'shanghai',
+			'singapore',
+			'livingston',
+			'bath',
+			'swansea'
+		]);
+	});
 
-			expect(row.textContent?.trim().startsWith(String(number))).toBe(true);
+	it('draws one point per place instead of a numbered marker', () => {
+		const { container } = renderModal();
+		const markers = Array.from(container.querySelectorAll('[data-marker-id]'));
+
+		expect(markers).toHaveLength(CITIES.length);
+		for (const marker of markers) {
+			expect(marker.textContent?.trim()).toBe('');
 		}
 	});
 

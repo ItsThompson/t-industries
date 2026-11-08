@@ -72,7 +72,6 @@ describe('buildMapLayout', () => {
 
 		expect(layout.markers).toHaveLength(CITIES.length);
 		expect(layout.markers.map((marker) => marker.id)).toEqual(CITIES.map((city) => city.id));
-		expect(layout.markers.map((marker) => marker.number)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 	});
 
 	it('stays within the tile budget', () => {

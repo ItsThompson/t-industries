@@ -43,6 +43,7 @@
 
         {#each layout.markers as marker (marker.id)}
             {@const active = marker.id === activeId}
+            {@const labelOnLeft = marker.left > 72}
             {#if marker.shifted}
                 <!-- Leader line back to the city's true position. -->
                 <div
@@ -58,23 +59,24 @@
                 ></div>
             {/if}
             <div
-                class="absolute -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 transition-transform duration-150 {active
-                    ? 'scale-110 z-10'
-                    : ''}"
+                class="absolute -translate-x-1/2 -translate-y-1/2 {active ? 'z-10' : ''}"
                 style:left="{marker.left}%"
                 style:top="{marker.top}%"
                 data-marker-id={marker.id}
                 data-active={active ? 'true' : undefined}
             >
+                <!-- The point stays on the coordinate; only the label is placed beside it. -->
                 <span
-                    class="flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center border label-xs transition-colors duration-150 {active
-                        ? 'border-primary bg-primary text-black'
-                        : 'border-secondary-100 bg-black text-secondary-100'}"
-                >
-                    {marker.number}
-                </span>
+                    class="block h-2.5 w-2.5 rotate-45 border transition-colors duration-150 {active
+                        ? 'scale-125 border-primary bg-primary'
+                        : 'border-secondary-100 bg-black'}"
+                ></span>
                 {#if active}
-                    <span class="label-xs whitespace-nowrap bg-black px-1 py-0.5 text-white border border-primary">
+                    <span
+                        class="absolute top-1/2 -translate-y-1/2 label-xs whitespace-nowrap bg-black px-1 py-0.5 text-white border border-primary {labelOnLeft
+                            ? 'right-4'
+                            : 'left-4'}"
+                    >
                         {marker.name}
                     </span>
                 {/if}
