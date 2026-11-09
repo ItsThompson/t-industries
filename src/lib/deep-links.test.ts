@@ -26,25 +26,42 @@ describe('highlightHref', () => {
 });
 
 describe('readHighlightTarget', () => {
-	it('reads the target from search params', () => {
-		expect(readHighlightTarget(new URLSearchParams('?highlight=msd'))).toBe('msd');
+	function pageUrl(search = ''): URL {
+		return new URL(`https://thompsontong.dev/ethos${search}`);
+	}
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it('reads the target from the page url', () => {
+		expect(readHighlightTarget(pageUrl('?highlight=msd'))).toBe('msd');
 	});
 
 	it('treats a missing param as no target', () => {
-		expect(readHighlightTarget(new URLSearchParams(''))).toBeNull();
+		expect(readHighlightTarget(pageUrl())).toBeNull();
 	});
 
 	it('treats a blank param as no target', () => {
-		expect(readHighlightTarget(new URLSearchParams('?highlight=%20'))).toBeNull();
-	});
-
-	it('tolerates an absent search params object', () => {
-		expect(readHighlightTarget(undefined)).toBeNull();
-		expect(readHighlightTarget(null)).toBeNull();
+		expect(readHighlightTarget(pageUrl('?highlight=%20'))).toBeNull();
 	});
 
 	it('ignores unrelated params', () => {
-		expect(readHighlightTarget(new URLSearchParams('?utm=email'))).toBeNull();
+		expect(readHighlightTarget(pageUrl('?utm=email'))).toBeNull();
+	});
+
+	it('reads no target outside the browser, where prerendered urls throw', () => {
+		vi.stubGlobal('window', undefined);
+		const url = pageUrl('?highlight=msd');
+		Object.defineProperty(url, 'searchParams', {
+			get() {
+				throw new Error(
+					'Cannot access url.searchParams on a page with prerendering enabled'
+				);
+			}
+		});
+
+		expect(readHighlightTarget(url)).toBeNull();
 	});
 });
 

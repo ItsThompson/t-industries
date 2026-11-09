@@ -1,13 +1,19 @@
 import { writable } from 'svelte/store';
 
+const ORIGIN = 'http://localhost';
+
+function buildPageUrl(pathname: string | null, search: string): URL {
+	return new URL(`${pathname ?? '/'}${search}`, ORIGIN);
+}
+
 export const page = writable({
-	url: { pathname: '/', search: '', searchParams: new URLSearchParams() },
+	url: buildPageUrl('/', ''),
 	route: { id: '/' as string | null }
 });
 
 export function setPageUrl(pathname: string | null, search = ''): void {
 	page.set({
-		url: { pathname: pathname ?? '/', search, searchParams: new URLSearchParams(search) },
+		url: buildPageUrl(pathname, search),
 		route: { id: pathname }
 	});
 }
