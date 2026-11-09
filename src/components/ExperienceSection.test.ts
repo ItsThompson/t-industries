@@ -1,10 +1,26 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
+import { tick } from 'svelte';
 import ExperienceSection from './ExperienceSection.svelte';
+import { resetPageRoute, setPageUrl } from '$lib/__mocks__/app-stores';
+
+function nextFrame(): Promise<void> {
+    return new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+}
 
 describe('ExperienceSection', () => {
-    afterEach(() => {
+    beforeEach(() => {
+        resetPageRoute();
+    });
+
+    afterEach(async () => {
+        // Let a deferred reveal land before the document is torn down, so it
+        // cannot scroll an element belonging to the next test.
+        await nextFrame();
         cleanup();
+        vi.restoreAllMocks();
+        delete (Element.prototype as unknown as { scrollIntoView?: unknown }).scrollIntoView;
+        resetPageRoute();
     });
 
     it('renders a section with id="experience"', () => {
@@ -104,5 +120,98 @@ describe('ExperienceSection', () => {
         const { container } = render(ExperienceSection);
         const section = container.querySelector('section#experience');
         expect(section?.classList.contains('relative')).toBe(true);
+    });
+
+    describe('highlighted by a bio link', () => {
+        function stubScrollIntoView(): ReturnType<typeof vi.fn> {
+            const scrollIntoView = vi.fn();
+            (Element.prototype as unknown as { scrollIntoView: unknown }).scrollIntoView =
+                scrollIntoView;
+            return scrollIntoView;
+        }
+
+        function highlightedRows(container: HTMLElement): Element[] {
+            return Array.from(container.querySelectorAll('[data-highlighted="true"]'));
+        }
+
+        it('marks nothing when no target is requested', () => {
+            const { container } = render(ExperienceSection);
+            expect(highlightedRows(container)).toHaveLength(0);
+        });
+
+        it('marks only the requested entry', () => {
+            setPageUrl('/experience', '?highlight=msd');
+
+            const { container } = render(ExperienceSection);
+            const rows = highlightedRows(container);
+
+            expect(rows).toHaveLength(1);
+            expect(rows[0].getAttribute('data-experience-id')).toBe('msd');
+        });
+
+        it('gives the requested entry an anchor another route can scroll to', () => {
+            setPageUrl('/experience', '?highlight=criisp');
+
+            const { container } = render(ExperienceSection);
+
+            expect(container.querySelector('#experience-criisp')).toBeTruthy();
+        });
+
+        it('centers the requested entry in the scroll region', async () => {
+            const scrollIntoView = stubScrollIntoView();
+            setPageUrl('/experience', '?highlight=amazon');
+
+            render(ExperienceSection);
+            await nextFrame();
+
+            expect(scrollIntoView).toHaveBeenCalledWith(
+                expect.objectContaining({ block: 'center' })
+            );
+            const scrolledElement = scrollIntoView.mock.instances[0] as unknown as HTMLElement;
+            expect(scrolledElement.id).toBe('experience-amazon');
+        });
+
+        it('paints the requested entry in the organization brand color', () => {
+            setPageUrl('/experience', '?highlight=msd');
+
+            const { container } = render(ExperienceSection);
+            const row = container.querySelector('[data-experience-id="msd"]');
+            const compartment = row?.querySelector('.border.bg-black');
+
+            expect(compartment?.getAttribute('style')).toContain('border-color: rgb(0, 148, 132)');
+        });
+
+        it('leaves the entry text untouched, so the highlight is the only signal', () => {
+            setPageUrl('/experience', '?highlight=msd');
+
+            const { container } = render(ExperienceSection);
+            const row = container.querySelector('[data-experience-id="msd"]');
+
+            expect(row?.textContent).not.toContain('LINKED FROM BIO');
+            expect(row?.textContent).toContain('MLOps Intern, GenAI');
+        });
+
+        it('ignores a target that names no entry', async () => {
+            const scrollIntoView = stubScrollIntoView();
+            setPageUrl('/experience', '?highlight=does-not-exist');
+
+            const { container } = render(ExperienceSection);
+            await nextFrame();
+
+            expect(highlightedRows(container)).toHaveLength(0);
+            expect(scrollIntoView).not.toHaveBeenCalled();
+        });
+
+        it('drops the highlight when the query param goes away', async () => {
+            setPageUrl('/experience', '?highlight=msd');
+
+            const { container } = render(ExperienceSection);
+            expect(highlightedRows(container)).toHaveLength(1);
+
+            setPageUrl('/experience');
+            await tick();
+
+            expect(highlightedRows(container)).toHaveLength(0);
+        });
     });
 });

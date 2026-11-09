@@ -1,8 +1,25 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
+    import { afterNavigate } from '$app/navigation';
+    import { page } from '$app/stores';
     import Compartment from './industrial/Compartment.svelte';
     import MetadataBar from './industrial/MetadataBar.svelte';
     import SectionHeading from './industrial/SectionHeading.svelte';
-    import { ETHOS_ITEMS } from '$lib/ethos';
+    import { ethosAnchorId, ETHOS_ITEMS } from '$lib/ethos';
+    import { ACCENTS } from '$lib/accents';
+    import { readHighlightTarget, revealElement } from '$lib/deep-links';
+
+    $: highlightedTarget = readHighlightTarget($page.url.searchParams);
+
+    function revealHighlightedRow(target: string | null): void {
+        if (!target) return;
+        revealElement(ethosAnchorId(target));
+    }
+
+    // The layout resets the scroll region on every navigation, so the reveal has
+    // to run after that reset to survive a link from another route.
+    afterNavigate(() => revealHighlightedRow(readHighlightTarget($page.url.searchParams)));
+    onMount(() => revealHighlightedRow(readHighlightTarget($page.url.searchParams)));
 </script>
 
 <section id="ethos">
@@ -18,7 +35,16 @@
         <Compartment>
             <div class="space-y-6">
                 {#each ETHOS_ITEMS as item}
-                    <div class="grid grid-cols-12 gap-3 items-start">
+                    {@const highlighted = highlightedTarget === item.id}
+                    <div
+                        id={ethosAnchorId(item.id)}
+                        class="grid grid-cols-12 gap-3 items-start scroll-mt-4 transition-colors {highlighted
+                            ? 'border-l-2 pl-3 -ml-3'
+                            : ''}"
+                        style:border-color={highlighted ? ACCENTS.ethos : null}
+                        data-ethos-id={item.id}
+                        data-highlighted={highlighted ? 'true' : undefined}
+                    >
                         <h2 class="col-span-12 md:col-span-2 text-sm font-bold font-mono text-white">
                             {item.title}
                         </h2>

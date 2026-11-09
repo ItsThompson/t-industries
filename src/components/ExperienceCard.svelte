@@ -4,9 +4,13 @@
 
     export let experience: Experience;
     export let alignment: 'left' | 'right' = 'left';
+    /** Set when a bio link on another route reveals this entry. */
+    export let highlighted = false;
+
+    $: accent = highlighted ? experience.accent : null;
 </script>
 
-<Compartment title={experience.company}>
+<Compartment title={experience.company} {accent}>
     <div class="space-y-2 {alignment === 'left' ? 'md:text-right' : ''}">
         <p class="text-sm font-mono text-white font-bold">{experience.role}</p>
         <p class="label-sm text-secondary-200">

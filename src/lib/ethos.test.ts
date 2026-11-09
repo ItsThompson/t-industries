@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ETHOS_ITEMS } from './ethos';
+import { ETHOS_ITEMS, ethosAnchorId } from './ethos';
 
 describe('ethos data', () => {
 	it('contains exactly 3 ethos items', () => {
@@ -38,5 +38,17 @@ describe('ethos data', () => {
 
 	it('Global Perspective walkingTheWalk mentions 7 cities, 6 countries', () => {
 		expect(ETHOS_ITEMS[0].walkingTheWalk).toContain('7 cities, 6 countries, 3 continents');
+	});
+
+	it('gives every item a unique id, so a deep link can name exactly one row', () => {
+		const ids = ETHOS_ITEMS.map((item) => item.id);
+		expect(new Set(ids).size).toBe(ETHOS_ITEMS.length);
+		expect(ids).toContain('continuous-learning');
+	});
+
+	it('builds anchor ids that cannot collide with another row', () => {
+		const anchors = ETHOS_ITEMS.map((item) => ethosAnchorId(item.id));
+		expect(new Set(anchors).size).toBe(ETHOS_ITEMS.length);
+		expect(anchors).toContain('ethos-continuous-learning');
 	});
 });

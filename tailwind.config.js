@@ -1,20 +1,15 @@
+import { THEME_COLORS } from './src/lib/theme';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
     extend: {
-        colors: {
-            'primary': '#FF6363',
-            'secondary': {
-                100: '#E2E2D5',
-                200: '#888883',
-            }
-        },
-        fontFamily: {
-            display: ['VT323', 'monospace'],
-        },
-    },
+      colors: THEME_COLORS,
+      fontFamily: {
+        display: ['VT323', 'monospace']
+      }
+    }
   },
-  plugins: [],
-}
-
+  plugins: []
+};
