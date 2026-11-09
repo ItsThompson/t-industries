@@ -1,15 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    /** Id of the element that names the dialog. */
     export let titleId: string;
     export let onClose: () => void;
-    /**
-     * Whether closing returns focus to whatever opened the modal. Pointer users
-     * do not need it, and it would leave the trigger looking selected.
-     */
     export let restoreFocus = true;
-    /** Panel width, so a picture can open wider than a text panel. */
     export let sizeClass = 'max-w-5xl';
 
     const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';

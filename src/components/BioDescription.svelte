@@ -9,7 +9,6 @@
     let className: string = 'text-sm';
     export { className as class };
 
-    /** The one modal that is open, and how it was opened. */
     let openModal: { kind: 'map' | 'oldSite'; openedByKeyboard: boolean } | null = null;
 
     // A click with detail 0 comes from Enter or Space, so focus belongs on the
@@ -31,8 +30,6 @@
 
 <p class={className}>
     Hi, I'm Thompson, a <Age floored={true} /> year old software engineer with
-    <!-- Props are passed one by one: the spec also carries the modal's url and
-         heading, which this action does not take. -->
     <InlineAction
         target={BIO_OLD_SITE_ACTION.target}
         label={BIO_OLD_SITE_ACTION.label}

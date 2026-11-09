@@ -18,8 +18,6 @@
         <h2 id={TITLE_ID} class="display-md mt-1">{action.heading}</h2>
     </span>
 
-    <!-- The warning sits above the frame, not inside a panel, and the frame is
-         created when the modal opens so the live copy is fetched on demand. -->
     <p role="note" class="px-3 py-2 text-yellow-300">{WARNING}</p>
 
     <iframe

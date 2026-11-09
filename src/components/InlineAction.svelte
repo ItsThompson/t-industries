@@ -2,17 +2,13 @@
     import { onMount, tick } from 'svelte';
     import type { NoteScreenshot } from '$lib/bio-links';
 
-    /** Renders an anchor when set. */
     export let href: string | undefined = undefined;
     export let target: string;
     export let accent: string;
     export let label: string;
-    /** Optional, because a screenshot can say the whole thing. */
     export let note: string | undefined = undefined;
-    /** Trailing line of the note, describing what activation does. */
     export let hint: string = 'CLICK TO OPEN';
     export let onActivate: ((event: MouseEvent) => void) | null = null;
-    /** Image shown above the note, fetched only once the note opens. */
     export let screenshot: NoteScreenshot | null = null;
 
     const TOOLTIP_GAP = 8;
@@ -24,19 +20,11 @@
     let left = 0;
     let top = 0;
     let frameRequested = false;
-    /** Where the reader is pointing, so the note follows the line they touch. */
     let pointer: { x: number; y: number } | null = null;
 
     $: isLink = Boolean(href);
-    // An action with neither a destination nor a click handler only reveals its
-    // note, so it must not claim link or button semantics.
     $: isActivatable = isLink || onActivate !== null;
-    // A span, not a button: the browser lays buttons out inline-block, which
-    // stops a long action from wrapping inside a sentence and leaves a gap on
-    // the line above it.
     $: element = isLink ? 'a' : 'span';
-    // `svelte:element` types its attributes as generic HTML, so the tag-specific
-    // attributes ride in through a spread.
     $: elementAttributes = isLink ? { href } : { tabindex: 0 };
     $: role = isLink ? 'link' : isActivatable ? 'button' : undefined;
     $: tooltipId = `bio-note-${target}`;
@@ -61,7 +49,6 @@
     }
 
     function handleFocus(): void {
-        // No pointer, so the note anchors to the first line of the action.
         pointer = null;
         show();
     }
@@ -80,8 +67,6 @@
             return;
         }
 
-        // A span with button semantics has to supply the activation an anchor or
-        // a real button would get from the browser.
         if (event.key !== 'Enter' && event.key !== ' ') return;
         if (isLink || !onActivate) return;
 
@@ -96,7 +81,6 @@
 
         const anchorRect = rectForPointer();
 
-        // The note is fixed, so it cannot follow an anchor that leaves the page.
         if (anchorRect.bottom < 0 || anchorRect.top > window.innerHeight) {
             hide();
             return;
@@ -205,10 +189,10 @@
     <!-- Rendered only while open so the image is never fetched on page load. -->
     {#if screenshot && visible}
         <img
-            src={screenshot.src}
+            src={screenshot.staticAssetPathWithDeployBase}
             alt={screenshot.alt}
-            width={screenshot.width}
-            height={screenshot.height}
+            width={screenshot.intrinsicPixelWidth}
+            height={screenshot.intrinsicPixelHeight}
             decoding="async"
             class="mb-1 block w-full"
         />

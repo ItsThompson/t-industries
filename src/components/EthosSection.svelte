@@ -41,7 +41,7 @@
                         class="grid grid-cols-12 gap-3 items-start scroll-mt-4 transition-colors {highlighted
                             ? 'border-l-2 pl-3 -ml-3'
                             : ''}"
-                        style:border-color={highlighted ? ACCENTS.ethos : null}
+                        style:border-color={highlighted ? ACCENTS.primary : null}
                         data-ethos-id={item.id}
                         data-highlighted={highlighted ? 'true' : undefined}
                     >
