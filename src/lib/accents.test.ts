@@ -18,4 +18,8 @@ describe('accents', () => {
 		expect(ACCENTS.msd).not.toBe(ACCENTS.ethos);
 		expect(ACCENTS.criisp).not.toBe(ACCENTS.ethos);
 	});
+
+	it('takes the prose accent from the body text, so it reads as plain copy', () => {
+		expect(ACCENTS.prose).toBe(THEME_COLORS.secondary[100]);
+	});
 });

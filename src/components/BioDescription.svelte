@@ -2,20 +2,28 @@
     import Age from './Age.svelte';
     import InlineAction from './InlineAction.svelte';
     import CityMapModal from './CityMapModal.svelte';
+    import OldSiteModal from './OldSiteModal.svelte';
     import { yearsOfExperience } from '$lib/identity';
-    import { BIO_LINKS, BIO_PLACES_ACTION } from '$lib/bio-links';
+    import { BIO_LINKS, BIO_OLD_SITE_ACTION, BIO_PLACES_ACTION } from '$lib/bio-links';
 
     let className: string = 'text-sm';
     export { className as class };
 
-    let mapOpen = false;
-    let openedByKeyboard = false;
+    /** The one modal that is open, and how it was opened. */
+    let openModal: { kind: 'map' | 'oldSite'; openedByKeyboard: boolean } | null = null;
 
+    // A click with detail 0 comes from Enter or Space, so focus belongs on the
+    // trigger after closing. A pointer click should leave no focus behind.
     function openMap(event: MouseEvent): void {
-        // A click with detail 0 comes from Enter or Space, so focus belongs on
-        // the trigger after closing. A pointer click should leave no focus behind.
-        openedByKeyboard = event.detail === 0;
-        mapOpen = true;
+        openModal = { kind: 'map', openedByKeyboard: event.detail === 0 };
+    }
+
+    function openOldSite(event: MouseEvent): void {
+        openModal = { kind: 'oldSite', openedByKeyboard: event.detail === 0 };
+    }
+
+    function closeModal(): void {
+        openModal = null;
     }
 
     $: yearsInExperience = yearsOfExperience();
@@ -23,7 +31,15 @@
 
 <p class={className}>
     Hi, I'm Thompson, a <Age floored={true} /> year old software engineer with
-    <span class="underline">{yearsInExperience} years of experience</span>
+    <!-- Props are passed one by one: the spec also carries the modal's url and
+         heading, which this action does not take. -->
+    <InlineAction
+        target={BIO_OLD_SITE_ACTION.target}
+        label={BIO_OLD_SITE_ACTION.label}
+        accent={BIO_OLD_SITE_ACTION.accent}
+        screenshot={BIO_OLD_SITE_ACTION.screenshot}
+        onActivate={openOldSite}>{yearsInExperience} years of experience</InlineAction
+    >
     building and shipping production software at scale. I've lived in <InlineAction
         {...BIO_PLACES_ACTION}
         hint="CLICK TO OPEN MAP"
@@ -43,6 +59,13 @@
     development than most.
 </p>
 
-{#if mapOpen}
-    <CityMapModal restoreFocus={openedByKeyboard} onClose={() => (mapOpen = false)} />
+{#if openModal?.kind === 'map'}
+    <CityMapModal restoreFocus={openModal.openedByKeyboard} onClose={closeModal} />
+{/if}
+{#if openModal?.kind === 'oldSite'}
+    <OldSiteModal
+        action={BIO_OLD_SITE_ACTION}
+        restoreFocus={openModal.openedByKeyboard}
+        onClose={closeModal}
+    />
 {/if}

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { BIO_LINKS, BIO_PLACES_ACTION } from './bio-links';
+import { BIO_LINKS, BIO_OLD_SITE_ACTION, BIO_PLACES_ACTION } from './bio-links';
 import { ACCENTS } from './accents';
 import { CITY_COUNT } from './cities';
 
 const LINKS = Object.values(BIO_LINKS);
-const ACTIONS = [...LINKS, BIO_PLACES_ACTION];
+const ACTIONS = [...LINKS, BIO_PLACES_ACTION, BIO_OLD_SITE_ACTION];
 
 describe('bio links', () => {
 	it('gives every link a unique target, so no two notes share an id', () => {
@@ -35,9 +35,40 @@ describe('bio links', () => {
 	});
 
 	it('gives every link a label and a note worth hovering for', () => {
-		ACTIONS.forEach((action) => {
+		[...LINKS, BIO_PLACES_ACTION].forEach((action) => {
 			expect(action.label.length).toBeGreaterThan(0);
-			expect(action.note.length).toBeGreaterThan(40);
+			expect(action.note?.length).toBeGreaterThan(40);
+		});
+	});
+
+	describe('first website easter egg', () => {
+		const SCREENSHOT = BIO_OLD_SITE_ACTION.screenshot;
+
+		it('has no destination, so the old site is never linked', () => {
+			expect('href' in BIO_OLD_SITE_ACTION).toBe(false);
+		});
+
+		it('carries the picture that the note previews', () => {
+			expect(SCREENSHOT.src).toBe('/old-site.png');
+			expect(SCREENSHOT.alt.length).toBeGreaterThan(40);
+		});
+
+		it('frames the live copy in the modal', () => {
+			expect(BIO_OLD_SITE_ACTION.url).toBe('https://itsthompson.github.io/personal-website/');
+			expect(BIO_OLD_SITE_ACTION.heading).toBe('THE FIRST WEBSITE');
+		});
+
+		it('lets the picture carry the note, with no written description', () => {
+			expect('note' in BIO_OLD_SITE_ACTION).toBe(false);
+		});
+
+		it('declares the aspect ratio, so the note reserves the image box before it loads', () => {
+			expect(SCREENSHOT.width).toBeGreaterThan(0);
+			expect(SCREENSHOT.height).toBeGreaterThan(0);
+		});
+
+		it('uses the prose accent, so the easter egg does not ask for attention', () => {
+			expect(BIO_OLD_SITE_ACTION.accent).toBe(ACCENTS.prose);
 		});
 	});
 

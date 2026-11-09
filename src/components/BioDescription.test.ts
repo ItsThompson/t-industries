@@ -39,6 +39,7 @@ describe('BioDescription', () => {
 		const { container } = render(BioDescription);
 		const text = container.textContent ?? '';
 		expect(text).toContain('software engineer');
+		expect(text).toContain('years of experience');
 		expect(text).toContain('8 different cities across 3 continents');
 		expect(text).toContain('University of Bath');
 	});
@@ -210,21 +211,122 @@ describe('BioDescription', () => {
 		expect(ACCENTS.ethos).toBe('#FF6363');
 	});
 
-	describe('places map', () => {
-		function findPlacesTrigger(container: HTMLElement): HTMLButtonElement {
-			const button = Array.from(container.querySelectorAll('button')).find((candidate) =>
-				candidate.textContent?.includes('8 different cities')
+	describe('first website easter egg', () => {
+		function findExperienceTrigger(container: HTMLElement): HTMLElement {
+			const element = Array.from(container.querySelectorAll('[role="button"]')).find(
+				(candidate) => candidate.textContent?.includes('years of experience')
 			);
-			if (!button) throw new Error('No places trigger');
-			return button as HTMLButtonElement;
+			if (!element) throw new Error('No experience trigger');
+			return element as HTMLElement;
+		}
+
+		it('renders the experience phrase as a button, not a link to the old site', () => {
+			const { container } = render(BioDescription);
+			const trigger = findExperienceTrigger(container);
+
+			expect(trigger.getAttribute('role')).toBe('button');
+			expect(trigger.hasAttribute('href')).toBe(false);
+		});
+
+		it('keeps the phrase in the text flow, so it wraps with the sentence', () => {
+			const { container } = render(BioDescription);
+			const trigger = findExperienceTrigger(container);
+
+			// A button would be laid out inline-block and could not wrap mid-phrase.
+			expect(trigger.tagName).toBe('SPAN');
+			expect(container.querySelector('button')).toBeNull();
+		});
+
+		it('shows nothing of the old site until the phrase is hovered', () => {
+			const { container } = render(BioDescription);
+			const note = tooltipFor(findExperienceTrigger(container));
+
+			expect(note.querySelector('img')).toBeNull();
+		});
+
+		it('reveals a screenshot of the old site on hover', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findExperienceTrigger(container);
+
+			await fireEvent.mouseEnter(trigger);
+			await tick();
+
+			const image = tooltipFor(trigger).querySelector('img');
+			if (!image) throw new Error('No screenshot rendered');
+
+			expect(image.getAttribute('src')).toBe('/old-site.png');
+			expect(image.getAttribute('alt')).toContain('first site');
+		});
+
+		it('names the note, so the picture has a caption', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findExperienceTrigger(container);
+
+			await fireEvent.mouseEnter(trigger);
+			await tick();
+
+			expect(tooltipFor(trigger).textContent).toContain('Old Site');
+		});
+
+		it('says the note opens the screenshot', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findExperienceTrigger(container);
+
+			await fireEvent.mouseEnter(trigger);
+			await tick();
+
+			expect(tooltipFor(trigger).textContent).toContain('CLICK TO OPEN');
+		});
+
+		it('keeps the live site closed until the phrase is clicked', () => {
+			const { container } = render(BioDescription);
+
+			expect(container.querySelector('[role="dialog"]')).toBeNull();
+		});
+
+		it('opens the live copy of the site in a frame when the phrase is clicked', async () => {
+			const { container } = render(BioDescription);
+
+			await fireEvent.click(findExperienceTrigger(container));
+			await tick();
+
+			const dialog = container.querySelector('[role="dialog"]');
+			if (!dialog) throw new Error('No old site dialog');
+
+			const frame = dialog.querySelector('iframe');
+			if (!frame) throw new Error('No frame in the dialog');
+
+			expect(frame.getAttribute('src')).toBe('https://itsthompson.github.io/personal-website/');
+			expect(dialog.textContent).toContain('THE FIRST WEBSITE');
+		});
+
+		it('closes the old site on Escape', async () => {
+			const { container } = render(BioDescription);
+
+			await fireEvent.click(findExperienceTrigger(container));
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(container.querySelector('[role="dialog"]')).toBeNull();
+		});
+	});
+
+	describe('places map', () => {
+		function findPlacesTrigger(container: HTMLElement): HTMLElement {
+			const element = Array.from(container.querySelectorAll('[role="button"]')).find(
+				(candidate) => candidate.textContent?.includes('8 different cities')
+			);
+			if (!element) throw new Error('No places trigger');
+			return element as HTMLElement;
 		}
 
 		it('renders the places phrase as a button, not a link', () => {
 			const { container } = render(BioDescription);
 			const trigger = findPlacesTrigger(container);
 
-			expect(trigger.tagName).toBe('BUTTON');
-			expect(trigger.getAttribute('type')).toBe('button');
+			expect(trigger.getAttribute('role')).toBe('button');
+			expect(trigger.getAttribute('tabindex')).toBe('0');
 		});
 
 		it('keeps the map closed until the phrase is activated', () => {
@@ -272,8 +374,7 @@ describe('BioDescription', () => {
 			const trigger = findPlacesTrigger(container);
 			trigger.focus();
 
-			// Enter and Space produce a click with detail 0.
-			await fireEvent.click(trigger, { detail: 0 });
+			await fireEvent.keyDown(trigger, { key: 'Enter' });
 			await tick();
 			await fireEvent.keyDown(window, { key: 'Escape' });
 			await tick();

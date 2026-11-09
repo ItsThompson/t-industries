@@ -1,6 +1,17 @@
+import { base } from '$app/paths';
 import { ACCENTS } from './accents';
 import { CITY_COUNT } from './cities';
 import { highlightHref } from './deep-links';
+
+/** An image shown inside a hover note, for actions whose point is the picture. */
+export interface NoteScreenshot {
+	/** Path under `static/`, prefixed with the deploy base. */
+	src: string;
+	alt: string;
+	/** Intrinsic pixel size, so the note reserves the image box before it loads. */
+	width: number;
+	height: number;
+}
 
 /**
  * An inline action in the bio. `target` names the element the action reveals,
@@ -10,13 +21,26 @@ export interface BioActionSpec {
 	target: string;
 	/** Short label shown at the top of the hover note. */
 	label: string;
-	/** Context that does not fit in the bio sentence. */
-	note: string;
+	/**
+	 * Context that does not fit in the bio sentence. Omit it when the screenshot
+	 * says enough on its own.
+	 */
+	note?: string;
 	accent: string;
+	screenshot?: NoteScreenshot;
 }
 
 export interface BioLinkSpec extends BioActionSpec {
 	href: string;
+}
+
+/** An action whose note carries a picture the reader can open full size. */
+export interface OldSiteSpec extends BioActionSpec {
+	screenshot: NoteScreenshot;
+	/** Live copy, which the modal frames. */
+	url: string;
+	/** Heading of the modal, above the frame. */
+	heading: string;
 }
 
 export const BIO_LINKS = {
@@ -49,6 +73,23 @@ export const BIO_LINKS = {
 		accent: ACCENTS.ethos
 	}
 } satisfies Record<string, BioLinkSpec>;
+
+/**
+ * The first website: a screenshot as the note, and the live copy in the modal.
+ */
+export const BIO_OLD_SITE_ACTION = {
+	target: 'old-site',
+	label: 'Old Site / First Build',
+	accent: ACCENTS.prose,
+	url: 'https://itsthompson.github.io/personal-website/',
+	heading: 'THE FIRST WEBSITE',
+	screenshot: {
+		src: `${base}/old-site.png`,
+		alt: 'Home page of the first site: a sunset gradient fills the screen, a four item nav bar sits above the name Thompson T. in large serif capitals.',
+		width: 2048,
+		height: 1610
+	}
+} satisfies OldSiteSpec;
 
 /**
  * Opens the places map instead of a route, so it renders as a button.
