@@ -1,3 +1,5 @@
+import { CITIES, CITY_COUNT, continentCount } from './cities';
+
 export interface EthosItem {
 	/** Stable slug used for anchors and deep links. */
 	id: string;
@@ -12,8 +14,7 @@ export const ETHOS_ITEMS: EthosItem[] = [
 		title: 'Global Perspective',
 		description:
 			'The diversity of the world population drives innovation and change only if we can overcome language barriers and accept cultural differences.',
-		walkingTheWalk:
-			'8 cities, 6 countries, 3 continents. A multinational education. Multicultural, multidiciplinary work experience. The combination of these factors allows me to draw in different perspectives and experiences to drive innovation, and facilitate meaningful change.'
+		walkingTheWalk: `${CITY_COUNT} cities, ${continentCount(CITIES)} continents. A multinational education. Multicultural, multidiciplinary work experience. The combination of these factors allows me to draw in different perspectives and experiences to drive innovation, and facilitate meaningful change.`
 	},
 	{
 		id: 'continuous-learning',

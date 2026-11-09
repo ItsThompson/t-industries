@@ -68,7 +68,7 @@ describe('cities', () => {
 
 	it('agrees with the count in the ethos page copy', () => {
 		expect(ETHOS_ITEMS[0].walkingTheWalk).toContain(
-			`${CITY_COUNT} cities, 6 countries, ${continentCount(CITIES)} continents`
+			`${CITY_COUNT} cities, ${continentCount(CITIES)} continents`
 		);
 	});
 });
