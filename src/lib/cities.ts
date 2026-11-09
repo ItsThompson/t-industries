@@ -13,7 +13,6 @@ export interface City {
 
 /**
  * The places behind "8 different cities across 3 continents" in the bio.
- * Order drives the marker numbers, so keep it chronological.
  */
 export const CITIES: City[] = [
 	{ id: 'hong-kong', name: 'Hong Kong', region: 'Hong Kong SAR', continent: 'Asia', latitude: 22.3193, longitude: 114.1694 },

@@ -56,7 +56,7 @@ const DEFAULTS: Required<MapOptions> = {
 	padding: 48
 };
 
-/** Points are 8px wide, so anything closer than this would read as one dot. */
+/** Markers are 10px across, so anything closer than this would read as one dot. */
 const MIN_MARKER_GAP_PX = 14;
 
 /**

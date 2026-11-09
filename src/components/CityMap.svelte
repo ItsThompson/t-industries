@@ -9,7 +9,6 @@
     $: layout = buildMapLayout(cities);
 </script>
 
-<!-- The map is a picture of the legend beside it, so it carries no extra text. -->
 <div class="relative overflow-hidden border border-secondary-200 bg-black" aria-hidden="true">
     <div
         class="relative w-full"
@@ -65,7 +64,6 @@
                 data-marker-id={marker.id}
                 data-active={active ? 'true' : undefined}
             >
-                <!-- The point stays on the coordinate; only the label is placed beside it. -->
                 <span
                     class="block h-2.5 w-2.5 rotate-45 border transition-colors duration-150 {active
                         ? 'scale-125 border-primary bg-primary'
