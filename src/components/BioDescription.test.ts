@@ -12,7 +12,7 @@ function findLink(container: HTMLElement, text: string): HTMLAnchorElement {
 	return link as HTMLAnchorElement;
 }
 
-function tooltipFor(link: HTMLAnchorElement): HTMLElement {
+function tooltipFor(link: HTMLElement): HTMLElement {
 	const id = link.getAttribute('aria-describedby');
 	const tooltip = id ? document.getElementById(id) : null;
 	if (!tooltip) throw new Error('Link has no tooltip');
@@ -208,5 +208,87 @@ describe('BioDescription', () => {
 
 	it('uses the ethos accent for the first-principles note', () => {
 		expect(ACCENTS.ethos).toBe('#FF6363');
+	});
+
+	describe('places map', () => {
+		function findPlacesTrigger(container: HTMLElement): HTMLButtonElement {
+			const button = Array.from(container.querySelectorAll('button')).find((candidate) =>
+				candidate.textContent?.includes('8 different cities')
+			);
+			if (!button) throw new Error('No places trigger');
+			return button as HTMLButtonElement;
+		}
+
+		it('renders the places phrase as a button, not a link', () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+
+			expect(trigger.tagName).toBe('BUTTON');
+			expect(trigger.getAttribute('type')).toBe('button');
+		});
+
+		it('keeps the map closed until the phrase is activated', () => {
+			const { container } = render(BioDescription);
+
+			expect(container.querySelector('[role="dialog"]')).toBeNull();
+		});
+
+		it('opens the map when the phrase is clicked', async () => {
+			const { container } = render(BioDescription);
+
+			await fireEvent.click(findPlacesTrigger(container));
+			await tick();
+
+			expect(container.querySelector('[role="dialog"]')).toBeTruthy();
+		});
+
+		it('closes the map on Escape', async () => {
+			const { container } = render(BioDescription);
+
+			await fireEvent.click(findPlacesTrigger(container));
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(container.querySelector('[role="dialog"]')).toBeNull();
+		});
+
+		it('leaves the trigger unselected after a pointer click closes the map', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+			trigger.focus();
+
+			await fireEvent.click(trigger, { detail: 1 });
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(document.activeElement).not.toBe(trigger);
+			expect(tooltipFor(trigger).className).toContain('invisible');
+		});
+
+		it('returns focus to the trigger after a keyboard open and close', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+			trigger.focus();
+
+			// Enter and Space produce a click with detail 0.
+			await fireEvent.click(trigger, { detail: 0 });
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(document.activeElement).toBe(trigger);
+		});
+
+		it('tells the reader the phrase opens a map', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+
+			await fireEvent.mouseEnter(trigger);
+			await tick();
+
+			expect(tooltipFor(trigger).textContent).toContain('CLICK TO OPEN MAP');
+		});
 	});
 });

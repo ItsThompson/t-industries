@@ -36,8 +36,8 @@ describe('ethos data', () => {
 		);
 	});
 
-	it('Global Perspective walkingTheWalk mentions 7 cities, 6 countries', () => {
-		expect(ETHOS_ITEMS[0].walkingTheWalk).toContain('7 cities, 6 countries, 3 continents');
+	it('Global Perspective walkingTheWalk mentions 8 cities and 3 continents', () => {
+		expect(ETHOS_ITEMS[0].walkingTheWalk).toContain('8 cities, 3 continents');
 	});
 
 	it('gives every item a unique id, so a deep link can name exactly one row', () => {

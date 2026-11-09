@@ -1,18 +1,22 @@
 import { ACCENTS } from './accents';
+import { CITY_COUNT } from './cities';
 import { highlightHref } from './deep-links';
 
 /**
- * An inline link in the bio. `target` names the element the destination route
- * reveals, and doubles as the tooltip id, so it must be unique per link.
+ * An inline action in the bio. `target` names the element the action reveals,
+ * and doubles as the note id, so it must be unique per action.
  */
-export interface BioLinkSpec {
+export interface BioActionSpec {
 	target: string;
 	/** Short label shown at the top of the hover note. */
 	label: string;
 	/** Context that does not fit in the bio sentence. */
 	note: string;
-	href: string;
 	accent: string;
+}
+
+export interface BioLinkSpec extends BioActionSpec {
+	href: string;
 }
 
 export const BIO_LINKS = {
@@ -45,3 +49,13 @@ export const BIO_LINKS = {
 		accent: ACCENTS.ethos
 	}
 } satisfies Record<string, BioLinkSpec>;
+
+/**
+ * Opens the places map instead of a route, so it renders as a button.
+ */
+export const BIO_PLACES_ACTION: BioActionSpec = {
+	target: 'places',
+	label: `Places / ${CITY_COUNT} Cities`,
+	note: `${CITY_COUNT} cities across Asia, Europe and North America. Open the map to see them all.`,
+	accent: ACCENTS.ethos
+};

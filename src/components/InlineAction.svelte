@@ -1,22 +1,30 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
 
-    export let href: string;
+    /** Renders an anchor when set, a button otherwise. */
+    export let href: string | undefined = undefined;
     export let target: string;
     export let accent: string;
     export let label: string;
     export let note: string;
+    /** Trailing line of the note, describing what activation does. */
+    export let hint: string = 'CLICK TO OPEN';
+    export let onActivate: ((event: MouseEvent) => void) | null = null;
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
 
-    let anchorElement: HTMLAnchorElement;
+    let anchorElement: HTMLElement;
     let tooltipElement: HTMLSpanElement;
     let visible = false;
     let left = 0;
     let top = 0;
     let frameRequested = false;
 
+    $: element = href ? 'a' : 'button';
+    // `svelte:element` types its attributes as generic HTML, so the tag-specific
+    // attributes ride in through a spread.
+    $: elementAttributes = href ? { href } : { type: 'button' };
     $: tooltipId = `bio-note-${target}`;
 
     async function show(): Promise<void> {
@@ -79,20 +87,25 @@
     });
 </script>
 
-<a
+<!-- The element carries native semantics: an anchor when href is set, a button otherwise. -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<svelte:element
+    this={element}
     bind:this={anchorElement}
-    {href}
+    {...elementAttributes}
+    role={href ? 'link' : 'button'}
     aria-describedby={tooltipId}
     class="border-b border-dotted hover:border-solid transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
     style:color={accent}
     style:border-color={accent}
     style:outline-color={accent}
+    on:click={(event) => onActivate?.(event)}
     on:mouseenter={show}
     on:mouseleave={hide}
     on:focus={show}
     on:blur={hide}
     on:keydown={handleKeydown}
-><slot /></a><span
+><slot /></svelte:element><span
     bind:this={tooltipElement}
     id={tooltipId}
     role="tooltip"
@@ -105,5 +118,5 @@
 >
     <span class="label-xs block mb-1" style:color={accent}>{label}</span>
     <span class="block text-xs font-mono text-secondary-100 leading-relaxed">{note}</span>
-    <span class="label-xs block mt-1 text-secondary-200">CLICK TO OPEN &#8629;</span>
+    <span class="label-xs block mt-1 text-secondary-200">{hint} &#8629;</span>
 </span>
