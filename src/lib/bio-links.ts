@@ -1,4 +1,5 @@
 import { ACCENTS } from './accents';
+import { CITY_COUNT } from './cities';
 import { highlightHref } from './deep-links';
 
 /**
@@ -54,7 +55,7 @@ export const BIO_LINKS = {
  */
 export const BIO_PLACES_ACTION: BioActionSpec = {
 	target: 'places',
-	label: 'Places / 8 Cities',
-	note: 'Eight cities across Asia, Europe and North America. Open the map to see them all.',
+	label: `Places / ${CITY_COUNT} Cities`,
+	note: `${CITY_COUNT} cities across Asia, Europe and North America. Open the map to see them all.`,
 	accent: ACCENTS.ethos
 };

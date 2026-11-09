@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { BIO_LINKS, BIO_PLACES_ACTION } from './bio-links';
 import { ACCENTS } from './accents';
+import { CITY_COUNT } from './cities';
 
 const LINKS = Object.values(BIO_LINKS);
 const ACTIONS = [...LINKS, BIO_PLACES_ACTION];
@@ -50,7 +51,8 @@ describe('bio links', () => {
 		});
 
 		it('names the counts the map will show', () => {
-			expect(BIO_PLACES_ACTION.note).toContain('Eight cities');
+			expect(BIO_PLACES_ACTION.note).toContain(`${CITY_COUNT} cities`);
+			expect(BIO_PLACES_ACTION.label).toContain(`${CITY_COUNT}`);
 			expect(BIO_PLACES_ACTION.note).toContain('Asia');
 			expect(BIO_PLACES_ACTION.note).toContain('Europe');
 			expect(BIO_PLACES_ACTION.note).toContain('North America');
