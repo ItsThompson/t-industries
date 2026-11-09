@@ -1,15 +1,15 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
+    import type { NoteScreenshot } from '$lib/bio-links';
 
-    /** Renders an anchor when set, a button otherwise. */
     export let href: string | undefined = undefined;
     export let target: string;
     export let accent: string;
     export let label: string;
-    export let note: string;
-    /** Trailing line of the note, describing what activation does. */
+    export let note: string | undefined = undefined;
     export let hint: string = 'CLICK TO OPEN';
     export let onActivate: ((event: MouseEvent) => void) | null = null;
+    export let screenshot: NoteScreenshot | null = null;
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
@@ -20,11 +20,13 @@
     let left = 0;
     let top = 0;
     let frameRequested = false;
+    let pointer: { x: number; y: number } | null = null;
 
-    $: element = href ? 'a' : 'button';
-    // `svelte:element` types its attributes as generic HTML, so the tag-specific
-    // attributes ride in through a spread.
-    $: elementAttributes = href ? { href } : { type: 'button' };
+    $: isLink = Boolean(href);
+    $: isActivatable = isLink || onActivate !== null;
+    $: element = isLink ? 'a' : 'span';
+    $: elementAttributes = isLink ? { href } : { tabindex: 0 };
+    $: role = isLink ? 'link' : isActivatable ? 'button' : undefined;
     $: tooltipId = `bio-note-${target}`;
 
     async function show(): Promise<void> {
@@ -34,20 +36,51 @@
         positionNote();
     }
 
+    function handlePointerEnter(event: MouseEvent): void {
+        pointer = { x: event.clientX, y: event.clientY };
+        show();
+    }
+
+    function handlePointerMove(event: MouseEvent): void {
+        if (!visible) return;
+
+        pointer = { x: event.clientX, y: event.clientY };
+        schedulePosition();
+    }
+
+    function handleFocus(): void {
+        pointer = null;
+        show();
+    }
+
     function hide(): void {
         visible = false;
     }
 
+    function handleClick(event: MouseEvent): void {
+        onActivate?.(event);
+    }
+
     function handleKeydown(event: KeyboardEvent): void {
-        if (event.key === 'Escape') hide();
+        if (event.key === 'Escape') {
+            hide();
+            return;
+        }
+
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        if (isLink || !onActivate) return;
+
+        event.preventDefault();
+        // detail 0 marks a keyboard activation, matching the click an anchor gets
+        // from Enter, so the caller can decide whether to restore focus.
+        onActivate(new MouseEvent('click', { detail: 0 }));
     }
 
     function positionNote(): void {
         if (!anchorElement || !tooltipElement) return;
 
-        const anchorRect = anchorElement.getBoundingClientRect();
+        const anchorRect = rectForPointer();
 
-        // The note is fixed, so it cannot follow an anchor that leaves the page.
         if (anchorRect.bottom < 0 || anchorRect.top > window.innerHeight) {
             hide();
             return;
@@ -64,7 +97,42 @@
         top = aboveTop < VIEWPORT_MARGIN ? anchorRect.bottom + TOOLTIP_GAP : aboveTop;
     }
 
-    function handleViewportChange(): void {
+    /**
+     * An action that wraps has one rect per line, and the union of them spans the
+     * whole paragraph, so centring on it drops the note somewhere unrelated. Pick
+     * the line the reader points at, or the last one when the pointer is past it.
+     */
+    function rectForPointer(): DOMRect {
+        const rects = Array.from(anchorElement.getClientRects()).filter(
+            (rect) => rect.width > 0 || rect.height > 0
+        );
+
+        if (rects.length === 0) return anchorElement.getBoundingClientRect();
+
+        const at = pointer;
+        if (!at) return rects[0];
+
+        const under = rects.find(
+            (rect) =>
+                at.x >= rect.left &&
+                at.x <= rect.right &&
+                at.y >= rect.top &&
+                at.y <= rect.bottom
+        );
+        if (under) return under;
+
+        return rects.reduce((nearest, rect) =>
+            distanceTo(rect, at) < distanceTo(nearest, at) ? rect : nearest
+        );
+    }
+
+    function distanceTo(rect: DOMRect, point: { x: number; y: number }): number {
+        const x = point.x - (rect.left + rect.width / 2);
+        const y = point.y - (rect.top + rect.height / 2);
+        return x * x + y * y;
+    }
+
+    function schedulePosition(): void {
         if (!visible || frameRequested) return;
 
         frameRequested = true;
@@ -77,12 +145,12 @@
     onMount(() => {
         // Focusing a link can scroll the page, so the note follows the anchor
         // instead of closing on every scroll event.
-        window.addEventListener('scroll', handleViewportChange, true);
-        window.addEventListener('resize', handleViewportChange);
+        window.addEventListener('scroll', schedulePosition, true);
+        window.addEventListener('resize', schedulePosition);
 
         return () => {
-            window.removeEventListener('scroll', handleViewportChange, true);
-            window.removeEventListener('resize', handleViewportChange);
+            window.removeEventListener('scroll', schedulePosition, true);
+            window.removeEventListener('resize', schedulePosition);
         };
     });
 </script>
@@ -93,16 +161,17 @@
     this={element}
     bind:this={anchorElement}
     {...elementAttributes}
-    role={href ? 'link' : 'button'}
+    {role}
     aria-describedby={tooltipId}
     class="border-b border-dotted hover:border-solid transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
     style:color={accent}
     style:border-color={accent}
     style:outline-color={accent}
-    on:click={(event) => onActivate?.(event)}
-    on:mouseenter={show}
+    on:click={handleClick}
+    on:mouseenter={handlePointerEnter}
+    on:mousemove={handlePointerMove}
     on:mouseleave={hide}
-    on:focus={show}
+    on:focus={handleFocus}
     on:blur={hide}
     on:keydown={handleKeydown}
 ><slot /></svelte:element><span
@@ -117,6 +186,19 @@
     style:top="{top}px"
 >
     <span class="label-xs block mb-1" style:color={accent}>{label}</span>
-    <span class="block text-xs font-mono text-secondary-100 leading-relaxed">{note}</span>
-    <span class="label-xs block mt-1 text-secondary-200">{hint} &#8629;</span>
+    <!-- Rendered only while open so the image is never fetched on page load. -->
+    {#if screenshot && visible}
+        <img
+            src={screenshot.staticAssetPathWithDeployBase}
+            alt={screenshot.alt}
+            width={screenshot.intrinsicPixelWidth}
+            height={screenshot.intrinsicPixelHeight}
+            decoding="async"
+            class="mb-1 block w-full"
+        />
+    {/if}
+    {#if note}
+        <span class="block text-xs font-mono text-secondary-100 leading-relaxed">{note}</span>
+    {/if}
+    <span class="label-xs block mt-1 text-secondary-200">{hint}{#if isActivatable} &#8629;{/if}</span>
 </span>
