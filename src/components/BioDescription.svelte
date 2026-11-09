@@ -9,6 +9,14 @@
     export { className as class };
 
     let mapOpen = false;
+    let openedByKeyboard = false;
+
+    function openMap(event: MouseEvent): void {
+        // A click with detail 0 comes from Enter or Space, so focus belongs on
+        // the trigger after closing. A pointer click should leave no focus behind.
+        openedByKeyboard = event.detail === 0;
+        mapOpen = true;
+    }
 
     $: yearsInExperience = yearsOfExperience();
 </script>
@@ -19,7 +27,7 @@
     building and shipping production software at scale. I've lived in <InlineAction
         {...BIO_PLACES_ACTION}
         hint="CLICK TO OPEN MAP"
-        onActivate={() => (mapOpen = true)}>8 different cities across 3 continents</InlineAction
+        onActivate={openMap}>8 different cities across 3 continents</InlineAction
     >, which has given me a broad perspective on technology and problem-solving. I had
     just completed my <InlineAction {...BIO_LINKS.amazon}>placement at Amazon</InlineAction>, and finishing my final year at the
     University of Bath, where I studied CS + AI. Previously, I worked on
@@ -36,5 +44,5 @@
 </p>
 
 {#if mapOpen}
-    <CityMapModal onClose={() => (mapOpen = false)} />
+    <CityMapModal restoreFocus={openedByKeyboard} onClose={() => (mapOpen = false)} />
 {/if}

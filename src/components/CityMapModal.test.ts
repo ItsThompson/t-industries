@@ -129,6 +129,21 @@ describe('CityMapModal', () => {
 		trigger.remove();
 	});
 
+	it('leaves nothing focused when the trigger was clicked with a pointer', async () => {
+		const trigger = document.createElement('button');
+		document.body.appendChild(trigger);
+		trigger.focus();
+
+		const { unmount } = render(CityMapModal, {
+			props: { onClose: () => undefined, restoreFocus: false }
+		});
+		await tick();
+		unmount();
+
+		expect(document.activeElement).not.toBe(trigger);
+		trigger.remove();
+	});
+
 	it('keeps tab focus inside the dialog', async () => {
 		const { container } = renderModal();
 		await tick();

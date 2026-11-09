@@ -9,7 +9,7 @@
     export let note: string;
     /** Trailing line of the note, describing what activation does. */
     export let hint: string = 'CLICK TO OPEN';
-    export let onActivate: (() => void) | null = null;
+    export let onActivate: ((event: MouseEvent) => void) | null = null;
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
@@ -99,7 +99,7 @@
     style:color={accent}
     style:border-color={accent}
     style:outline-color={accent}
-    on:click={() => onActivate?.()}
+    on:click={(event) => onActivate?.(event)}
     on:mouseenter={show}
     on:mouseleave={hide}
     on:focus={show}

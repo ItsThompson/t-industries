@@ -5,6 +5,11 @@
     import { MAP_ATTRIBUTION } from '$lib/map-tiles';
 
     export let onClose: () => void;
+    /**
+     * Whether closing returns focus to whatever opened the modal. Pointer users
+     * do not need it, and it would leave the trigger looking selected.
+     */
+    export let restoreFocus = true;
 
     const groups = citiesByContinent(CITIES);
     const continents = continentCount(CITIES);
@@ -12,16 +17,19 @@
     let panel: HTMLDivElement;
     let closeButton: HTMLButtonElement;
     let activeId: string | null = null;
-    let previouslyFocused: Element | null = null;
+    let previouslyFocused: HTMLElement | null = null;
 
     const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     onMount(() => {
-        previouslyFocused = document.activeElement;
+        previouslyFocused =
+            document.activeElement instanceof HTMLElement ? document.activeElement : null;
         closeButton?.focus();
 
+        const returnTo = restoreFocus ? previouslyFocused : null;
+
         return () => {
-            if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+            returnTo?.focus();
         };
     });
 

@@ -253,6 +253,34 @@ describe('BioDescription', () => {
 			expect(container.querySelector('[role="dialog"]')).toBeNull();
 		});
 
+		it('leaves the trigger unselected after a pointer click closes the map', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+			trigger.focus();
+
+			await fireEvent.click(trigger, { detail: 1 });
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(document.activeElement).not.toBe(trigger);
+			expect(tooltipFor(trigger).className).toContain('invisible');
+		});
+
+		it('returns focus to the trigger after a keyboard open and close', async () => {
+			const { container } = render(BioDescription);
+			const trigger = findPlacesTrigger(container);
+			trigger.focus();
+
+			// Enter and Space produce a click with detail 0.
+			await fireEvent.click(trigger, { detail: 0 });
+			await tick();
+			await fireEvent.keyDown(window, { key: 'Escape' });
+			await tick();
+
+			expect(document.activeElement).toBe(trigger);
+		});
+
 		it('tells the reader the phrase opens a map', async () => {
 			const { container } = render(BioDescription);
 			const trigger = findPlacesTrigger(container);
