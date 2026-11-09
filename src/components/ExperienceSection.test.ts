@@ -72,8 +72,8 @@ describe('ExperienceSection', () => {
     it('displays date range for each experience', () => {
         const { container } = render(ExperienceSection);
         const text = container.textContent ?? '';
-        expect(text).toContain('Sep 2025 - Present');
-        expect(text).toContain('Aug 2024 - Present');
+        expect(text).toContain('Sep 2025 - Sep 2026');
+        expect(text).toContain('Aug 2024 - Sep 2025');
         expect(text).toContain('Jun 2024 - Jul 2024');
         expect(text).toContain('Sep 2021 - Dec 2023');
         expect(text).toContain('Dec 2021 - Feb 2023');

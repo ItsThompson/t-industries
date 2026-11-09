@@ -19,7 +19,7 @@ export const experiences: Experience[] = [
 		company: 'Amazon (Veeqo)',
 		role: 'Front-End Engineer',
 		startDate: 'Sep 2025',
-		endDate: 'Present',
+		endDate: 'Sep 2026',
 		description:
 			'Reduced frontend build times by ~82% and page latency by ~75% by designing the monolith-to-microservices migration architecture, shipping 5 React settings pages to 50,000+ sellers with zero rollbacks. Owned features end-to-end from Figma to post-launch analytics, achieving 76% user retention on Custom Bookmarks and building an AI-powered changelog pipeline eliminating manual work for support/sales teams.'
 	},
@@ -29,7 +29,7 @@ export const experiences: Experience[] = [
 		company: 'University of Bath CRIISP',
 		role: 'Research Assistant',
 		startDate: 'Aug 2024',
-		endDate: 'Present',
+		endDate: 'Sep 2025',
 		description:
 			'Reduced SEM creation time by 30% by improving retrieval of academic paper summaries from Firebase, building software that helps scientists visually model the factors influencing pain perception.'
 	},

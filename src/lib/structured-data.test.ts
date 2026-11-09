@@ -30,16 +30,20 @@ describe('buildProfileGraph', () => {
 		expect(person.sameAs).toEqual(SOCIAL_LINKS.map((link) => link.href));
 	});
 
-	it('gives the employer and university a URL to disambiguate them', () => {
+	it('gives every organization a URL to disambiguate it', () => {
 		const person = getNode('Person');
-		const alumniOf = person.alumniOf as JsonLdNode;
-		const employers = person.worksFor as JsonLdNode[];
+		const alumniOf = person.alumniOf as JsonLdNode[];
 
-		expect(alumniOf.url).toBe('https://www.bath.ac.uk');
-		expect(employers.length).toBeGreaterThan(0);
-		for (const employer of employers) {
-			expect(employer.url).toBeTruthy();
+		expect(alumniOf.map((org) => org.name)).toEqual(['University of Bath', 'Amazon', 'MSD']);
+		for (const org of alumniOf) {
+			expect(org.url).toBeTruthy();
 		}
+	});
+
+	it('claims no current employer, since every listed role has ended', () => {
+		const person = getNode('Person');
+
+		expect(person.worksFor).toBeUndefined();
 	});
 
 	it('wires the profile page to the person and the person to the site', () => {

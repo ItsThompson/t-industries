@@ -43,7 +43,7 @@ describe('experiences', () => {
 
 	it('first entry is Amazon (Veeqo) as the most recent role', () => {
 		expect(experiences[0].company).toBe('Amazon (Veeqo)');
-		expect(experiences[0].endDate).toBe('Present');
+		expect(experiences[0].endDate).toBe('Sep 2026');
 	});
 
 	it('last entry is Coding For Good as the earliest role', () => {
