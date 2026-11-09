@@ -10,13 +10,15 @@ export function highlightHref(path: string, targetId: string): string {
 }
 
 /**
- * Reads the reveal target from a route's search params. Returns null when the
- * param is absent or blank, so callers can treat "no target" as one case.
+ * Reads the reveal target from a page URL. Returns null when the param is
+ * absent or blank, so callers can treat "no target" as one case. A prerendered
+ * page has no query string and throws on `url.searchParams`, so the target is
+ * only read in the browser.
  */
-export function readHighlightTarget(
-	searchParams: URLSearchParams | null | undefined
-): string | null {
-	const target = searchParams?.get(HIGHLIGHT_PARAM)?.trim();
+export function readHighlightTarget(url: URL): string | null {
+	if (typeof window === 'undefined') return null;
+
+	const target = url.searchParams.get(HIGHLIGHT_PARAM)?.trim();
 	return target ? target : null;
 }
 

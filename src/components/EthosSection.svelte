@@ -9,7 +9,7 @@
     import { ACCENTS } from '$lib/accents';
     import { readHighlightTarget, revealElement } from '$lib/deep-links';
 
-    $: highlightedTarget = readHighlightTarget($page.url.searchParams);
+    $: highlightedTarget = readHighlightTarget($page.url);
 
     function revealHighlightedRow(target: string | null): void {
         if (!target) return;
@@ -18,8 +18,8 @@
 
     // The layout resets the scroll region on every navigation, so the reveal has
     // to run after that reset to survive a link from another route.
-    afterNavigate(() => revealHighlightedRow(readHighlightTarget($page.url.searchParams)));
-    onMount(() => revealHighlightedRow(readHighlightTarget($page.url.searchParams)));
+    afterNavigate(() => revealHighlightedRow(readHighlightTarget($page.url)));
+    onMount(() => revealHighlightedRow(readHighlightTarget($page.url)));
 </script>
 
 <section id="ethos">

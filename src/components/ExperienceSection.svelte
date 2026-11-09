@@ -11,7 +11,7 @@
 
     const orgCount = experiences.length;
 
-    $: highlightedTarget = readHighlightTarget($page.url.searchParams);
+    $: highlightedTarget = readHighlightTarget($page.url);
 
     function revealHighlightedEntry(target: string | null): void {
         if (!target) return;
@@ -20,8 +20,8 @@
 
     // The layout resets the scroll region on every navigation, so the reveal has
     // to run after that reset to survive a link from another route.
-    afterNavigate(() => revealHighlightedEntry(readHighlightTarget($page.url.searchParams)));
-    onMount(() => revealHighlightedEntry(readHighlightTarget($page.url.searchParams)));
+    afterNavigate(() => revealHighlightedEntry(readHighlightTarget($page.url)));
+    onMount(() => revealHighlightedEntry(readHighlightTarget($page.url)));
 </script>
 
 <section id="experience" class="relative">
