@@ -22,7 +22,7 @@ const ALMA_MATER: JsonLdNode = {
 	url: 'https://www.bath.ac.uk'
 };
 
-const EMPLOYERS: JsonLdNode[] = [
+const FORMER_EMPLOYERS: JsonLdNode[] = [
 	{ '@type': 'Organization', name: 'Amazon', url: 'https://www.amazon.com' },
 	{ '@type': 'Organization', name: 'MSD', url: 'https://www.msd.com' }
 ];
@@ -58,8 +58,7 @@ export function buildProfileGraph(): JsonLdGraph {
 				description: PERSON_DESCRIPTION,
 				url: canonicalUrl('/'),
 				sameAs: SOCIAL_LINKS.map((link) => link.href),
-				alumniOf: ALMA_MATER,
-				worksFor: EMPLOYERS
+				alumniOf: [ALMA_MATER, ...FORMER_EMPLOYERS]
 			}
 		]
 	};

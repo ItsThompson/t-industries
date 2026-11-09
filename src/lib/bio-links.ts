@@ -23,7 +23,7 @@ export const BIO_LINKS = {
 	amazon: {
 		target: 'amazon',
 		label: 'Amazon (Veeqo) / Front-End',
-		note: 'Sep 2025 to present. Delivered 5 React settings pages to 50,000+ sellers and cut frontend build times by 82%.',
+		note: 'Sep 2025 to Sep 2026. Cut frontend build times by 82% by designing the monolith-to-microservices migration on a website with 50,000+ sellers.',
 		href: highlightHref('/experience', 'amazon'),
 		accent: ACCENTS.amazon
 	},
@@ -37,7 +37,7 @@ export const BIO_LINKS = {
 	criisp: {
 		target: 'criisp',
 		label: 'University of Bath / CRIISP',
-		note: 'Aug 2024 to present. Cut SEM creation time by 30% for scientists modeling pain perception.',
+		note: 'Aug 2024 to Sep 2025. Cut SEM creation time by 30% for scientists modeling pain perception.',
 		href: highlightHref('/experience', 'criisp'),
 		accent: ACCENTS.criisp
 	},
