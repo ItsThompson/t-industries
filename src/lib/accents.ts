@@ -12,5 +12,3 @@ export const ACCENTS = {
 	// The ethos accent is the site accent, so it follows the Tailwind theme.
 	ethos: THEME_COLORS.primary
 } as const;
-
-export type AccentKey = keyof typeof ACCENTS;

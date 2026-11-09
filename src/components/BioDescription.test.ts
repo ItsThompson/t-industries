@@ -19,7 +19,6 @@ function tooltipFor(link: HTMLAnchorElement): HTMLElement {
 	return tooltip;
 }
 
-/** Reads the paragraph text with the hover notes removed, as a reader sees it. */
 function proseWithoutNotes(container: HTMLElement): string {
 	const clone = container.cloneNode(true) as HTMLElement;
 	clone.querySelectorAll('[role="tooltip"]').forEach((note) => note.remove());

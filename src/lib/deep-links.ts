@@ -5,9 +5,6 @@ export const HIGHLIGHT_PARAM = 'highlight';
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-/**
- * Builds a link to `path` that asks the target route to reveal `targetId`.
- */
 export function highlightHref(path: string, targetId: string): string {
 	return `${base}${path}?${HIGHLIGHT_PARAM}=${encodeURIComponent(targetId)}`;
 }

@@ -79,8 +79,6 @@
     });
 </script>
 
-<!-- The note sits flush against the anchor. Any whitespace between them would
-     render as a gap before the punctuation that follows the link. -->
 <a
     bind:this={anchorElement}
     {href}
