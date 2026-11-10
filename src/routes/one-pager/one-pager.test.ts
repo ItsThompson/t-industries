@@ -130,7 +130,7 @@ describe('one-pager', () => {
     const { container } = renderPage();
     const grain = container.querySelector('[aria-hidden="true"]') as HTMLElement;
 
-    expect(grain.style.backgroundImage).toContain('feTurbulence');
+    expect(grain.style.backgroundImage).toContain('/grain.svg');
     expect(Number(grain.style.opacity)).toBe(PAPER_GRAIN_OPACITY);
     expect(grain.className).toContain('mix-blend-multiply');
   });

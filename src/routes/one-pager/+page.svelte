@@ -10,7 +10,7 @@
     import { highlightHref } from '$lib/deep-links';
     import { ETHOS_ITEMS } from '$lib/ethos';
     import { highlights } from '$lib/experiences';
-    import { PAPER_GRAIN_OPACITY, PAPER_GRAIN_URI } from '$lib/paper';
+    import { PAPER_GRAIN_OPACITY } from '$lib/paper';
 
     /** Adds the comma and the "and" that turn the three titles into one sentence. */
     function separatorAfter(index: number): string {
@@ -46,7 +46,7 @@
     <div
         aria-hidden="true"
         class="pointer-events-none fixed inset-0 mix-blend-multiply"
-        style:background-image={PAPER_GRAIN_URI}
+        style:background-image="url({base}/grain.svg)"
         style:opacity={PAPER_GRAIN_OPACITY}
     ></div>
 

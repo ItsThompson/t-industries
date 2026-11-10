@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { wcagContrast } from 'culori/fn';
+import grain from '../../static/grain.svg?raw';
 import {
 	hexToRgbTriplet,
 	PAPER_BAND_ALPHA,
@@ -8,7 +9,6 @@ import {
 	PAPER_BAND_MIN_CONTRAST,
 	paperBandColor,
 	PAPER_GRAIN_OPACITY,
-	PAPER_GRAIN_URI,
 	paperBandStyle
 } from './paper';
 import { ACCENTS } from './accents';
@@ -120,14 +120,13 @@ describe('PAPER_GRAIN_OPACITY', () => {
 	});
 });
 
-describe('PAPER_GRAIN_URI', () => {
-	it('is a single inline image, so the grain costs no second request', () => {
-		expect(PAPER_GRAIN_URI.startsWith('url("data:image/svg+xml,')).toBe(true);
-		expect(PAPER_GRAIN_URI.endsWith('")')).toBe(true);
+describe('the grain asset', () => {
+	it('tiles a noise filter instead of a bitmap', () => {
+		expect(grain).toContain('feTurbulence');
+		expect(grain).toContain('stitchTiles');
 	});
 
-	it('tiles a noise filter instead of a bitmap', () => {
-		expect(PAPER_GRAIN_URI).toContain('feTurbulence');
-		expect(PAPER_GRAIN_URI).toContain('stitchTiles');
+	it('draws across the whole tile, so the repeat has no bare edge', () => {
+		expect(grain).toContain('width="180" height="180"');
 	});
 });
