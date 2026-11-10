@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import WorkEntry from './WorkEntry.svelte';
 import { highlights } from '$lib/experiences';
+import { hexToRgbTriplet } from '$lib/paper';
 
 const EXPERIENCE = highlights()[0];
 
@@ -40,6 +41,15 @@ describe('WorkEntry', () => {
     const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
 
     expect(container.querySelector('article')?.className).toContain('scroll-mt-24');
+  });
+
+  it('carries its own accent, so the landing marker matches the entry', () => {
+    const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
+    const article = container.querySelector('article') as HTMLElement;
+
+    expect(article.style.getPropertyValue('--band')).toBe(
+      hexToRgbTriplet(EXPERIENCE.accent),
+    );
   });
 
   it('keeps the ink colors from the page rather than a fixed color', () => {
