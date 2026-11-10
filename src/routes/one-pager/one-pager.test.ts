@@ -78,7 +78,25 @@ describe('one-pager', () => {
       link.textContent?.includes('View all experience'),
     );
 
-    expect(viewAll?.getAttribute('href')).toBe('/experience');
+    expect(viewAll?.getAttribute('href')).toBe('/experience?from=summary');
+  });
+
+  it('marks every link that leaves the summary, so each one offers the way back', () => {
+    const { container } = renderPage();
+    const leaving = Array.from(container.querySelectorAll('a')).filter((link) =>
+      link.getAttribute('href')?.startsWith('/'),
+    );
+
+    expect(leaving).toHaveLength(6);
+    leaving.forEach((link) => expect(link.getAttribute('href')).toContain('from=summary'));
+  });
+
+  it('leaves the on-page anchors unmarked, since the reader never leaves', () => {
+    const { container } = renderPage();
+    const anchors = Array.from(container.querySelectorAll('a[href^="#"]'));
+
+    expect(anchors.length).toBeGreaterThan(0);
+    anchors.forEach((anchor) => expect(anchor.getAttribute('href')).not.toContain('from='));
   });
 
   it('links each ethos title to its row on the ethos page', () => {
@@ -87,9 +105,11 @@ describe('one-pager', () => {
 
     expect(links).toHaveLength(ETHOS_ITEMS.length);
     ETHOS_ITEMS.forEach((item) => {
-      expect(links.some((link) => link.getAttribute('href') === `/ethos?highlight=${item.id}`)).toBe(
-        true,
-      );
+      expect(
+        links.some(
+          (link) => link.getAttribute('href') === `/ethos?highlight=${item.id}&from=summary`,
+        ),
+      ).toBe(true);
     });
   });
 

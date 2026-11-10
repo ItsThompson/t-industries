@@ -284,12 +284,12 @@ describe("BioDescription", () => {
       expect(tooltipFor(trigger).textContent).toContain("JUMP TO HIGHLIGHT");
     });
 
-    it("leaves the first-principles curiosity pointing at the ethos page", () => {
+    it("leaves the first-principles curiosity pointing at the ethos page, marked as leaving the summary", () => {
       const { container } = renderPaper();
 
       expect(
         findTrigger(container, "systems work from first principles").getAttribute("href"),
-      ).toBe("/ethos?highlight=continuous-learning");
+      ).toBe("/ethos?highlight=continuous-learning&from=summary");
     });
 
     it("keeps the cities phrase off the map, since the page has no map", () => {

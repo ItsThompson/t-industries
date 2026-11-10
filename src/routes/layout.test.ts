@@ -1,11 +1,15 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, cleanup, act } from '@testing-library/svelte';
+import { render, cleanup, act, fireEvent } from '@testing-library/svelte';
 import Layout from './(site)/+layout.svelte';
 import {
 	buildAfterNavigate,
+	getReplaceStateCalls,
 	resetAfterNavigate,
+	resetReplaceState,
 	triggerAfterNavigate
 } from '$lib/__mocks__/app-navigation';
+import { resetPageRoute, setPageUrl } from '$lib/__mocks__/app-stores';
+import { clearToasts } from '$lib/toasts';
 
 function getScrollRegion(container: HTMLElement): HTMLElement {
 	const region = container.querySelector<HTMLElement>('.overflow-y-auto');
@@ -197,6 +201,72 @@ describe('+layout', () => {
 		triggerAfterNavigate(buildAfterNavigate({ type: 'link' }));
 
 		expect(setScrollTop).toHaveBeenCalledWith(0);
+	});
+
+	describe('summary origin notice', () => {
+		beforeEach(() => {
+			clearToasts();
+			resetReplaceState();
+			window.history.replaceState({}, '', '/experience?from=summary');
+			setPageUrl('/experience', '?from=summary');
+		});
+
+		afterEach(() => {
+			window.history.replaceState({}, '', '/');
+			resetPageRoute();
+			clearToasts();
+		});
+
+		it('offers the way back when the reader arrived from the summary', async () => {
+			const { container } = render(Layout);
+			await act();
+
+			expect(container.querySelector('[data-toast="summary-origin"]')).toBeTruthy();
+			expect(container.textContent).toContain('YOU ARE IN THE TERMINAL.');
+		});
+
+		it('stays quiet on a direct visit', async () => {
+			window.history.replaceState({}, '', '/experience');
+			setPageUrl('/experience');
+
+			const { container } = render(Layout);
+			await act();
+
+			expect(container.querySelector('[data-toast]')).toBeNull();
+		});
+
+		it('trusts the address bar over the stored page url, so a dismissed notice stays gone', async () => {
+			// Kit keeps its own copy of the page url, which still names the summary after
+			// a dismissal rewrites the address bar, so the layout must read the address.
+			window.history.replaceState({}, '', '/experience');
+			setPageUrl('/experience', '?from=summary');
+
+			const { container } = render(Layout);
+			await act();
+
+			expect(container.querySelector('[data-toast]')).toBeNull();
+		});
+
+		it('sits directly above the navbar, so it never covers the navigation', async () => {
+			const { container } = render(Layout);
+			await act();
+
+			const toast = container.querySelector('[data-toast="summary-origin"]');
+
+			expect(getNavbar(container).previousElementSibling?.contains(toast as Node)).toBe(true);
+		});
+
+		it('clears the marker from the address when dismissed', async () => {
+			const { container } = render(Layout);
+			await act();
+
+			await fireEvent.click(
+				container.querySelector('[aria-label="Dismiss notice"]') as HTMLElement
+			);
+
+			expect(getReplaceStateCalls()).toHaveLength(1);
+			expect(getReplaceStateCalls()[0]?.url).not.toContain('from=');
+		});
 	});
 
 	describe('background effects', () => {

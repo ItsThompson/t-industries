@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { base } from '$app/paths';
+    import { summaryHref } from '$lib/summary-origin';
     import Age from '../../components/Age.svelte';
     import Link from '../../components/Link.svelte';
     import Compartment from '../../components/industrial/Compartment.svelte';
@@ -50,8 +50,8 @@
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pt-2">
                     <p class="label-xs text-secondary-200">AGE: <Age /> YRS</p>
                     <a
-                        href="{base}/one-pager"
-                        aria-label="Alter ego: open the one-pager"
+                        href={summaryHref()}
+                        aria-label="Open the summary page"
                         class="label-xs text-primary transition-colors duration-150 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         >ALTER EGO &#8594;</a
                     >
