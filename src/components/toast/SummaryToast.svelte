@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { base } from '$app/paths';
     import { summaryHref } from '$lib/summary-origin';
     import { OUTFIT_STYLESHEET_HREF } from '$lib/fonts';
 
@@ -17,13 +18,12 @@
 <div
     class="relative w-full bg-paper-base px-4 pb-4 pt-5 font-outfit text-paper-ink shadow-[0_20px_40px_-12px_rgba(0,0,0,0.9)] md:-rotate-1"
 >
-    <svg
+    <img
+        src="{base}/tape.svg"
+        alt=""
         aria-hidden="true"
-        viewBox="0 0 64 18"
-        class="absolute left-1/2 top-0 w-16 -translate-x-1/2 -translate-y-1/2 -rotate-2 text-paper-raised/65 drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]"
-    >
-        <rect width="64" height="18" rx="1" fill="currentColor" />
-    </svg>
+        class="absolute left-1/2 top-0 w-16 -translate-x-1/2 -translate-y-1/2 -rotate-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]"
+    />
 
     <button
         type="button"

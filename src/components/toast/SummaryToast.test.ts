@@ -1,5 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, cleanup, fireEvent } from '@testing-library/svelte';
+import tape from '../../../static/tape.svg?raw';
+import { THEME_COLORS } from '$lib/theme';
 import SummaryToast from './SummaryToast.svelte';
 
 function renderToast() {
@@ -73,10 +75,17 @@ describe('SummaryToast', () => {
 	it('is taped on and tilted, so it looks placed rather than docked', () => {
 		const { container } = renderToast();
 		const card = container.firstElementChild as HTMLElement;
-		const tape = card.querySelector('svg');
+		const strip = card.querySelector('img');
 
 		expect(card.className).toContain('md:-rotate-1');
-		expect(tape?.getAttribute('aria-hidden')).toBe('true');
+		expect(strip?.getAttribute('src')).toBe('/tape.svg');
+		expect(strip?.getAttribute('aria-hidden')).toBe('true');
+	});
+
+	it('keeps the tape out of the component, so the shape lives with the other assets', () => {
+		const { container } = renderToast();
+
+		expect(container.querySelector('svg')).toBeNull();
 	});
 
 	it('loads the paper typeface on the routes that do not carry it', () => {
@@ -87,5 +96,15 @@ describe('SummaryToast', () => {
 		);
 
 		expect(hrefs.some((href) => href?.includes('family=Outfit'))).toBe(true);
+	});
+});
+
+describe('the tape asset', () => {
+	it('paints the tape in the raised paper tone the theme declares', () => {
+		expect(tape.toUpperCase()).toContain(`FILL="${THEME_COLORS.paper.raised.toUpperCase()}"`);
+	});
+
+	it('stays translucent, so the card shows through the strip', () => {
+		expect(tape).toContain('fill-opacity="0.65"');
 	});
 });
