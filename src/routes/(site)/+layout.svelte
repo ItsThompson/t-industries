@@ -9,8 +9,7 @@
 
     let scrollRegion: HTMLDivElement;
 
-    // The backgrounds stay unmounted below the wide threshold so phones and
-    // tablets never pay for a WebGL context or an animation loop.
+    // Backgrounds stay unmounted below the threshold so WebGL does not run on phones and tablets 
     let isWideViewport = false;
 
     onMount(() =>
@@ -20,8 +19,7 @@
         })
     );
 
-    // This layout stays mounted across navigations, so its scroll offset carries
-    // over from the previous route unless it is reset.
+    // This layout stays mounted across navigations, so its scroll offset carries over from the previous route unless it is reset.
     afterNavigate(() => {
         scrollRegion.scrollTop = 0;
     });
@@ -35,8 +33,6 @@
 <div
     class="relative z-10 h-dvh w-full flex flex-col justify-start md:justify-center items-center overflow-hidden py-8"
 >
-    <!-- No flex-1: the region hugs its content, so the root can center the whole
-         stack while the content fits, and the region shrinks to scroll when it does not. -->
     <div
         bind:this={scrollRegion}
         class="flex flex-col w-full min-h-0 overflow-y-auto overscroll-none"

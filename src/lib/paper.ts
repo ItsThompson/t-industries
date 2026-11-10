@@ -26,12 +26,6 @@ export const PAPER_BAND_MIN_CONTRAST = 1.5;
 
 const DARKEN_STEP = 0.1;
 
-/**
- * Band styling shared by every highlighter on the paper page. The band color
- * and its two opacities arrive as the `--band`, `--band-alpha`, and
- * `--band-alpha-hover` custom properties, so the alpha values live here and not
- * in each component's stylesheet.
- */
 export const PAPER_BAND_CLASSES =
   "bg-[rgba(var(--band),var(--band-alpha))] hover:bg-[rgba(var(--band),var(--band-alpha-hover))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.18em] py-[0.04em] -mx-[0.02em] rounded-[3px] transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-paper-ink";
 
