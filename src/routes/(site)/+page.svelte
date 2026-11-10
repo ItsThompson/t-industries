@@ -1,12 +1,12 @@
 <script lang="ts">
-    import Age from '../components/Age.svelte';
-    import Link from '../components/Link.svelte';
-    import Compartment from '../components/industrial/Compartment.svelte';
-    import SectionHeading from '../components/industrial/SectionHeading.svelte';
-    import MetadataBar from '../components/industrial/MetadataBar.svelte';
-    import BioDescription from '../components/BioDescription.svelte';
-    import RndList from '../components/RndList.svelte';
-    import Seo from '../components/Seo.svelte';
+    import Age from '../../components/Age.svelte';
+    import Link from '../../components/Link.svelte';
+    import Compartment from '../../components/industrial/Compartment.svelte';
+    import SectionHeading from '../../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../../components/industrial/MetadataBar.svelte';
+    import BioDescription from '../../components/BioDescription.svelte';
+    import RndList from '../../components/RndList.svelte';
+    import Seo from '../../components/Seo.svelte';
     import { getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';

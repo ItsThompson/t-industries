@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup, act } from '@testing-library/svelte';
-import Layout from './+layout.svelte';
+import Layout from './(site)/+layout.svelte';
 import {
 	buildAfterNavigate,
 	resetAfterNavigate,

@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
 import type { ComponentType } from 'svelte';
-import HomePage from './+page.svelte';
-import ExperiencePage from './experience/+page.svelte';
-import ProjectsPage from './projects/+page.svelte';
-import EthosPage from './ethos/+page.svelte';
+import HomePage from './(site)/+page.svelte';
+import ExperiencePage from './(site)/experience/+page.svelte';
+import ProjectsPage from './(site)/projects/+page.svelte';
+import EthosPage from './(site)/ethos/+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { BIO_NAME } from '$lib/bio';
 import { canonicalUrl } from '$lib/seo';

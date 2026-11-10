@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { BIO_NAME } from '$lib/bio';
-    import { canonicalUrl } from '$lib/seo';
+    import { canonicalUrl, stripRouteGroups } from '$lib/seo';
     import { buildProfileGraph, serializeJsonLd } from '$lib/structured-data';
 
     export let title: string;
@@ -9,7 +9,7 @@
     /** Set on the one page whose primary subject is the person, so it carries the profile graph. */
     export let profilePage: boolean = false;
 
-    $: canonical = canonicalUrl(requireRouteId($page.route.id));
+    $: canonical = canonicalUrl(stripRouteGroups(requireRouteId($page.route.id)));
     $: jsonLdScript = profilePage
         ? `<script type="application/ld+json">${serializeJsonLd(buildProfileGraph())}<\/script>`
         : null;
