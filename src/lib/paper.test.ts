@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { wcagContrast } from 'culori/fn';
 import {
-	contrastRatio,
 	hexToRgbTriplet,
 	PAPER_BAND_ALPHA,
 	PAPER_BAND_ALPHA_HOVER,
@@ -13,8 +13,10 @@ import {
 import { ACCENTS } from './accents';
 import { THEME_COLORS } from './theme';
 
+const PAPER = THEME_COLORS.paper.base;
+
 describe('hexToRgbTriplet', () => {
-	it('splits a six digit hex color into its channels', () => {
+	it('splits a hex color into the channels a custom property can hold', () => {
 		expect(hexToRgbTriplet('#FF9900')).toBe('255,153,0');
 		expect(hexToRgbTriplet('#009484')).toBe('0,148,132');
 	});
@@ -23,16 +25,13 @@ describe('hexToRgbTriplet', () => {
 		expect(hexToRgbTriplet('#abdbFA')).toBe(hexToRgbTriplet('#ABDBFA'));
 	});
 
-	it('rejects a short hex color instead of guessing the shorthand', () => {
-		expect(() => hexToRgbTriplet('#F90')).toThrow();
+	it('expands the three digit shorthand', () => {
+		expect(hexToRgbTriplet('#F90')).toBe('255,153,0');
 	});
 
-	it('rejects a hex color without the leading hash', () => {
-		expect(() => hexToRgbTriplet('FF9900')).toThrow();
-	});
-
-	it('rejects characters that are not hex digits', () => {
+	it('rejects a value that is not a color, instead of painting a bad band', () => {
 		expect(() => hexToRgbTriplet('#GG9900')).toThrow();
+		expect(() => hexToRgbTriplet('not a color')).toThrow();
 	});
 
 	it('names the value it rejected, so a bad accent is easy to trace', () => {
@@ -40,26 +39,7 @@ describe('hexToRgbTriplet', () => {
 	});
 });
 
-describe('contrastRatio', () => {
-	it('measures black against white at the WCAG maximum', () => {
-		expect(contrastRatio('#000000', '#FFFFFF')).toBeCloseTo(21, 1);
-	});
-
-	it('gives the same answer whichever order the colors arrive in', () => {
-		expect(contrastRatio('#FF9900', '#F4EFE2')).toBeCloseTo(
-			contrastRatio('#F4EFE2', '#FF9900'),
-			5
-		);
-	});
-
-	it('rejects a malformed color rather than guessing', () => {
-		expect(() => contrastRatio('#FFF', '#FFFFFF')).toThrow();
-	});
-});
-
 describe('paperBandColor', () => {
-	const PAPER = THEME_COLORS.paper.base;
-
 	it('keeps an accent that already stands off the paper', () => {
 		expect(paperBandColor(ACCENTS.amazon)).toBe(ACCENTS.amazon);
 		expect(paperBandColor(ACCENTS.msd)).toBe(ACCENTS.msd);
@@ -72,7 +52,7 @@ describe('paperBandColor', () => {
 
 	it('carries every band past the visibility floor', () => {
 		Object.values(ACCENTS).forEach((accent) => {
-			expect(contrastRatio(paperBandColor(accent), PAPER)).toBeGreaterThanOrEqual(
+			expect(wcagContrast(paperBandColor(accent), PAPER)).toBeGreaterThanOrEqual(
 				PAPER_BAND_MIN_CONTRAST
 			);
 		});
@@ -81,9 +61,13 @@ describe('paperBandColor', () => {
 	it('moves the accent toward ink, keeping the hue it started with', () => {
 		const darkened = paperBandColor(ACCENTS.secondary100);
 
-		expect(contrastRatio(darkened, PAPER)).toBeGreaterThan(
-			contrastRatio(ACCENTS.secondary100, PAPER)
+		expect(wcagContrast(darkened, PAPER)).toBeGreaterThan(
+			wcagContrast(ACCENTS.secondary100, PAPER)
 		);
+	});
+
+	it('rejects a value that is not a color', () => {
+		expect(() => paperBandColor('chartreuse-ish')).toThrow();
 	});
 });
 
