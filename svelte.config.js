@@ -8,10 +8,10 @@ const config = {
     preprocess: vitePreprocess(),
 
     kit: {
+        // The site serves from the root of thompsontong.com, so no base path is
+        // set. A base prefix puts every absolute link and asset one segment too
+        // deep for that origin.
         adapter: adapter(),
-        paths: {
-            base: process.env.NODE_ENV === "production" ? "/t-industries" : "",
-        },
     },
 };
 
