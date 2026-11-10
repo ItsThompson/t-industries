@@ -235,6 +235,124 @@ describe("BioDescription", () => {
     expect(ACCENTS.primary).toBe("#FF6363");
   });
 
+  describe("paper mode", () => {
+    function renderPaper() {
+      return render(BioDescription, { props: { mode: "paper" } });
+    }
+
+    function findTrigger(container: HTMLElement, text: string): HTMLElement {
+      const element = Array.from(
+        container.querySelectorAll<HTMLElement>("[aria-describedby]"),
+      ).find((candidate) => candidate.textContent?.includes(text));
+      if (!element) throw new Error(`No trigger containing "${text}"`);
+      return element;
+    }
+
+    it("keeps the bio prose word for word", () => {
+      const { container } = renderPaper();
+      const text = container.textContent ?? "";
+
+      expect(text).toContain("year old software engineer");
+      expect(text).toContain("years of experience");
+      expect(text).toContain("8 different cities across 3 continents");
+      expect(text).toContain("University of Bath");
+    });
+
+    it("sends each named role to the entry further down the page", () => {
+      const { container } = renderPaper();
+
+      expect(findTrigger(container, "placement at Amazon").getAttribute("href")).toBe(
+        "#experience-amazon",
+      );
+      expect(findTrigger(container, "LLMOps at MSD").getAttribute("href")).toBe(
+        "#experience-msd",
+      );
+      expect(
+        findTrigger(container, "programming research assistant for CRIISP").getAttribute(
+          "href",
+        ),
+      ).toBe("#experience-criisp");
+    });
+
+    it("tells the reader the role links jump to the highlight", async () => {
+      const { container } = renderPaper();
+      const trigger = findTrigger(container, "placement at Amazon");
+
+      await fireEvent.mouseEnter(trigger);
+      await tick();
+
+      expect(tooltipFor(trigger).textContent).toContain("JUMP TO HIGHLIGHT");
+    });
+
+    it("leaves the first-principles curiosity pointing at the ethos page", () => {
+      const { container } = renderPaper();
+
+      expect(
+        findTrigger(container, "systems work from first principles").getAttribute("href"),
+      ).toBe("/ethos?highlight=continuous-learning");
+    });
+
+    it("keeps the cities phrase off the map, since the page has no map", () => {
+      const { container } = renderPaper();
+      const trigger = findTrigger(container, "8 different cities");
+
+      expect(trigger.tagName).toBe("SPAN");
+      expect(trigger.hasAttribute("href")).toBe(false);
+      expect(trigger.hasAttribute("role")).toBe(false);
+    });
+
+    it("names every city in the note, so the phrase still explains itself", async () => {
+      const { container } = renderPaper();
+      const trigger = findTrigger(container, "8 different cities");
+
+      await fireEvent.mouseEnter(trigger);
+      await tick();
+
+      const note = tooltipFor(trigger).textContent ?? "";
+      expect(note).toContain("Hong Kong");
+      expect(note).toContain("Swansea");
+    });
+
+    it("opens no modal when the cities phrase is clicked", async () => {
+      const { container } = renderPaper();
+
+      await fireEvent.click(findTrigger(container, "8 different cities"));
+      await tick();
+
+      expect(container.querySelector('[role="dialog"]')).toBeNull();
+    });
+
+    it("opens no modal when the experience phrase is clicked", async () => {
+      const { container } = renderPaper();
+
+      await fireEvent.click(findTrigger(container, "years of experience"));
+      await tick();
+
+      expect(container.querySelector('[role="dialog"]')).toBeNull();
+    });
+
+    it("still previews the 2019 screenshot on hover", async () => {
+      const { container } = renderPaper();
+      const trigger = findTrigger(container, "years of experience");
+
+      await fireEvent.mouseEnter(trigger);
+      await tick();
+
+      expect(tooltipFor(trigger).querySelector("img")).toBeTruthy();
+    });
+
+    it("paints every phrase as a highlighter band", () => {
+      const { container } = renderPaper();
+
+      for (const trigger of Array.from(
+        container.querySelectorAll<HTMLElement>("[aria-describedby]"),
+      )) {
+        expect(trigger.className).toContain("rgba(var(--band)");
+        expect(trigger.className).not.toContain("border-dotted");
+      }
+    });
+  });
+
   describe("first website easter egg", () => {
     function findExperienceTrigger(container: HTMLElement): HTMLElement {
       const element = Array.from(

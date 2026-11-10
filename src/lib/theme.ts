@@ -3,9 +3,15 @@
  * imports it, and component code reads the same values from it.
  */
 export const THEME_COLORS = {
-	primary: '#FF6363',
-	secondary: {
-		100: '#E2E2D5',
-		200: '#888883'
-	}
+  primary: "#FF6363",
+  secondary: {
+    100: "#E2E2D5",
+    200: "#888883",
+  },
+  paper: {
+    base: "#F4EFE2",
+    raised: "#FFFEF4",
+    ink: "#1C1917",
+    muted: "#726C66",
+  },
 } as const;

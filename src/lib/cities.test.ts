@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { CITIES, CITY_COUNT, citiesByContinent, continentCount } from './cities';
+import { CITIES, CITY_COUNT, citiesByContinent, citiesNote, continentCount } from './cities';
 import { ETHOS_ITEMS } from './ethos';
 
 describe('cities', () => {
@@ -70,5 +70,22 @@ describe('cities', () => {
 		expect(ETHOS_ITEMS[0].walkingTheWalk).toContain(
 			`${CITY_COUNT} cities, ${continentCount(CITIES)} continents`
 		);
+	});
+});
+
+describe('citiesNote', () => {
+	it('names every place the bio counts', () => {
+		const note = citiesNote();
+
+		CITIES.forEach((city) => expect(note).toContain(city.name));
+	});
+
+	it('keeps the places in the order the list holds them', () => {
+		expect(citiesNote()).toContain('Hong Kong, Taipei, Chengdu, Shanghai, Livingston');
+	});
+
+	it('ends with a full stop, so the note needs no separate punctuation', () => {
+		expect(citiesNote()).not.toMatch(/\s{2,}/);
+		expect(citiesNote().endsWith('.')).toBe(true);
 	});
 });

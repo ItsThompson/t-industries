@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
     import type { NoteScreenshot } from '$lib/bio-links';
+    import type { PageTone } from '$lib/paper';
+    import { appearanceFor } from './inline-action-appearance';
 
     export let href: string | undefined = undefined;
     export let target: string;
@@ -10,6 +12,7 @@
     export let hint: string = 'CLICK TO OPEN';
     export let onActivate: ((event: MouseEvent) => void) | null = null;
     export let screenshot: NoteScreenshot | null = null;
+    export let tone: PageTone = 'terminal';
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
@@ -22,12 +25,30 @@
     let frameRequested = false;
     let pointer: { x: number; y: number } | null = null;
 
+    /** The trigger is an anchor when it has a destination, a span when it acts in place. */
+    interface Trigger {
+        element: 'a' | 'span';
+        attributes: { href: string } | { tabindex: number };
+        role: 'link' | 'button' | undefined;
+    }
+
+    function triggerFor(
+        destination: string | undefined,
+        action: ((event: MouseEvent) => void) | null
+    ): Trigger {
+        if (destination) {
+            return { element: 'a', attributes: { href: destination }, role: 'link' };
+        }
+
+        return { element: 'span', attributes: { tabindex: 0 }, role: action ? 'button' : undefined };
+    }
+
     $: isLink = Boolean(href);
     $: isActivatable = isLink || onActivate !== null;
-    $: element = isLink ? 'a' : 'span';
-    $: elementAttributes = isLink ? { href } : { tabindex: 0 };
-    $: role = isLink ? 'link' : isActivatable ? 'button' : undefined;
+    $: trigger = triggerFor(href, onActivate);
     $: tooltipId = `bio-note-${target}`;
+    $: appearance = appearanceFor(tone, { accent, isActivatable });
+    $: tooltipClasses = `${appearance.tooltipClasses} ${visible ? 'visible' : 'invisible'}`;
 
     async function show(): Promise<void> {
         visible = true;
@@ -158,15 +179,13 @@
 <!-- The element carries native semantics: an anchor when href is set, a button otherwise. -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <svelte:element
-    this={element}
+    this={trigger.element}
     bind:this={anchorElement}
-    {...elementAttributes}
-    {role}
+    {...trigger.attributes}
+    role={trigger.role}
     aria-describedby={tooltipId}
-    class="border-b border-dotted hover:border-solid transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
-    style:color={accent}
-    style:border-color={accent}
-    style:outline-color={accent}
+    class={appearance.triggerClasses}
+    style={appearance.triggerStyle}
     on:click={handleClick}
     on:mouseenter={handlePointerEnter}
     on:mousemove={handlePointerMove}
@@ -178,14 +197,12 @@
     bind:this={tooltipElement}
     id={tooltipId}
     role="tooltip"
-    class="fixed z-50 block w-64 max-w-[calc(100vw-1rem)] border bg-black p-2 text-left pointer-events-none {visible
-        ? 'visible'
-        : 'invisible'}"
-    style:border-color={accent}
+    class={tooltipClasses}
+    style={appearance.tooltipStyle}
     style:left="{left}px"
     style:top="{top}px"
 >
-    <span class="label-xs block mb-1" style:color={accent}>{label}</span>
+    <span class={appearance.labelClasses} style={appearance.labelStyle}>{label}</span>
     <!-- Rendered only while open so the image is never fetched on page load. -->
     {#if screenshot && visible}
         <img
@@ -198,7 +215,9 @@
         />
     {/if}
     {#if note}
-        <span class="block text-xs font-mono text-secondary-100 leading-relaxed">{note}</span>
+        <span class={appearance.noteClasses}>{note}</span>
     {/if}
-    <span class="label-xs block mt-1 text-secondary-200">{hint}{#if isActivatable} &#8629;{/if}</span>
+    {#if hint}
+        <span class={appearance.hintClasses}>{hint}{#if isActivatable} &#8629;{/if}</span>
+    {/if}
 </span>

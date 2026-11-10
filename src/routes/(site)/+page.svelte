@@ -1,12 +1,13 @@
 <script lang="ts">
-    import Age from '../components/Age.svelte';
-    import Link from '../components/Link.svelte';
-    import Compartment from '../components/industrial/Compartment.svelte';
-    import SectionHeading from '../components/industrial/SectionHeading.svelte';
-    import MetadataBar from '../components/industrial/MetadataBar.svelte';
-    import BioDescription from '../components/BioDescription.svelte';
-    import RndList from '../components/RndList.svelte';
-    import Seo from '../components/Seo.svelte';
+    import { base } from '$app/paths';
+    import Age from '../../components/Age.svelte';
+    import Link from '../../components/Link.svelte';
+    import Compartment from '../../components/industrial/Compartment.svelte';
+    import SectionHeading from '../../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../../components/industrial/MetadataBar.svelte';
+    import BioDescription from '../../components/BioDescription.svelte';
+    import RndList from '../../components/RndList.svelte';
+    import Seo from '../../components/Seo.svelte';
     import { getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
@@ -46,9 +47,15 @@
                     {BIO_TITLE}
                 </p>
                 <BioDescription class="text-sm font-mono text-secondary-100 leading-relaxed" />
-                <p class="label-xs text-secondary-200 pt-2">
-                    AGE: <Age /> YRS
-                </p>
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pt-2">
+                    <p class="label-xs text-secondary-200">AGE: <Age /> YRS</p>
+                    <a
+                        href="{base}/one-pager"
+                        aria-label="Alter ego: open the one-pager"
+                        class="label-xs text-primary transition-colors duration-150 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                        >ALTER EGO &#8594;</a
+                    >
+                </div>
             </div>
         </Compartment>
     </div>
@@ -65,7 +72,7 @@
             </div>
         </Compartment>
 
-        <Compartment title="CURRENT R&D OPS">
+        <Compartment title="CURRENT INTERESTS">
             <RndList />
         </Compartment>
     </div>

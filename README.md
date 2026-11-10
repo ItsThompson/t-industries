@@ -61,7 +61,6 @@ npm run dev
 | `npm run check` | Run svelte-check type checking |
 | `npm run test` | Run unit tests |
 | `npm run test:watch` | Run tests in watch mode |
-| `npm run deploy` | Deploy to GitHub Pages |
 
 ### Building for Production
 
@@ -70,21 +69,3 @@ npm run build
 ```
 
 The static output will be in the `build/` directory, ready for deployment.
-
-## Project Structure
-
-```
-src/
-├── components/       # Reusable Svelte components
-│   ├── PipesBackground.svelte
-│   ├── NavBar.svelte
-│   ├── Badge.svelte
-│   └── ...
-├── routes/           # SvelteKit file-based routing
-│   ├── +page.svelte
-│   ├── ethos/
-│   └── projects/
-├── lib/              # Shared utilities
-├── app.css           # Global styles
-└── app.html          # HTML template
-```

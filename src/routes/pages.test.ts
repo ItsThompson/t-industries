@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
 import type { ComponentType } from 'svelte';
-import HomePage from './+page.svelte';
-import ExperiencePage from './experience/+page.svelte';
-import ProjectsPage from './projects/+page.svelte';
-import EthosPage from './ethos/+page.svelte';
+import HomePage from './(site)/+page.svelte';
+import ExperiencePage from './(site)/experience/+page.svelte';
+import ProjectsPage from './(site)/projects/+page.svelte';
+import EthosPage from './(site)/ethos/+page.svelte';
+import OnePagerPage from './one-pager/+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { BIO_NAME } from '$lib/bio';
 import { canonicalUrl } from '$lib/seo';
@@ -25,7 +26,13 @@ const ROUTES: RouteCase[] = [
 		path: '/projects',
 		expectedHeading: 'PROJECTS'
 	},
-	{ component: EthosPage, props: {}, path: '/ethos', expectedHeading: 'ETHOS' }
+	{ component: EthosPage, props: {}, path: '/ethos', expectedHeading: 'ETHOS' },
+	{
+		component: OnePagerPage,
+		props: {},
+		path: '/one-pager',
+		expectedHeading: BIO_NAME
+	}
 ];
 
 const PAGE_SOURCES = import.meta.glob('/src/routes/**/+page.svelte', {
