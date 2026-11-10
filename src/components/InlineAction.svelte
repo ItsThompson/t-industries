@@ -50,7 +50,7 @@
             ? 'bg-paper-raised border border-paper-ink/15 rounded-[5px] p-3 font-outfit shadow-[0_10px_28px_rgba(28,25,23,0.13)]'
             : 'bg-black border p-2'
     } ${visible ? 'visible' : 'invisible'}`;
-    $: tooltipStyle = isPaper ? undefined : `border-color:${accent}`;
+    $: tooltipStyle = isPaper ? '' : `border-color:${accent}`;
     $: labelClasses = isPaper
         ? 'block mb-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-paper-ink'
         : 'label-xs block mb-1';

@@ -332,8 +332,10 @@ describe("InlineAction", () => {
 
     it("keeps the accent border off the note card", () => {
       const { container } = renderPaper();
+      const style = noteFor(container).getAttribute("style") ?? "";
 
-      expect(noteFor(container).getAttribute("style")).not.toContain("border-color");
+      expect(style).not.toContain("border-color");
+      expect(style).not.toContain("undefined");
     });
 
     it("labels the note in ink, so the accent never carries text", () => {
