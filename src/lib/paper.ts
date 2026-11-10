@@ -1,3 +1,6 @@
+/** Which page a component renders for: the black site or the paper page. */
+export type PageTone = 'terminal' | 'paper';
+
 /** Opacity of a highlighter band at rest, over the paper background. */
 export const PAPER_BAND_ALPHA = 0.4;
 

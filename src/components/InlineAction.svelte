@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
     import type { NoteScreenshot } from '$lib/bio-links';
-    import { PAPER_BAND_CLASSES, paperBandStyle } from '$lib/paper';
+    import { PAPER_BAND_CLASSES, paperBandStyle, type PageTone } from '$lib/paper';
 
     export let href: string | undefined = undefined;
     export let target: string;
@@ -12,7 +12,7 @@
     export let onActivate: ((event: MouseEvent) => void) | null = null;
     export let screenshot: NoteScreenshot | null = null;
     /** `terminal` is the black site; `paper` is the highlighter page. */
-    export let tone: 'terminal' | 'paper' = 'terminal';
+    export let tone: PageTone = 'terminal';
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
