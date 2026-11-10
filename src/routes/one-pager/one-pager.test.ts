@@ -5,6 +5,7 @@ import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { BIO_NAME } from '$lib/bio';
 import { ETHOS_ITEMS } from '$lib/ethos';
 import { highlights } from '$lib/experiences';
+import { PAPER_GRAIN_OPACITY } from '$lib/paper';
 import { THEME_COLORS } from '$lib/theme';
 
 function renderPage(): ReturnType<typeof render> {
@@ -123,6 +124,15 @@ describe('one-pager', () => {
     expect(wrapper?.className).toContain('bg-paper-base');
     expect(wrapper?.className).toContain('text-paper-ink');
     expect(wrapper?.className).toContain('font-outfit');
+  });
+
+  it('lays a grain over the paper at a strength that shows', () => {
+    const { container } = renderPage();
+    const grain = container.querySelector('[aria-hidden="true"]') as HTMLElement;
+
+    expect(grain.style.backgroundImage).toContain('feTurbulence');
+    expect(Number(grain.style.opacity)).toBe(PAPER_GRAIN_OPACITY);
+    expect(grain.className).toContain('mix-blend-multiply');
   });
 
   it('paints the body before hydration, so overscroll never shows the black site', () => {

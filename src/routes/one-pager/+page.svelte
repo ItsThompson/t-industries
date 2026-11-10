@@ -10,7 +10,7 @@
     import { highlightHref } from '$lib/deep-links';
     import { ETHOS_ITEMS } from '$lib/ethos';
     import { highlights } from '$lib/experiences';
-    import { PAPER_GRAIN_URI } from '$lib/paper';
+    import { PAPER_GRAIN_OPACITY, PAPER_GRAIN_URI } from '$lib/paper';
 
     /** Adds the comma and the "and" that turn the three titles into one sentence. */
     function separatorAfter(index: number): string {
@@ -45,8 +45,9 @@
 <div class="relative min-h-dvh bg-paper-base font-outfit text-paper-ink">
     <div
         aria-hidden="true"
-        class="pointer-events-none fixed inset-0 opacity-[0.06] mix-blend-multiply"
+        class="pointer-events-none fixed inset-0 mix-blend-multiply"
         style:background-image={PAPER_GRAIN_URI}
+        style:opacity={PAPER_GRAIN_OPACITY}
     ></div>
 
     <div class="relative mx-auto max-w-6xl px-6 py-16 md:py-24">

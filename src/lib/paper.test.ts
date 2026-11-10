@@ -7,6 +7,7 @@ import {
 	PAPER_BAND_CLASSES,
 	PAPER_BAND_MIN_CONTRAST,
 	paperBandColor,
+	PAPER_GRAIN_OPACITY,
 	PAPER_GRAIN_URI,
 	paperBandStyle
 } from './paper';
@@ -106,6 +107,16 @@ describe('paper band tokens', () => {
 
 	it('reads its color from the band custom property rather than a fixed color', () => {
 		expect(PAPER_BAND_CLASSES).toContain('rgba(var(--band),var(--band-alpha))');
+	});
+});
+
+describe('PAPER_GRAIN_OPACITY', () => {
+	it('shows the grain instead of burying it in the paper tone', () => {
+		expect(PAPER_GRAIN_OPACITY).toBeGreaterThanOrEqual(0.15);
+	});
+
+	it('stays a translucent coat, not an opaque image', () => {
+		expect(PAPER_GRAIN_OPACITY).toBeLessThanOrEqual(1);
 	});
 });
 
