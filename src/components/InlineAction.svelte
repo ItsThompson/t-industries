@@ -39,7 +39,7 @@
     // The paper band carries the accent at low alpha behind ink glyphs. Text in
     // the raw accent is 1.3:1 to 3.3:1 on paper, so it never carries a glyph.
     $: triggerClasses = isPaper
-        ? `${PAPER_BAND_CLASSES} ${isActivatable ? '' : 'cursor-help'} ${FOCUS_CLASSES} focus-visible:outline-paper-ink`
+        ? `${PAPER_BAND_CLASSES} ${isActivatable ? '' : 'cursor-help'}`
         : `border-b border-dotted hover:border-solid transition-colors duration-150 ${FOCUS_CLASSES}`;
     $: triggerStyle = isPaper
         ? paperBandStyle(accent)

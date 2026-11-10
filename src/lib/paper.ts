@@ -14,7 +14,7 @@ export const PAPER_BAND_ALPHA_HOVER = 0.54;
  * in each component's stylesheet.
  */
 export const PAPER_BAND_CLASSES =
-	'bg-[rgba(var(--band),var(--band-alpha))] hover:bg-[rgba(var(--band),var(--band-alpha-hover))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.18em] py-[0.04em] -mx-[0.02em] rounded-[3px] transition-colors duration-150';
+	'bg-[rgba(var(--band),var(--band-alpha))] hover:bg-[rgba(var(--band),var(--band-alpha-hover))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.18em] py-[0.04em] -mx-[0.02em] rounded-[3px] transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-paper-ink';
 
 /** Turns `#FF9900` into `255,153,0`, for `rgba(var(--band), alpha)`. */
 export function hexToRgbTriplet(hex: string): string {

@@ -16,6 +16,9 @@ export interface Experience {
   highlightSummary?: string;
 }
 
+/** An entry the one-pager can list, carrying the line it renders. */
+export type HighlightedExperience = Experience & { highlightSummary: string };
+
 export const experiences: Experience[] = [
   {
     id: "amazon",
@@ -81,8 +84,18 @@ export const experiences: Experience[] = [
 ];
 
 /** The entries the one-pager lists, in the order the timeline holds them. */
-export function highlights(): Experience[] {
-  return experiences.filter((experience) => experience.highlight);
+export function highlights(): HighlightedExperience[] {
+  return experiences
+    .filter((experience) => experience.highlight)
+    .map((experience) => {
+      if (!experience.highlightSummary) {
+        throw new Error(
+          `highlighted experience "${experience.id}" has no highlightSummary to render`,
+        );
+      }
+
+      return { ...experience, highlightSummary: experience.highlightSummary };
+    });
 }
 
 /** DOM id of one experience entry, shared by the section and its deep links. */
