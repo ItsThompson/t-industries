@@ -3,9 +3,11 @@
     import { afterNavigate } from "$app/navigation";
     import Navbar from "../../components/NavBar.svelte";
     import Footer from "../../components/Footer.svelte";
+    import ToastHost from "../../components/toast/ToastHost.svelte";
     import CRTBackground from "../../components/shader/CRTBackground.svelte";
     import PipesBackground from "../../components/PipesBackground.svelte";
     import { observeViewportWidth } from "$lib/viewport";
+    import { syncSummaryOriginToast } from "$lib/toasts";
 
     let scrollRegion: HTMLDivElement;
 
@@ -23,6 +25,12 @@
     afterNavigate(() => {
         scrollRegion.scrollTop = 0;
     });
+
+    // The origin parameter lives in the URL, so arriving and leaving both sync here.
+    // It is read from the address bar, not `$page.url`: history navigation restores a
+    // stored page url that still carries a marker the reader already dismissed.
+    afterNavigate(() => syncSummaryOriginToast(new URL(window.location.href)));
+    onMount(() => syncSummaryOriginToast(new URL(window.location.href)));
 </script>
 
 {#if isWideViewport}
@@ -48,5 +56,6 @@
     <div class="w-full max-w-5xl px-4 mx-auto hidden md:block">
         <Footer />
     </div>
+    <ToastHost />
     <Navbar />
 </div>

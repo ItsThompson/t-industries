@@ -8,6 +8,7 @@
     import { citiesNote } from '$lib/cities';
     import { experienceAnchorId } from '$lib/experiences';
     import type { PageTone } from '$lib/paper';
+    import { withSummaryOrigin } from '$lib/summary-origin';
 
     let className: string = 'text-sm';
     export { className as class };
@@ -33,6 +34,13 @@
 
     $: yearsInExperience = yearsOfExperience();
     $: isPaper = mode === 'paper';
+    // Every link that leaves the summary is marked, so the terminal can offer the way back.
+    $: continuousLearningAction = {
+        ...BIO_LINKS.continuousLearning,
+        href: isPaper
+            ? withSummaryOrigin(BIO_LINKS.continuousLearning.href)
+            : BIO_LINKS.continuousLearning.href
+    };
     // Paper page doesn't have a modal.
     $: yearsAction = isPaper ? { hint: '' } : { onActivate: openOldSite };
     $: placesAction = isPaper
@@ -69,7 +77,7 @@
     University of Bath.
 </p>
 <p class={className}>
-    I'm deeply curious about how <InlineAction {...BIO_LINKS.continuousLearning} tone={mode}
+    I'm deeply curious about how <InlineAction {...continuousLearningAction} tone={mode}
         >systems work from first principles</InlineAction
     >, whether that's foundational technology or bleeding-edge tooling. Understanding
     what's happening under the hood means I get far more out of AI-assisted
