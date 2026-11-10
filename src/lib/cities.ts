@@ -48,3 +48,10 @@ export function citiesByContinent(cities: City[] = CITIES): ContinentGroup[] {
 export function continentCount(cities: City[] = CITIES): number {
 	return new Set(cities.map((city) => city.continent)).size;
 }
+
+/** One sentence naming every place, grouped by continent, for a tooltip. */
+export function citiesNote(): string {
+	return citiesByContinent()
+		.map((group) => `${group.continent}: ${group.cities.map((city) => city.name).join(', ')}.`)
+		.join(' ');
+}

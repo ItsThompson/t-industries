@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { experienceAnchorId, experiences } from './experiences';
-import type { Experience } from './experiences';
+import { experienceAnchorId, experiences, highlights } from './experiences';
 
 describe('experiences', () => {
 	it('contains exactly 5 entries', () => {
@@ -8,7 +7,16 @@ describe('experiences', () => {
 	});
 
 	it('each entry has all required fields', () => {
-		const requiredKeys: (keyof Experience)[] = [
+		type TextField =
+			| 'id'
+			| 'company'
+			| 'role'
+			| 'startDate'
+			| 'endDate'
+			| 'description'
+			| 'accent';
+
+		const requiredKeys: TextField[] = [
 			'id',
 			'company',
 			'role',
@@ -65,5 +73,36 @@ describe('experiences', () => {
 		experiences.forEach((entry) => {
 			expect(entry.accent).toMatch(/^#[0-9A-Fa-f]{6}$/);
 		});
+	});
+});
+
+describe('highlights', () => {
+	it('lists at least one entry, so the one-pager work section is never empty', () => {
+		expect(highlights().length).toBeGreaterThan(0);
+	});
+
+	it('gives every highlighted entry a summary line to show', () => {
+		highlights().forEach((entry) => {
+			expect(entry.highlightSummary?.trim().length ?? 0).toBeGreaterThan(0);
+		});
+	});
+
+	it('keeps the timeline order of the full list', () => {
+		const highlighted = highlights();
+		const positions = highlighted.map((entry) => experiences.indexOf(entry));
+
+		expect(positions).toEqual([...positions].sort((a, b) => a - b));
+	});
+
+	it('leaves the entries the one-pager does not list out of the result', () => {
+		const highlighted = highlights().map((entry) => entry.id);
+
+		experiences
+			.filter((entry) => !entry.highlight)
+			.forEach((entry) => expect(highlighted).not.toContain(entry.id));
+	});
+
+	it('lists the three roles the page claims', () => {
+		expect(highlights().map((entry) => entry.id)).toEqual(['amazon', 'criisp', 'msd']);
 	});
 });

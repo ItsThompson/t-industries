@@ -7,7 +7,8 @@ export default {
     extend: {
       colors: THEME_COLORS,
       fontFamily: {
-        display: ['VT323', 'monospace']
+        display: ['VT323', 'monospace'],
+        outfit: ['Outfit', 'system-ui', 'sans-serif']
       }
     }
   },

@@ -7,5 +7,12 @@ export const THEME_COLORS = {
 	secondary: {
 		100: '#E2E2D5',
 		200: '#888883'
+	},
+	/** Palette of the paper one-pager, which owns its own background and ink. */
+	paper: {
+		base: '#F4EFE2',
+		raised: '#FFFEF4',
+		ink: '#1C1917',
+		muted: '#726C66'
 	}
 } as const;
