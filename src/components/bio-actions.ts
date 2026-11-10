@@ -20,12 +20,14 @@ export interface BioPhraseAction {
   href?: string;
   /* A required `hint: string` distinguishes "hide the hint" (`''`) from "use the default `CLICK TO OPEN`" (omitted), which an optional field would merge into one. */
   hint: string;
-  onActivate?: (event: MouseEvent) => void;
+  onActivate?: (event: MouseEvent, trigger: HTMLElement) => void;
 }
 
 export interface BioPhraseHandlers {
   openMap: (event: MouseEvent) => void;
   openOldSite: (event: MouseEvent) => void;
+  /* Optional because only the one-pager can jump to work entries; without it a paper work phrase stays a plain anchor. */
+  jumpToWork?: (id: BioWorkId, trigger: HTMLElement, event: MouseEvent) => void;
 }
 
 export interface BioActions {
@@ -60,7 +62,7 @@ const ACTIONS_BY_TONE: Record<
 
   // The summary is a single page with no modals, so each phrase either jumps
   // to a section further down or links back into the terminal.
-  paper: () => ({
+  paper: ({ jumpToWork }) => ({
     years: { ...oldSitePhrase, hint: NO_HINT },
     places: { ...BIO_PLACES_ACTION, note: citiesNote(), hint: NO_HINT },
     continuousLearning: {
@@ -68,10 +70,16 @@ const ACTIONS_BY_TONE: Record<
       href: withSummaryOrigin(BIO_LINKS.continuousLearning.href),
       hint: OPEN_HINT,
     },
+    // The href keeps the anchor real, so right-click, middle-click, and the
+    // no-JS jump still work; onActivate calls preventDefault only when the
+    // arrow actually takes over.
     work: (id) => ({
       ...BIO_LINKS[id],
       href: `#${experienceAnchorId(id)}`,
       hint: JUMP_HINT,
+      onActivate: jumpToWork
+        ? (event, trigger) => jumpToWork(id, trigger, event)
+        : undefined,
     }),
   }),
 };

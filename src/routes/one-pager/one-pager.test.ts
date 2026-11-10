@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
-import { render, cleanup } from '@testing-library/svelte';
+import { render, cleanup, fireEvent } from '@testing-library/svelte';
 import OnePager from './+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { ACCENTS } from '$lib/accents';
@@ -35,6 +35,7 @@ describe('one-pager', () => {
 
   afterEach(() => {
     cleanup();
+    window.location.hash = '';
     resetPageRoute();
     vi.restoreAllMocks();
   });
@@ -70,6 +71,39 @@ describe('one-pager', () => {
     highlights().forEach((experience) => {
       expect(container.querySelector(`#experience-${experience.id}`)).toBeTruthy();
     });
+  });
+
+  it('narrows the column, so the gutter can hold the arrow', () => {
+    const { container } = renderPage();
+    const column = container.querySelector('.max-w-3xl');
+
+    expect(column?.className).toContain('max-w-3xl');
+    expect(column?.className).not.toContain('max-w-6xl');
+  });
+
+  it('marks the entry when the arrow cannot draw, keeping the fallback line', async () => {
+    // jsdom reports zero rects, so the arrow can never draw and the page falls
+    // back to the jump and the accent line.
+    const { container } = renderPage();
+    const phrase = Array.from(container.querySelectorAll('a')).find((link) =>
+      link.getAttribute('href') === '#experience-msd',
+    );
+    if (!phrase) throw new Error('No work phrase rendered');
+
+    await fireEvent.click(phrase);
+
+    const msd = container.querySelector('#experience-msd');
+    expect(msd?.className).toContain('marked');
+    expect(container.querySelector('#experience-amazon')?.className).not.toContain('marked');
+  });
+
+  it('marks the deep-linked entry on mount, now that the marker is state', () => {
+    window.location.hash = '#experience-amazon';
+
+    const { container } = renderPage();
+
+    expect(container.querySelector('#experience-amazon')?.className).toContain('marked');
+    expect(container.querySelector('#experience-msd')?.className).not.toContain('marked');
   });
 
   it('links every work entry to the experience page for the rest', () => {

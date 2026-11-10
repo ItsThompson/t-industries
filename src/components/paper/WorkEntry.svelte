@@ -3,11 +3,14 @@
     import { paperBandStyle } from '$lib/paper';
 
     export let experience: HighlightedExperience;
+    export let marked = false;
 </script>
 
 <article
     id={experienceAnchorId(experience.id)}
+    tabindex="-1"
     class="relative mb-7 scroll-mt-24 last:mb-0"
+    class:marked
     style={paperBandStyle(experience.accent)}
 >
     <h3 class="text-lg font-medium">{experience.company}</h3>
@@ -28,9 +31,13 @@
         border-radius: 2px;
         background-color: rgba(var(--band), 0.55);
         opacity: 0;
+        transition: opacity 200ms;
     }
 
-    article:target::before {
+    /* Driven from a class rather than :target: a fallback jump or deep link
+       sets the hash, and :target would re-show this line under an arrow drawn
+       later. */
+    article.marked::before {
         opacity: 1;
     }
 </style>

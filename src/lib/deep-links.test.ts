@@ -2,7 +2,6 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import {
 	HIGHLIGHT_PARAM,
 	highlightHref,
-	prefersReducedMotion,
 	readHighlightTarget,
 	revealElement,
 	scrollToCenter
@@ -132,26 +131,5 @@ describe('revealElement', () => {
 		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
 		expect(scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({ block: 'center' }));
-	});
-});
-
-describe('prefersReducedMotion', () => {
-	afterEach(() => {
-		vi.unstubAllGlobals();
-	});
-
-	it('reports the reduced-motion preference', () => {
-		vi.stubGlobal(
-			'matchMedia',
-			vi.fn().mockReturnValue({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })
-		);
-
-		expect(prefersReducedMotion()).toBe(true);
-	});
-
-	it('assumes motion is allowed when the browser cannot report it', () => {
-		vi.stubGlobal('matchMedia', undefined);
-
-		expect(prefersReducedMotion()).toBe(false);
 	});
 });

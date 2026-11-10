@@ -1,14 +1,17 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
     import { base } from '$app/paths';
     import BioDescription from '../../components/BioDescription.svelte';
     import InlineAction from '../../components/InlineAction.svelte';
     import Seo from '../../components/Seo.svelte';
     import SocialRow from '../../components/paper/SocialRow.svelte';
+    import WorkArrow from '../../components/paper/WorkArrow.svelte';
     import WorkEntry from '../../components/paper/WorkEntry.svelte';
+    import type { BioWorkId } from '../../components/bio-actions';
     import { ACCENTS } from '$lib/accents';
     import { highlightHref } from '$lib/deep-links';
     import { ETHOS_ITEMS } from '$lib/ethos';
-    import { highlights } from '$lib/experiences';
+    import { experienceAnchorId, highlights } from '$lib/experiences';
     import {
         GOOGLE_FONTS_ORIGIN,
         GOOGLE_FONTS_STATIC_ORIGIN,
@@ -17,6 +20,49 @@
     import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, paperBandStyle } from '$lib/paper';
     import { proseSeparatorAfter } from '$lib/prose';
     import { withSummaryOrigin } from '$lib/summary-origin';
+
+    let workArrow: WorkArrow;
+    let markedId: string | null = null;
+
+    function handleWorkJump(id: BioWorkId, trigger: HTMLElement, event: MouseEvent): void {
+        // A modified click opens the link natively, so it must not draw.
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        const experience = highlights().find((highlight) => highlight.id === id);
+        const entry = experience ? document.getElementById(experienceAnchorId(id)) : null;
+        if (!experience || !entry) return;
+
+        const keyboard = event.detail === 0;
+        const drew =
+            workArrow?.tryDraw({
+                trigger,
+                entry,
+                accent: experience.accent,
+                pointer: keyboard ? null : { x: event.clientX, y: event.clientY },
+                keyboard,
+            }) ?? false;
+
+        if (!drew) {
+            markedId = id;
+            return;
+        }
+
+        // The arrow is the whole response: no scroll, no hash change, and no
+        // accent line beside the entry.
+        event.preventDefault();
+        markedId = null;
+        if (keyboard) entry.focus();
+    }
+
+    onMount(() => {
+        // A deep link still shows the line, now that the marker is state
+        // rather than :target.
+        const hash = window.location.hash.slice(1);
+        const linked = highlights().find(
+            (experience) => experienceAnchorId(experience.id) === hash,
+        );
+        markedId = linked ? linked.id : null;
+    });
 </script>
 
 <Seo
@@ -44,7 +90,7 @@
         style:opacity={PAPER_GRAIN_OPACITY}
     ></div>
 
-    <div class="relative mx-auto max-w-6xl px-6 py-16 md:py-24">
+    <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
             <span class="font-normal text-paper-muted">Hi, my name is</span>
             <InlineAction
@@ -58,7 +104,11 @@
         </h1>
 
         <div class="space-y-4">
-            <BioDescription mode="paper" class="text-[1.1875rem] font-light leading-[1.65]" />
+            <BioDescription
+                mode="paper"
+                class="text-[1.1875rem] font-light leading-[1.65]"
+                onJumpToWork={handleWorkJump}
+            />
         </div>
 
         <section>
@@ -68,7 +118,7 @@
                 Work
             </h2>
             {#each highlights() as experience}
-                <WorkEntry {experience} />
+                <WorkEntry {experience} marked={markedId === experience.id} />
             {/each}
             <a
                 href={withSummaryOrigin(`${base}/experience`)}
@@ -95,4 +145,6 @@
 
         <SocialRow />
     </div>
+
+    <WorkArrow bind:this={workArrow} />
 </div>

@@ -3,7 +3,7 @@
     import InlineAction from './InlineAction.svelte';
     import CityMapModal from './CityMapModal.svelte';
     import OldSiteModal from './OldSiteModal.svelte';
-    import { bioActionsFor } from './bio-actions';
+    import { bioActionsFor, type BioWorkId } from './bio-actions';
     import { yearsOfExperience } from '$lib/identity';
     import { BIO_OLD_SITE_ACTION } from '$lib/bio-links';
     import type { PageTone } from '$lib/paper';
@@ -11,6 +11,9 @@
     let className: string = 'text-sm';
     export { className as class };
     export let mode: PageTone = 'terminal';
+    export let onJumpToWork:
+        | ((id: BioWorkId, trigger: HTMLElement, event: MouseEvent) => void)
+        | null = null;
 
     let openModal: { kind: 'map' | 'oldSite'; openedByKeyboard: boolean } | null = null;
 
@@ -29,7 +32,11 @@
     }
 
     $: yearsInExperience = yearsOfExperience();
-    $: actions = bioActionsFor(mode, { openMap, openOldSite });
+    $: actions = bioActionsFor(mode, {
+        openMap,
+        openOldSite,
+        jumpToWork: onJumpToWork ?? undefined,
+    });
 </script>
 
 <p class={className}>

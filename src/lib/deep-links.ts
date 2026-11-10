@@ -1,9 +1,9 @@
 import { base } from '$app/paths';
 
+import { prefersReducedMotion } from './motion-preference';
+
 /** Query parameter that names the element a route should reveal. */
 export const HIGHLIGHT_PARAM = 'highlight';
-
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 export function highlightHref(path: string, targetId: string): string {
 	return `${base}${path}?${HIGHLIGHT_PARAM}=${encodeURIComponent(targetId)}`;
@@ -20,14 +20,6 @@ export function readHighlightTarget(url: URL): string | null {
 
 	const target = url.searchParams.get(HIGHLIGHT_PARAM)?.trim();
 	return target ? target : null;
-}
-
-export function prefersReducedMotion(): boolean {
-	return (
-		typeof window !== 'undefined' &&
-		typeof window.matchMedia === 'function' &&
-		window.matchMedia(REDUCED_MOTION_QUERY).matches
-	);
 }
 
 /**
