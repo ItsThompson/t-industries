@@ -49,7 +49,7 @@
         style:background-image={PAPER_GRAIN_URI}
     ></div>
 
-    <div class="relative mx-auto max-w-[38rem] px-6 py-16 md:py-24">
+    <div class="relative mx-auto max-w-6xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
             <span class="font-normal text-paper-muted">Hi, my name is</span>
             <InlineAction
