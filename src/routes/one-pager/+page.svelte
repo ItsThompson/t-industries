@@ -10,14 +10,7 @@
     import { ETHOS_ITEMS } from '$lib/ethos';
     import { highlights } from '$lib/experiences';
     import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, paperBandStyle } from '$lib/paper';
-
-    /** Adds the comma and the "and" that turn the three titles into one sentence. */
-    function separatorAfter(index: number): string {
-        const last = ETHOS_ITEMS.length - 1;
-
-        if (index === last) return '';
-        return index === last - 1 ? ', and ' : ', ';
-    }
+    import { proseSeparatorAfter } from '$lib/prose';
 </script>
 
 <Seo
@@ -32,8 +25,7 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet"
     />
-    <!-- Painted before hydration, so a prerendered page never flashes the black site.
-         The color is the paper palette value; the page test holds the two together. -->
+    <!-- Painted before hydration, so a prerendered page never flashes the black site. --> 
     <style>
         body {
             background-color: #F4EFE2;
@@ -94,7 +86,7 @@
                         href={highlightHref('/ethos', item.id)}
                         class={PAPER_BAND_CLASSES}
                         style={paperBandStyle(ACCENTS.primary)}>{item.title.toLowerCase()}</a
-                    >{separatorAfter(index)}{/each}.
+                    >{proseSeparatorAfter(index, ETHOS_ITEMS.length)}{/each}.
             </p>
         </section>
 

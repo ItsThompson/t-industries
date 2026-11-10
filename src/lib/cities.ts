@@ -1,19 +1,16 @@
+import { joinAsProse } from "./prose";
+
 export type Continent = "Asia" | "Europe" | "North America";
 
 export interface City {
-  /** Stable slug used for keys and the active-marker state. */
   id: string;
   name: string;
-  /** Country or territory the place sits in, for the map legend. */
   region: string;
   continent: Continent;
   latitude: number;
   longitude: number;
 }
 
-/**
- * The places behind "8 different cities across 3 continents" in the bio.
- */
 export const CITIES: City[] = [
   {
     id: "hong-kong",
@@ -88,7 +85,6 @@ export interface ContinentGroup {
   cities: City[];
 }
 
-/** Groups the places by continent, keeping the first-seen continent order. */
 export function citiesByContinent(cities: City[] = CITIES): ContinentGroup[] {
   const groups = new Map<Continent, City[]>();
 
@@ -108,7 +104,6 @@ export function continentCount(cities: City[] = CITIES): number {
   return new Set(cities.map((city) => city.continent)).size;
 }
 
-/** One sentence naming every place, for a tooltip. */
 export function citiesNote(): string {
-  return CITIES.map((city) => city.name).join(", ") + ".";
+  return joinAsProse(CITIES.map((city) => city.name)) + ".";
 }
