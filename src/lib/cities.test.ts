@@ -80,20 +80,11 @@ describe('citiesNote', () => {
 		CITIES.forEach((city) => expect(note).toContain(city.name));
 	});
 
-	it('names all 3 continents', () => {
-		const note = citiesNote();
-
-		citiesByContinent().forEach((group) => expect(note).toContain(group.continent));
-		expect(note).toContain('Asia');
-		expect(note).toContain('Europe');
-		expect(note).toContain('North America');
+	it('keeps the places in the order the list holds them', () => {
+		expect(citiesNote()).toContain('Hong Kong, Taipei, Chengdu, Shanghai, Livingston');
 	});
 
-	it('groups the places under the continent they belong to', () => {
-		expect(citiesNote()).toContain('Europe: Bath, Swansea.');
-	});
-
-	it('reads as sentences, so the note needs no separate punctuation', () => {
+	it('ends with a full stop, so the note needs no separate punctuation', () => {
 		expect(citiesNote()).not.toMatch(/\s{2,}/);
 		expect(citiesNote().endsWith('.')).toBe(true);
 	});
