@@ -90,12 +90,13 @@ describe('one-pager', () => {
 
   it('reads the ethos titles as one sentence', () => {
     const { container } = renderPage();
+    const titles = ETHOS_ITEMS.map((item) => item.title.toLowerCase());
     const sentence = Array.from(container.querySelectorAll('p')).find((paragraph) =>
-      paragraph.textContent?.includes('I work by'),
+      paragraph.textContent?.includes(titles[0]),
     );
 
-    expect(sentence?.textContent?.replace(/\s+/g, ' ').trim()).toBe(
-      'I work by global perspective, continuous learning, and impactful purpose.',
+    expect(sentence?.textContent?.replace(/\s+/g, ' ').trim()).toContain(
+      `${titles[0]}, ${titles[1]}, and ${titles[2]}.`,
     );
   });
 

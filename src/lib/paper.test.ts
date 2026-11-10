@@ -1,12 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import {
+	contrastRatio,
 	hexToRgbTriplet,
 	PAPER_BAND_ALPHA,
 	PAPER_BAND_ALPHA_HOVER,
 	PAPER_BAND_CLASSES,
+	PAPER_BAND_MIN_CONTRAST,
+	paperBandColor,
 	PAPER_GRAIN_URI,
 	paperBandStyle
 } from './paper';
+import { ACCENTS } from './accents';
+import { THEME_COLORS } from './theme';
 
 describe('hexToRgbTriplet', () => {
 	it('splits a six digit hex color into its channels', () => {
@@ -35,13 +40,66 @@ describe('hexToRgbTriplet', () => {
 	});
 });
 
+describe('contrastRatio', () => {
+	it('measures black against white at the WCAG maximum', () => {
+		expect(contrastRatio('#000000', '#FFFFFF')).toBeCloseTo(21, 1);
+	});
+
+	it('gives the same answer whichever order the colors arrive in', () => {
+		expect(contrastRatio('#FF9900', '#F4EFE2')).toBeCloseTo(
+			contrastRatio('#F4EFE2', '#FF9900'),
+			5
+		);
+	});
+
+	it('rejects a malformed color rather than guessing', () => {
+		expect(() => contrastRatio('#FFF', '#FFFFFF')).toThrow();
+	});
+});
+
+describe('paperBandColor', () => {
+	const PAPER = THEME_COLORS.paper.base;
+
+	it('keeps an accent that already stands off the paper', () => {
+		expect(paperBandColor(ACCENTS.amazon)).toBe(ACCENTS.amazon);
+		expect(paperBandColor(ACCENTS.msd)).toBe(ACCENTS.msd);
+		expect(paperBandColor(ACCENTS.primary)).toBe(ACCENTS.primary);
+	});
+
+	it('darkens the accent that would vanish into the paper', () => {
+		expect(paperBandColor(ACCENTS.secondary100)).not.toBe(ACCENTS.secondary100);
+	});
+
+	it('carries every band past the visibility floor', () => {
+		Object.values(ACCENTS).forEach((accent) => {
+			expect(contrastRatio(paperBandColor(accent), PAPER)).toBeGreaterThanOrEqual(
+				PAPER_BAND_MIN_CONTRAST
+			);
+		});
+	});
+
+	it('moves the accent toward ink, keeping the hue it started with', () => {
+		const darkened = paperBandColor(ACCENTS.secondary100);
+
+		expect(contrastRatio(darkened, PAPER)).toBeGreaterThan(
+			contrastRatio(ACCENTS.secondary100, PAPER)
+		);
+	});
+});
+
 describe('paperBandStyle', () => {
 	it('carries the band color and both opacities', () => {
-		const style = paperBandStyle('#FF9900');
+		const style = paperBandStyle(ACCENTS.amazon);
 
 		expect(style).toContain('--band:255,153,0');
 		expect(style).toContain(`--band-alpha:${PAPER_BAND_ALPHA}`);
 		expect(style).toContain(`--band-alpha-hover:${PAPER_BAND_ALPHA_HOVER}`);
+	});
+
+	it('passes the darkened color, not the raw accent, to the band', () => {
+		expect(paperBandStyle(ACCENTS.secondary100)).not.toContain(
+			hexToRgbTriplet(ACCENTS.secondary100)
+		);
 	});
 
 	it('does not paint text with the raw accent, which fails on paper', () => {
