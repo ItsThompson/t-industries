@@ -1,16 +1,21 @@
+import { base } from '$app/paths';
+
 export interface SocialLink {
 	href: string;
 	name: string;
-	/** Which mark to draw beside the link on the paper one-pager. */
-	logo: 'github' | 'linkedin';
+	markSrc: string;
 }
 
 export const BIO_NAME = 'Thompson Tong';
 export const BIO_TITLE = 'Software Engineer + Student';
 
 export const SOCIAL_LINKS: SocialLink[] = [
-	{ href: 'https://github.com/ItsThompson', name: 'GitHub', logo: 'github' },
-	{ href: 'https://www.linkedin.com/in/thompsontong', name: 'LinkedIn', logo: 'linkedin' }
+	{ href: 'https://github.com/ItsThompson', name: 'GitHub', markSrc: `${base}/github.svg` },
+	{
+		href: 'https://www.linkedin.com/in/thompsontong',
+		name: 'LinkedIn',
+		markSrc: `${base}/linkedin.svg`
+	}
 ];
 
 export const RND_API_ENDPOINT =

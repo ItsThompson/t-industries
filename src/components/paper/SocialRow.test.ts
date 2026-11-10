@@ -28,7 +28,7 @@ describe('SocialRow', () => {
     links(container).forEach((link, index) => {
       const mark = link.querySelector('img');
       expect(mark).toBeTruthy();
-      expect(mark?.getAttribute('src')).toContain(`/${SOCIAL_LINKS[index].logo}.svg`);
+      expect(mark?.getAttribute('src')).toBe(SOCIAL_LINKS[index].markSrc);
       // The anchor names the profile, so the image must stay out of the tree.
       expect(mark?.getAttribute('alt')).toBe('');
     });
