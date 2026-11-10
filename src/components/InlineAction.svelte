@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
     import type { NoteScreenshot } from '$lib/bio-links';
+    import { PAPER_BAND_CLASSES, paperBandStyle } from '$lib/paper';
 
     export let href: string | undefined = undefined;
     export let target: string;
@@ -10,6 +11,8 @@
     export let hint: string = 'CLICK TO OPEN';
     export let onActivate: ((event: MouseEvent) => void) | null = null;
     export let screenshot: NoteScreenshot | null = null;
+    /** `terminal` is the black site; `paper` is the highlighter page. */
+    export let tone: 'terminal' | 'paper' = 'terminal';
 
     const TOOLTIP_GAP = 8;
     const VIEWPORT_MARGIN = 8;
@@ -28,6 +31,36 @@
     $: elementAttributes = isLink ? { href } : { tabindex: 0 };
     $: role = isLink ? 'link' : isActivatable ? 'button' : undefined;
     $: tooltipId = `bio-note-${target}`;
+    $: isPaper = tone === 'paper';
+
+    const FOCUS_CLASSES =
+        'focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2';
+
+    // The paper band carries the accent at low alpha behind ink glyphs. Text in
+    // the raw accent is 1.3:1 to 3.3:1 on paper, so it never carries a glyph.
+    $: triggerClasses = isPaper
+        ? `${PAPER_BAND_CLASSES} ${isActivatable ? '' : 'cursor-help'} ${FOCUS_CLASSES} focus-visible:outline-paper-ink`
+        : `border-b border-dotted hover:border-solid transition-colors duration-150 ${FOCUS_CLASSES}`;
+    $: triggerStyle = isPaper
+        ? paperBandStyle(accent)
+        : `color:${accent};border-color:${accent};outline-color:${accent}`;
+
+    $: tooltipClasses = `fixed z-50 block w-64 max-w-[calc(100vw-1rem)] text-left pointer-events-none ${
+        isPaper
+            ? 'bg-paper-raised border border-paper-ink/15 rounded-[5px] p-3 font-outfit shadow-[0_10px_28px_rgba(28,25,23,0.13)]'
+            : 'bg-black border p-2'
+    } ${visible ? 'visible' : 'invisible'}`;
+    $: tooltipStyle = isPaper ? undefined : `border-color:${accent}`;
+    $: labelClasses = isPaper
+        ? 'block mb-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-paper-ink'
+        : 'label-xs block mb-1';
+    $: labelStyle = isPaper ? undefined : `color:${accent}`;
+    $: noteClasses = isPaper
+        ? 'block text-[13px] font-light leading-normal text-paper-ink'
+        : 'block text-xs font-mono text-secondary-100 leading-relaxed';
+    $: hintClasses = isPaper
+        ? 'block mt-1.5 text-[9px] uppercase tracking-[0.1em] text-paper-muted'
+        : 'label-xs block mt-1 text-secondary-200';
 
     async function show(): Promise<void> {
         visible = true;
@@ -163,10 +196,8 @@
     {...elementAttributes}
     {role}
     aria-describedby={tooltipId}
-    class="border-b border-dotted hover:border-solid transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2"
-    style:color={accent}
-    style:border-color={accent}
-    style:outline-color={accent}
+    class={triggerClasses}
+    style={triggerStyle}
     on:click={handleClick}
     on:mouseenter={handlePointerEnter}
     on:mousemove={handlePointerMove}
@@ -178,14 +209,12 @@
     bind:this={tooltipElement}
     id={tooltipId}
     role="tooltip"
-    class="fixed z-50 block w-64 max-w-[calc(100vw-1rem)] border bg-black p-2 text-left pointer-events-none {visible
-        ? 'visible'
-        : 'invisible'}"
-    style:border-color={accent}
+    class={tooltipClasses}
+    style={tooltipStyle}
     style:left="{left}px"
     style:top="{top}px"
 >
-    <span class="label-xs block mb-1" style:color={accent}>{label}</span>
+    <span class={labelClasses} style={labelStyle}>{label}</span>
     <!-- Rendered only while open so the image is never fetched on page load. -->
     {#if screenshot && visible}
         <img
@@ -198,7 +227,9 @@
         />
     {/if}
     {#if note}
-        <span class="block text-xs font-mono text-secondary-100 leading-relaxed">{note}</span>
+        <span class={noteClasses}>{note}</span>
     {/if}
-    <span class="label-xs block mt-1 text-secondary-200">{hint}{#if isActivatable} &#8629;{/if}</span>
+    {#if hint}
+        <span class={hintClasses}>{hint}{#if isActivatable} &#8629;{/if}</span>
+    {/if}
 </span>
