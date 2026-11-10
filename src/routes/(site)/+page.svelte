@@ -53,7 +53,7 @@
                     <a
                         href="{base}/one-pager"
                         aria-label="Alter ego: open the one-pager"
-                        class="label-xs text-secondary-200 transition-colors duration-150 hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                        class="label-xs text-primary transition-colors duration-150 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         >ALTER EGO &#8594;</a
                     >
                 </div>
@@ -73,7 +73,7 @@
             </div>
         </Compartment>
 
-        <Compartment title="CURRENT R&D OPS">
+        <Compartment title="CURRENT INTEREST">
             <RndList />
         </Compartment>
     </div>
