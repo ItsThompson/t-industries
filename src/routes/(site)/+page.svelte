@@ -49,7 +49,6 @@
                 <BioDescription class="text-sm font-mono text-secondary-100 leading-relaxed" />
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pt-2">
                     <p class="label-xs text-secondary-200">AGE: <Age /> YRS</p>
-                    <!-- The paper build has no nav of its own, so it hangs off this line. -->
                     <a
                         href="{base}/one-pager"
                         aria-label="Alter ego: open the one-pager"
@@ -73,7 +72,7 @@
             </div>
         </Compartment>
 
-        <Compartment title="CURRENT INTEREST">
+        <Compartment title="CURRENT INTERESTS">
             <RndList />
         </Compartment>
     </div>
