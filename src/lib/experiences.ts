@@ -1,22 +1,17 @@
 import { ACCENTS } from "./accents";
 
 export interface Experience {
-  /** Stable slug used for anchors and deep links. */
   id: string;
   company: string;
   role: string;
   startDate: string;
   endDate: string;
   description: string;
-  /** Brand color used when a link from the bio reveals this entry. */
   accent: string;
-  /** Set to list this entry in the one-pager work section. */
   highlight: boolean;
-  /** One line for the one-pager. Required when highlight is true. */
   highlightSummary?: string;
 }
 
-/** An entry the one-pager can list, carrying the line it renders. */
 export type HighlightedExperience = Experience & { highlightSummary: string };
 
 export const experiences: Experience[] = [
@@ -83,22 +78,30 @@ export const experiences: Experience[] = [
   },
 ];
 
-/** The entries the one-pager lists, in the order the timeline holds them. */
 export function highlights(): HighlightedExperience[] {
-  return experiences
-    .filter((experience) => experience.highlight)
-    .map((experience) => {
+  return experiences.reduce<HighlightedExperience[]>(
+    (highlighted, experience) => {
+      if (!experience.highlight) {
+        return highlighted;
+      }
+
       if (!experience.highlightSummary) {
         throw new Error(
           `highlighted experience "${experience.id}" has no highlightSummary to render`,
         );
       }
 
-      return { ...experience, highlightSummary: experience.highlightSummary };
-    });
+      highlighted.push({
+        ...experience,
+        highlightSummary: experience.highlightSummary,
+      });
+
+      return highlighted;
+    },
+    [],
+  );
 }
 
-/** DOM id of one experience entry, shared by the section and its deep links. */
 export function experienceAnchorId(id: string): string {
   return `experience-${id}`;
 }
