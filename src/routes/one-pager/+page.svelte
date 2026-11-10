@@ -3,14 +3,13 @@
     import BioDescription from '../../components/BioDescription.svelte';
     import InlineAction from '../../components/InlineAction.svelte';
     import Seo from '../../components/Seo.svelte';
-    import BandLink from '../../components/paper/BandLink.svelte';
     import SocialRow from '../../components/paper/SocialRow.svelte';
     import WorkEntry from '../../components/paper/WorkEntry.svelte';
     import { ACCENTS } from '$lib/accents';
     import { highlightHref } from '$lib/deep-links';
     import { ETHOS_ITEMS } from '$lib/ethos';
     import { highlights } from '$lib/experiences';
-    import { PAPER_GRAIN_OPACITY } from '$lib/paper';
+    import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, paperBandStyle } from '$lib/paper';
 
     /** Adds the comma and the "and" that turn the three titles into one sentence. */
     function separatorAfter(index: number): string {
@@ -91,9 +90,10 @@
             </h2>
             <p class="text-[1.1875rem] font-light leading-[1.65]">
                 My objective function optimizes for
-                {#each ETHOS_ITEMS as item, index}<BandLink
+                {#each ETHOS_ITEMS as item, index}<a
                         href={highlightHref('/ethos', item.id)}
-                        accent={ACCENTS.primary}>{item.title.toLowerCase()}</BandLink
+                        class={PAPER_BAND_CLASSES}
+                        style={paperBandStyle(ACCENTS.primary)}>{item.title.toLowerCase()}</a
                     >{separatorAfter(index)}{/each}.
             </p>
         </section>

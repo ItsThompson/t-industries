@@ -11,7 +11,6 @@
     export let hint: string = 'CLICK TO OPEN';
     export let onActivate: ((event: MouseEvent) => void) | null = null;
     export let screenshot: NoteScreenshot | null = null;
-    /** `terminal` is the black site; `paper` is the highlighter page. */
     export let tone: PageTone = 'terminal';
 
     const TOOLTIP_GAP = 8;

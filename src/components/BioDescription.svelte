@@ -11,7 +11,6 @@
 
     let className: string = 'text-sm';
     export { className as class };
-    /** `paper` keeps the reader on the page and drops the modals. */
     export let mode: PageTone = 'terminal';
 
     const JUMP_HINT = 'JUMP TO HIGHLIGHT';
@@ -34,8 +33,7 @@
 
     $: yearsInExperience = yearsOfExperience();
     $: isPaper = mode === 'paper';
-    // The paper page has no modal to open, so the phrases that opened one there
-    // reveal their note only, and the roles jump to the entry below.
+    // Paper page doesn't have a modal.
     $: yearsAction = isPaper ? { hint: '' } : { onActivate: openOldSite };
     $: placesAction = isPaper
         ? { note: citiesNote(), hint: '' }

@@ -2,10 +2,11 @@ import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
 import OnePager from './+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
+import { ACCENTS } from '$lib/accents';
 import { BIO_NAME } from '$lib/bio';
 import { ETHOS_ITEMS } from '$lib/ethos';
 import { highlights } from '$lib/experiences';
-import { PAPER_GRAIN_OPACITY } from '$lib/paper';
+import { PAPER_GRAIN_OPACITY, hexToRgbTriplet, paperBandColor } from '$lib/paper';
 import { THEME_COLORS } from '$lib/theme';
 
 function renderPage(): ReturnType<typeof render> {
@@ -17,6 +18,14 @@ function workHeadings(container: HTMLElement): string[] {
   return Array.from(container.querySelectorAll('article h3')).map(
     (heading) => heading.textContent ?? '',
   );
+}
+
+function ethosLinks(container: HTMLElement): HTMLAnchorElement[] {
+  const ethosSection = Array.from(container.querySelectorAll('section')).find((section) =>
+    section.textContent?.includes('Ethos'),
+  );
+
+  return Array.from(ethosSection?.querySelectorAll('a[href*="?highlight="]') ?? []);
 }
 
 describe('one-pager', () => {
@@ -74,18 +83,35 @@ describe('one-pager', () => {
 
   it('links each ethos title to its row on the ethos page', () => {
     const { container } = renderPage();
-    const ethosSection = Array.from(container.querySelectorAll('section')).find((section) =>
-      section.textContent?.includes('Ethos'),
-    );
-    const links = Array.from(
-      ethosSection?.querySelectorAll('a[href*="?highlight="]') ?? [],
-    );
+    const links = ethosLinks(container);
 
     expect(links).toHaveLength(ETHOS_ITEMS.length);
     ETHOS_ITEMS.forEach((item) => {
       expect(links.some((link) => link.getAttribute('href') === `/ethos?highlight=${item.id}`)).toBe(
         true,
       );
+    });
+  });
+
+  it('paints every ethos link as a band, matching the other paper highlights', () => {
+    const { container } = renderPage();
+
+    ethosLinks(container).forEach((link) => {
+      expect(link.className).toContain('rgba(var(--band),var(--band-alpha))');
+      expect(link.className).toContain('[box-decoration-break:clone]');
+      expect(link.className).toContain('focus-visible:outline-paper-ink');
+      expect(link.style.getPropertyValue('--band')).toBe(
+        hexToRgbTriplet(paperBandColor(ACCENTS.primary)),
+      );
+    });
+  });
+
+  it('reveals no note from an ethos link, so the browser owns the whole interaction', () => {
+    const { container } = renderPage();
+
+    ethosLinks(container).forEach((link) => {
+      expect(link.hasAttribute('aria-describedby')).toBe(false);
+      expect(link.querySelector('[role="tooltip"]')).toBeNull();
     });
   });
 

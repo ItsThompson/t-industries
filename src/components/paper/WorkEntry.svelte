@@ -18,10 +18,6 @@
 </article>
 
 <style>
-    /* A jump that lands on a page short enough to fit on one screen scrolls
-       nothing, so the entry the hash names carries a rule beside it. The rule
-       stays while the hash points here, which is what tells the reader where
-       the link took them. */
     article::before {
         content: '';
         position: absolute;
