@@ -14,7 +14,6 @@
     <link rel="stylesheet" href={OUTFIT_STYLESHEET_HREF} />
 </svelte:head>
 
-<!-- Deliberately paper, down to the tape: the point is that it does not belong here. -->
 <div
     class="relative w-full bg-paper-base px-4 pb-4 pt-5 font-outfit text-paper-ink shadow-[0_20px_40px_-12px_rgba(0,0,0,0.9)] md:-rotate-1"
 >
