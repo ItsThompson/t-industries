@@ -19,7 +19,9 @@
 
 <style>
     /* A jump that lands on a page short enough to fit on one screen scrolls
-       nothing, so the entry marks itself as the destination. */
+       nothing, so the entry the hash names carries a rule beside it. The rule
+       stays while the hash points here, which is what tells the reader where
+       the link took them. */
     article::before {
         content: '';
         position: absolute;
@@ -33,22 +35,6 @@
     }
 
     article:target::before {
-        animation: land 1.4s ease-out;
-    }
-
-    @keyframes land {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        article:target::before {
-            animation: none;
-            opacity: 1;
-        }
+        opacity: 1;
     }
 </style>

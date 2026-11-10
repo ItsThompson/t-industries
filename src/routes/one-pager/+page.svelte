@@ -89,7 +89,7 @@
                 Ethos
             </h2>
             <p class="text-[1.1875rem] font-light leading-[1.65]">
-                I work by
+                My objective function optimizes for
                 {#each ETHOS_ITEMS as item, index}<BandLink
                         href={highlightHref('/ethos', item.id)}
                         accent={ACCENTS.primary}>{item.title.toLowerCase()}</BandLink
