@@ -3,8 +3,7 @@
         trigger: HTMLElement;
         entry: HTMLElement;
         accent: string;
-        /** Pointer position in client coordinates, or null for a keyboard activation. */
-        pointer: { x: number; y: number } | null;
+        pointerInClientCoordinates: { x: number; y: number } | null;
         keyboard: boolean;
     }
 </script>
@@ -34,6 +33,12 @@
 
     const STROKE_WIDTH_PX = 2.25;
     const HEAD_FADE_SHARE = 0.12;
+    // Halfway through the flight the easing switches from speeding up to
+    // settling. The coefficient 4 is what brings the first half from standstill
+    // to half progress exactly at the midpoint; the second half is the same
+    // curve mirrored, so velocity stays continuous through the join.
+    const EASE_MIDPOINT = 0.5;
+    const EASE_IN_STEEPNESS = 4;
 
     export let minTurnRadius = DEFAULT_MIN_TURN_RADIUS;
     export let random: () => number = Math.random;
@@ -64,12 +69,6 @@
     let frameHandle: number | null = null;
     let dismissArmTimer: ReturnType<typeof setTimeout> | null = null;
 
-    /**
-     * Draws the arrow for one activation. Returns false without drawing when
-     * the viewport is narrow, the reader prefers reduced motion, or no honest
-     * path fits, so the caller can fall back to the native jump before the
-     * event finishes dispatching.
-     */
     export function tryDraw(request: ArrowRequest): boolean {
         if (window.innerWidth < WIDE_VIEWPORT_MIN_WIDTH_PX) return false;
         if (prefersReducedMotion()) return false;
@@ -77,7 +76,7 @@
 
         const layer = layerFrame();
         const built = buildArrowPath({
-            from: exitPointFor(request.trigger, request.pointer, layer),
+            from: exitPointFor(request.trigger, request.pointerInClientCoordinates, layer),
             to: entryTipFor(request.entry, layer),
             minTurnRadius,
             leftEdge: ARROW_EDGE_MARGIN_PX - layer.originX,
@@ -141,9 +140,6 @@
     }
 
     function armDismissal(): void {
-        // The click that started the arrow is still bubbling up to the
-        // document, so the listener goes on one task later or it would dismiss
-        // the arrow immediately.
         dismissArmTimer = setTimeout(attachDismissal, 0);
     }
 
@@ -155,8 +151,6 @@
     }
 
     function detachDismissal(): void {
-        // onDestroy also runs during server rendering, where the document
-        // teardown has nothing to remove from.
         if (typeof document === 'undefined') return;
         document.removeEventListener('click', dismiss);
         document.removeEventListener('keydown', dismissFromKey);
@@ -165,8 +159,6 @@
 
     function dismissFromKey(event: KeyboardEvent): void {
         if (event.key !== 'Escape') return;
-        // Escape hands focus back to the phrase when the activation came from
-        // the keyboard, matching the modal behaviour on the page.
         if (active?.keyboard) active.trigger.focus();
         dismiss();
     }
@@ -209,10 +201,11 @@
     }
 
     function easeInOutCubic(time: number): number {
-        return time < 0.5 ? 4 * time * time * time : 1 - Math.pow(-2 * time + 2, 3) / 2;
+        return time < EASE_MIDPOINT
+            ? EASE_IN_STEEPNESS * time ** 3
+            : 1 - EASE_IN_STEEPNESS * (1 - time) ** 3;
     }
 
-    /** The SVG's box in document coordinates, so one user unit stays one pixel. */
     function layerFrame(): { originX: number; originY: number; width: number } {
         const rect = svgElement.getBoundingClientRect();
         return {
@@ -222,24 +215,22 @@
         };
     }
 
-    /**
-     * A wrapped phrase reports one rect per line, and the union of them spans
-     * the whole paragraph, so the exit point comes from the line under the
-     * pointer, or the first line for a keyboard activation.
-     */
     function exitPointFor(
         trigger: HTMLElement,
         pointer: { x: number; y: number } | null,
         layer: { originX: number; originY: number },
     ): Point {
-        const rects = Array.from(trigger.getClientRects())
-            .filter((rect) => rect.width > 0 || rect.height > 0)
-            .map((rect) => ({
-                left: rect.left + window.scrollX,
-                top: rect.top + window.scrollY,
-                width: rect.width,
-                height: rect.height,
-            }));
+        const rects = Array.from(trigger.getClientRects()).reduce<LineRect[]>((kept, rect) => {
+            if (rect.width > 0 || rect.height > 0) {
+                kept.push({
+                    left: rect.left + window.scrollX,
+                    top: rect.top + window.scrollY,
+                    width: rect.width,
+                    height: rect.height,
+                });
+            }
+            return kept;
+        }, []);
 
         const chosen = rects.length === 0 ? unionRectFor(trigger) : pickLineRect(rects, pointer);
 
@@ -300,8 +291,6 @@
     onDestroy(clearArrow);
 </script>
 
-<!-- No viewBox, so one user unit is one pixel, and the path is anchored in
-     document coordinates: it scrolls with the page without bookkeeping. -->
 <svg
     bind:this={svgElement}
     aria-hidden="true"
