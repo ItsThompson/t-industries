@@ -34,9 +34,6 @@
         transition: opacity 200ms;
     }
 
-    /* Driven from a class rather than :target: a fallback jump or deep link
-       sets the hash, and :target would re-show this line under an arrow drawn
-       later. */
     article.marked::before {
         opacity: 1;
     }

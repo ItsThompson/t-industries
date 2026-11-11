@@ -26,7 +26,6 @@ export interface BioPhraseAction {
 export interface BioPhraseHandlers {
   openMap: (event: MouseEvent) => void;
   openOldSite: (event: MouseEvent) => void;
-  /* Optional because only the one-pager can jump to work entries; without it a paper work phrase stays a plain anchor. */
   jumpToWork?: (id: BioWorkId, trigger: HTMLElement, event: MouseEvent) => void;
 }
 
@@ -60,8 +59,6 @@ const ACTIONS_BY_TONE: Record<
     work: (id) => ({ ...BIO_LINKS[id], hint: OPEN_HINT }),
   }),
 
-  // The summary is a single page with no modals, so each phrase either jumps
-  // to a section further down or links back into the terminal.
   paper: ({ jumpToWork }) => ({
     years: { ...oldSitePhrase, hint: NO_HINT },
     places: { ...BIO_PLACES_ACTION, note: citiesNote(), hint: NO_HINT },
@@ -70,9 +67,6 @@ const ACTIONS_BY_TONE: Record<
       href: withSummaryOrigin(BIO_LINKS.continuousLearning.href),
       hint: OPEN_HINT,
     },
-    // The href keeps the anchor real, so right-click, middle-click, and the
-    // no-JS jump still work; onActivate calls preventDefault only when the
-    // arrow actually takes over.
     work: (id) => ({
       ...BIO_LINKS[id],
       href: `#${experienceAnchorId(id)}`,

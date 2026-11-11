@@ -33,10 +33,6 @@
 
     const STROKE_WIDTH_PX = 2.25;
     const HEAD_FADE_SHARE = 0.12;
-    // Halfway through the flight the easing switches from speeding up to
-    // settling. The coefficient 4 is what brings the first half from standstill
-    // to half progress exactly at the midpoint; the second half is the same
-    // curve mirrored, so velocity stays continuous through the join.
     const EASE_MIDPOINT = 0.5;
     const EASE_IN_STEEPNESS = 4;
 

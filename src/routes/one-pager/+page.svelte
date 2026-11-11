@@ -25,7 +25,6 @@
     let markedId: string | null = null;
 
     function handleWorkJump(id: BioWorkId, trigger: HTMLElement, event: MouseEvent): void {
-        // A modified click opens the link natively, so it must not draw.
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 
         const experience = highlights().find((highlight) => highlight.id === id);
@@ -38,7 +37,7 @@
                 trigger,
                 entry,
                 accent: experience.accent,
-                pointer: keyboard ? null : { x: event.clientX, y: event.clientY },
+                pointerInClientCoordinates: keyboard ? null : { x: event.clientX, y: event.clientY },
                 keyboard,
             }) ?? false;
 
@@ -47,16 +46,12 @@
             return;
         }
 
-        // The arrow is the whole response: no scroll, no hash change, and no
-        // accent line beside the entry.
         event.preventDefault();
         markedId = null;
         if (keyboard) entry.focus();
     }
 
     onMount(() => {
-        // A deep link still shows the line, now that the marker is state
-        // rather than :target.
         const hash = window.location.hash.slice(1);
         const linked = highlights().find(
             (experience) => experienceAnchorId(experience.id) === hash,

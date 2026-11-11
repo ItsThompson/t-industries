@@ -25,7 +25,6 @@
     let frameRequested = false;
     let pointer: { x: number; y: number } | null = null;
 
-    /** The trigger is an anchor when it has a destination, a span when it acts in place. */
     interface Trigger {
         element: 'a' | 'span';
         attributes: { href: string } | { tabindex: number };
@@ -79,8 +78,6 @@
     }
 
     function handleClick(event: MouseEvent): void {
-        // The trigger is an explicit argument because a keyboard activation
-        // synthesises a click event, which has no currentTarget to read.
         onActivate?.(event, anchorElement);
     }
 
@@ -166,8 +163,6 @@
     }
 
     onMount(() => {
-        // Focusing a link can scroll the page, so the note follows the anchor
-        // instead of closing on every scroll event.
         window.addEventListener('scroll', schedulePosition, true);
         window.addEventListener('resize', schedulePosition);
 
