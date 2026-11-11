@@ -12,14 +12,18 @@
     import { highlightHref } from '$lib/deep-links';
     import { ETHOS_ITEMS } from '$lib/ethos';
     import { experienceAnchorId, highlights } from '$lib/experiences';
+    import { projectPageUrl } from '$lib/github';
     import {
         GOOGLE_FONTS_ORIGIN,
         GOOGLE_FONTS_STATIC_ORIGIN,
         OUTFIT_STYLESHEET_HREF
     } from '$lib/fonts';
-    import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, paperBandStyle } from '$lib/paper';
+    import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, PAPER_PROSE_CLASSES, paperBandStyle } from '$lib/paper';
     import { proseSeparatorAfter } from '$lib/prose';
     import { withSummaryOrigin } from '$lib/summary-origin';
+    import type { PageData } from './$types';
+
+    export let data: PageData;
 
     let workArrow: WorkArrow;
     let markedId: string | null = null;
@@ -101,9 +105,24 @@
         <div class="space-y-4">
             <BioDescription
                 mode="paper"
-                class="text-[1.1875rem] font-light leading-[1.65]"
+                class={PAPER_PROSE_CLASSES}
                 onJumpToWork={handleWorkJump}
             />
+            {#if data.projects.length > 0}
+                <p class={PAPER_PROSE_CLASSES}>
+                    I built
+                    {#each data.projects as project, index}<a
+                            href={projectPageUrl(project)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="underline decoration-primary/55 decoration-2 underline-offset-[3px] transition-colors duration-150 hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-paper-ink"
+                            >{project.name}<span
+                                aria-hidden="true"
+                                class="ml-[0.12em] text-[0.75em] text-paper-muted">&#8599;</span
+                            ></a
+                        >{proseSeparatorAfter(index, data.projects.length)}{/each}.
+                </p>
+            {/if}
         </div>
 
         <section>
@@ -128,7 +147,7 @@
             >
                 Ethos
             </h2>
-            <p class="text-[1.1875rem] font-light leading-[1.65]">
+            <p class={PAPER_PROSE_CLASSES}>
                 My objective function optimizes for
                 {#each ETHOS_ITEMS as item, index}<a
                         href={withSummaryOrigin(highlightHref('/ethos', item.id))}

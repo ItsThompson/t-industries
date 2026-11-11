@@ -90,3 +90,7 @@ export async function fetchPinnedRepos(
 		primaryLanguage: node.primaryLanguage
 	}));
 }
+
+export function projectPageUrl(project: PinnedProject): string {
+	return project.homepageUrl || project.githubUrl;
+}

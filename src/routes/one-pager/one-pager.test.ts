@@ -6,12 +6,13 @@ import { ACCENTS } from '$lib/accents';
 import { BIO_NAME } from '$lib/bio';
 import { ETHOS_ITEMS } from '$lib/ethos';
 import { highlights } from '$lib/experiences';
+import type { PinnedProject } from '$lib/github';
 import { PAPER_GRAIN_OPACITY, hexToRgbTriplet, paperBandColor } from '$lib/paper';
 import { THEME_COLORS } from '$lib/theme';
 
-function renderPage(): ReturnType<typeof render> {
+function renderPage(projects: PinnedProject[] = []): ReturnType<typeof render> {
   setPageRoute('/one-pager');
-  return render(OnePager);
+  return render(OnePager, { props: { data: { projects } } });
 }
 
 function workHeadings(container: HTMLElement): string[] {
@@ -183,7 +184,7 @@ describe('one-pager', () => {
 
   it('renders two named social links, so the row is usable without the marks', () => {
     const { container } = renderPage();
-    const socials = Array.from(container.querySelectorAll('a[target="_blank"]'));
+    const socials = Array.from(container.querySelectorAll('a[aria-label]'));
 
     expect(socials).toHaveLength(2);
     socials.forEach((link) => expect(link.getAttribute('aria-label')).toBeTruthy());
@@ -238,5 +239,113 @@ describe('one-pager', () => {
     expect(
       document.head.querySelector('link[rel="canonical"]')?.getAttribute('href'),
     ).toBe('https://thompsontong.com/one-pager');
+  });
+});
+
+const PROJECTS: PinnedProject[] = [
+  {
+    name: 'pipes',
+    description: '',
+    githubUrl: 'https://github.com/ItsThompson/pipes',
+    homepageUrl: 'https://pipes.dev',
+    primaryLanguage: null,
+  },
+  {
+    name: 'ledger',
+    description: '',
+    githubUrl: 'https://github.com/ItsThompson/ledger',
+    homepageUrl: '',
+    primaryLanguage: null,
+  },
+  {
+    name: 'atlas',
+    description: '',
+    githubUrl: 'https://github.com/ItsThompson/atlas',
+    homepageUrl: 'https://atlas.dev',
+    primaryLanguage: null,
+  },
+];
+
+function projectSentence(container: HTMLElement): HTMLParagraphElement | undefined {
+  return Array.from(container.querySelectorAll('p')).find((paragraph) =>
+    paragraph.textContent?.includes('I built'),
+  );
+}
+
+function projectLinks(container: HTMLElement): HTMLAnchorElement[] {
+  return Array.from(projectSentence(container)?.querySelectorAll('a') ?? []);
+}
+
+function spokenText(element: HTMLElement | undefined): string {
+  if (!element) return '';
+
+  const copy = element.cloneNode(true) as HTMLElement;
+  copy.querySelectorAll('[aria-hidden="true"]').forEach((decorative) => decorative.remove());
+
+  return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
+}
+
+describe('one-pager projects line', () => {
+  beforeEach(() => {
+    setPageRoute('/one-pager');
+  });
+
+  afterEach(() => {
+    cleanup();
+    resetPageRoute();
+    vi.restoreAllMocks();
+  });
+
+  it('reads the pinned projects as one sentence, in the pinned order', () => {
+    const { container } = renderPage(PROJECTS);
+
+    expect(spokenText(projectSentence(container))).toBe('I built pipes, ledger, and atlas.');
+  });
+
+  it('stands the sentence after the bio, so the page introduces the person first', () => {
+    const { container } = renderPage(PROJECTS);
+    const paragraphs = Array.from(container.querySelectorAll('p'));
+    const bioIndex = paragraphs.findIndex((paragraph) =>
+      paragraph.textContent?.includes("I'm a"),
+    );
+    const sentence = projectSentence(container);
+    if (!sentence) throw new Error('No project sentence rendered');
+
+    expect(paragraphs.indexOf(sentence)).toBeGreaterThan(bioIndex);
+  });
+
+  it('links each project to its homepage, or to its repository when it has none', () => {
+    const { container } = renderPage(PROJECTS);
+
+    expect(projectLinks(container).map((link) => link.getAttribute('href'))).toEqual([
+      'https://pipes.dev',
+      'https://github.com/ItsThompson/ledger',
+      'https://atlas.dev',
+    ]);
+  });
+
+  it('opens each project in a new tab, leaving the summary in place', () => {
+    const { container } = renderPage(PROJECTS);
+
+    projectLinks(container).forEach((link) => {
+      expect(link.getAttribute('target')).toBe('_blank');
+      expect(link.getAttribute('rel')).toContain('noopener');
+    });
+  });
+
+  it('underlines each project with an arrow, so it reads as leaving the site', () => {
+    const { container } = renderPage(PROJECTS);
+
+    projectLinks(container).forEach((link) => {
+      expect(link.className).toContain('underline');
+      expect(link.className).not.toContain('rgba(var(--band)');
+      expect(link.querySelector('[aria-hidden="true"]')?.textContent).toBe('↗');
+    });
+  });
+
+  it('drops the sentence when nothing is pinned, so the page never reads "I built ."', () => {
+    const { container } = renderPage();
+
+    expect(projectSentence(container)).toBeUndefined();
   });
 });
