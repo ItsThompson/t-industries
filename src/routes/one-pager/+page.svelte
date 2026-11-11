@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
     import BioDescription from '../../components/BioDescription.svelte';
-    import InlineAction from '../../components/InlineAction.svelte';
+    import { InlinePhrase, type PhraseAction } from '../../components/inline-phrase';
     import Seo from '../../components/Seo.svelte';
     import SocialRow from '../../components/paper/SocialRow.svelte';
     import WorkArrow from '../../components/paper/WorkArrow.svelte';
@@ -27,6 +27,18 @@
 
     let workArrow: WorkArrow;
     let markedId: string | null = null;
+
+    const terminalPhrase: PhraseAction = {
+        kind: 'navigate',
+        target: 'index',
+        accent: ACCENTS.primary,
+        href: withSummaryOrigin(`${base}/`),
+        card: {
+            label: 'Thompson Tong / Terminal',
+            note: 'Go to terminal.',
+            hint: 'CLICK TO OPEN',
+        },
+    };
 
     function handleWorkJump(id: BioWorkId, trigger: HTMLElement, event: MouseEvent): void {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -92,14 +104,7 @@
     <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
             <span class="font-normal text-paper-muted">Hi, my name is</span>
-            <InlineAction
-                target="index"
-                accent={ACCENTS.primary}
-                label="Thompson Tong / Terminal"
-                note="Go to terminal."
-                href={withSummaryOrigin(`${base}/`)}
-                tone="paper">Thompson Tong</InlineAction
-            >
+            <InlinePhrase action={terminalPhrase} tone="paper">Thompson Tong</InlinePhrase>
         </h1>
 
         <div class="space-y-4">

@@ -1,6 +1,6 @@
 <script lang="ts">
     import Age from './Age.svelte';
-    import InlineAction from './InlineAction.svelte';
+    import { InlinePhrase } from './inline-phrase';
     import CityMapModal from './CityMapModal.svelte';
     import OldSiteModal from './OldSiteModal.svelte';
     import { bioActionsFor, type BioWorkId } from './bio-actions';
@@ -41,23 +41,23 @@
 
 <p class={className}>
     I'm a <Age floored={true} /> year old software engineer with
-    <InlineAction {...actions.years} tone={mode}>{yearsInExperience} years of experience</InlineAction
+    <InlinePhrase action={actions.years} tone={mode}>{yearsInExperience} years of experience</InlinePhrase
     >
-    building and shipping production software at scale. I've lived in <InlineAction
-        {...actions.places}
-        tone={mode}>8 different cities across 3 continents</InlineAction
+    building and shipping production software at scale. I've lived in <InlinePhrase
+        action={actions.places}
+        tone={mode}>8 different cities across 3 continents</InlinePhrase
     >, which has given me a broad perspective on technology and problem-solving. I had
-    just completed my <InlineAction {...actions.work('amazon')} tone={mode}
-        >placement at Amazon</InlineAction
+    just completed my <InlinePhrase action={actions.work('amazon')} tone={mode}
+        >placement at Amazon</InlinePhrase
     >, and finishing my final year at the
     University of Bath, where I studied CS + AI. Previously, I worked on
-    <InlineAction {...actions.work('msd')} tone={mode}>LLMOps at MSD</InlineAction> and was a
-    <InlineAction {...actions.work('criisp')} tone={mode}>programming research assistant for CRIISP</InlineAction> at the
+    <InlinePhrase action={actions.work('msd')} tone={mode}>LLMOps at MSD</InlinePhrase> and was a
+    <InlinePhrase action={actions.work('criisp')} tone={mode}>programming research assistant for CRIISP</InlinePhrase> at the
     University of Bath.
 </p>
 <p class={className}>
-    I'm deeply curious about how <InlineAction {...actions.continuousLearning} tone={mode}
-        >systems work from first principles</InlineAction
+    I'm deeply curious about how <InlinePhrase action={actions.continuousLearning} tone={mode}
+        >systems work from first principles</InlinePhrase
     >, whether that's foundational technology or bleeding-edge tooling. Understanding
     what's happening under the hood means I get far more out of AI-assisted
     development than most.
