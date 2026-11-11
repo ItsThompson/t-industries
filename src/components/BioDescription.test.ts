@@ -47,7 +47,7 @@ describe("BioDescription", () => {
     expect(text).toContain("University of Bath");
   });
 
-  it("leaves no gap between a link and the punctuation after it", () => {
+  it("keeps every phrase flush with the punctuation that follows it, card or no card", () => {
     const { container } = render(BioDescription);
     const prose = proseWithoutNotes(container);
 
@@ -196,6 +196,18 @@ describe("BioDescription", () => {
     expect(tooltipFor(link).textContent).toContain("CLICK TO OPEN");
   });
 
+  it("names the role and its dates in the card, since this page has no entry below", async () => {
+    const { container } = render(BioDescription);
+    const link = findLink(container, "placement at Amazon");
+
+    await fireEvent.mouseEnter(link);
+    await tick();
+
+    const note = tooltipFor(link).textContent ?? "";
+    expect(note).toContain("Amazon (Veeqo)");
+    expect(note).toContain("Sep 2025 to Sep 2026");
+  });
+
   it("keeps the note open when focusing scrolls the page", async () => {
     const { container } = render(BioDescription);
     const link = findLink(container, "placement at Amazon");
@@ -258,30 +270,45 @@ describe("BioDescription", () => {
       expect(text).toContain("University of Bath");
     });
 
+    it("keeps the phrases flush with the punctuation after them, cards or not", () => {
+      const { container } = renderPaper();
+      const prose = proseWithoutNotes(container);
+
+      expect(prose).toContain("placement at Amazon, and");
+      expect(prose).toContain("3 continents, which");
+      expect(prose).not.toMatch(/ [,.;:]/);
+    });
+
     it("sends each named role to the entry further down the page", () => {
       const { container } = renderPaper();
 
-      expect(findTrigger(container, "placement at Amazon").getAttribute("href")).toBe(
+      expect(findLink(container, "placement at Amazon").getAttribute("href")).toBe(
         "#experience-amazon",
       );
-      expect(findTrigger(container, "LLMOps at MSD").getAttribute("href")).toBe(
+      expect(findLink(container, "LLMOps at MSD").getAttribute("href")).toBe(
         "#experience-msd",
       );
       expect(
-        findTrigger(container, "programming research assistant for CRIISP").getAttribute(
-          "href",
-        ),
+        findLink(
+          container,
+          "programming research assistant for CRIISP",
+        ).getAttribute("href"),
       ).toBe("#experience-criisp");
     });
 
-    it("tells the reader the role links jump to the highlight", async () => {
+    it("leaves the role links without a card, since the entry below says the same thing", async () => {
       const { container } = renderPaper();
-      const trigger = findTrigger(container, "placement at Amazon");
+      const link = findLink(container, "placement at Amazon");
 
-      await fireEvent.mouseEnter(trigger);
+      expect(link.hasAttribute("aria-describedby")).toBe(false);
+
+      await fireEvent.mouseEnter(link);
       await tick();
 
-      expect(tooltipFor(trigger).textContent).toContain("JUMP TO HIGHLIGHT");
+      const open = Array.from(
+        container.querySelectorAll<HTMLElement>('[role="tooltip"]'),
+      ).filter((card) => card.className.split(' ').includes('visible'));
+      expect(open).toHaveLength(0);
     });
 
     it("leaves the first-principles curiosity pointing at the ethos page, marked as leaving the summary", () => {
@@ -343,10 +370,12 @@ describe("BioDescription", () => {
 
     it("paints every phrase as a highlighter band", () => {
       const { container } = renderPaper();
+      const phrases = Array.from(
+        container.querySelectorAll<HTMLElement>('a, span[tabindex="0"]'),
+      );
 
-      for (const trigger of Array.from(
-        container.querySelectorAll<HTMLElement>("[aria-describedby]"),
-      )) {
+      expect(phrases).toHaveLength(6);
+      for (const trigger of phrases) {
         expect(trigger.className).toContain("rgba(var(--band)");
         expect(trigger.className).not.toContain("border-dotted");
       }

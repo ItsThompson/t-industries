@@ -16,7 +16,7 @@ useMode(modeLrgb);
 
 const toRgb = converter("rgb");
 
-export type PageTone = "terminal" | "paper";
+export type PageMode = "terminal" | "paper";
 
 export const PAPER_BAND_ALPHA = 0.4;
 
