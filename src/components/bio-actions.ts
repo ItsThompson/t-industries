@@ -20,12 +20,13 @@ export interface BioPhraseAction {
   href?: string;
   /* A required `hint: string` distinguishes "hide the hint" (`''`) from "use the default `CLICK TO OPEN`" (omitted), which an optional field would merge into one. */
   hint: string;
-  onActivate?: (event: MouseEvent) => void;
+  onActivate?: (event: MouseEvent, trigger: HTMLElement) => void;
 }
 
 export interface BioPhraseHandlers {
   openMap: (event: MouseEvent) => void;
   openOldSite: (event: MouseEvent) => void;
+  jumpToWork?: (id: BioWorkId, trigger: HTMLElement, event: MouseEvent) => void;
 }
 
 export interface BioActions {
@@ -58,9 +59,7 @@ const ACTIONS_BY_TONE: Record<
     work: (id) => ({ ...BIO_LINKS[id], hint: OPEN_HINT }),
   }),
 
-  // The summary is a single page with no modals, so each phrase either jumps
-  // to a section further down or links back into the terminal.
-  paper: () => ({
+  paper: ({ jumpToWork }) => ({
     years: { ...oldSitePhrase, hint: NO_HINT },
     places: { ...BIO_PLACES_ACTION, note: citiesNote(), hint: NO_HINT },
     continuousLearning: {
@@ -72,6 +71,9 @@ const ACTIONS_BY_TONE: Record<
       ...BIO_LINKS[id],
       href: `#${experienceAnchorId(id)}`,
       hint: JUMP_HINT,
+      onActivate: jumpToWork
+        ? (event, trigger) => jumpToWork(id, trigger, event)
+        : undefined,
     }),
   }),
 };

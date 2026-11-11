@@ -1,7 +1,7 @@
 <script lang="ts">
     import { fly } from 'svelte/transition';
     import { dismissToast, toasts } from '$lib/toasts';
-    import { prefersReducedMotion } from '$lib/deep-links';
+    import { prefersReducedMotion } from '$lib/motion-preference';
     import { TOAST_VARIANTS } from './toast-variants';
 
     $: animation = prefersReducedMotion() ? { y: 0, duration: 0 } : { y: 16, duration: 200 };

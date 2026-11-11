@@ -10,7 +10,7 @@
     export let label: string;
     export let note: string | undefined = undefined;
     export let hint: string = 'CLICK TO OPEN';
-    export let onActivate: ((event: MouseEvent) => void) | null = null;
+    export let onActivate: ((event: MouseEvent, trigger: HTMLElement) => void) | null = null;
     export let screenshot: NoteScreenshot | null = null;
     export let tone: PageTone = 'terminal';
 
@@ -25,7 +25,6 @@
     let frameRequested = false;
     let pointer: { x: number; y: number } | null = null;
 
-    /** The trigger is an anchor when it has a destination, a span when it acts in place. */
     interface Trigger {
         element: 'a' | 'span';
         attributes: { href: string } | { tabindex: number };
@@ -34,7 +33,7 @@
 
     function triggerFor(
         destination: string | undefined,
-        action: ((event: MouseEvent) => void) | null
+        action: ((event: MouseEvent, trigger: HTMLElement) => void) | null
     ): Trigger {
         if (destination) {
             return { element: 'a', attributes: { href: destination }, role: 'link' };
@@ -79,7 +78,7 @@
     }
 
     function handleClick(event: MouseEvent): void {
-        onActivate?.(event);
+        onActivate?.(event, anchorElement);
     }
 
     function handleKeydown(event: KeyboardEvent): void {
@@ -94,7 +93,7 @@
         event.preventDefault();
         // detail 0 marks a keyboard activation, matching the click an anchor gets
         // from Enter, so the caller can decide whether to restore focus.
-        onActivate(new MouseEvent('click', { detail: 0 }));
+        onActivate(new MouseEvent('click', { detail: 0 }), anchorElement);
     }
 
     function positionNote(): void {
@@ -164,8 +163,6 @@
     }
 
     onMount(() => {
-        // Focusing a link can scroll the page, so the note follows the anchor
-        // instead of closing on every scroll event.
         window.addEventListener('scroll', schedulePosition, true);
         window.addEventListener('resize', schedulePosition);
 

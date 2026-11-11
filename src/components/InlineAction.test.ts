@@ -137,6 +137,18 @@ describe("InlineAction", () => {
       expect(onActivate).toHaveBeenCalledTimes(2);
     });
 
+    it("hands the trigger element to the handler, for callers that need its position", async () => {
+      const onActivate = vi.fn();
+      const { container } = renderAction({ onActivate });
+      const element = trigger(container);
+
+      await fireEvent.click(element);
+      expect(onActivate.mock.calls[0][1]).toBe(element);
+
+      await fireEvent.keyDown(element, { key: "Enter" });
+      expect(onActivate.mock.calls[1][1]).toBe(element);
+    });
+
     it("marks a keyboard activation as such, so focus can return on close", async () => {
       const onActivate = vi.fn();
       const { container } = renderAction({ onActivate });

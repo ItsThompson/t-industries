@@ -52,6 +52,20 @@ describe('WorkEntry', () => {
     );
   });
 
+  it('reveals the accent line only when marked, replacing the :target rule', () => {
+    const hidden = render(WorkEntry, { props: { experience: EXPERIENCE } });
+    expect(hidden.container.querySelector('article')?.className).not.toContain('marked');
+
+    const marked = render(WorkEntry, { props: { experience: EXPERIENCE, marked: true } });
+    expect(marked.container.querySelector('article')?.className).toContain('marked');
+  });
+
+  it('takes programmatic focus, so a keyboard jump can land on it', () => {
+    const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
+
+    expect(container.querySelector('article')?.getAttribute('tabindex')).toBe('-1');
+  });
+
   it('keeps the ink colors from the page rather than a fixed color', () => {
     const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
 

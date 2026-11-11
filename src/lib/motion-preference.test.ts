@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { observeMotionPreference } from './motion-preference';
+import { observeMotionPreference, prefersReducedMotion } from './motion-preference';
 
 describe('motion-preference', () => {
 	let addEventListenerSpy: ReturnType<typeof vi.fn>;
@@ -85,5 +85,26 @@ describe('motion-preference', () => {
 		cleanup();
 
 		expect(removeEventListenerSpy).toHaveBeenCalledWith('change', expect.any(Function));
+	});
+
+	describe('prefersReducedMotion', () => {
+		afterEach(() => {
+			vi.unstubAllGlobals();
+		});
+
+		it('reports the reduced-motion preference', () => {
+			vi.stubGlobal(
+				'matchMedia',
+				vi.fn().mockReturnValue({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })
+			);
+
+			expect(prefersReducedMotion()).toBe(true);
+		});
+
+		it('assumes motion is allowed when the browser cannot report it', () => {
+			vi.stubGlobal('matchMedia', undefined);
+
+			expect(prefersReducedMotion()).toBe(false);
+		});
 	});
 });

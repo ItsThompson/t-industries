@@ -140,6 +140,21 @@ describe('bioActionsFor', () => {
         expect(work.hint).toBe('JUMP TO HIGHLIGHT');
       }
     });
+
+    it('forwards each work phrase activation to the jump handler with its trigger', () => {
+      const jumpToWork = vi.fn();
+      const actions = bioActionsFor('paper', { ...handlers(), jumpToWork });
+      const event = new MouseEvent('click');
+      const trigger = document.createElement('a');
+
+      for (const id of WORK_IDS) {
+        actions.work(id).onActivate?.(event, trigger);
+
+        expect(jumpToWork).toHaveBeenCalledWith(id, trigger, event);
+      }
+
+      expect(jumpToWork).toHaveBeenCalledTimes(WORK_IDS.length);
+    });
   });
 
   it('returns a strategy for every page tone', () => {
