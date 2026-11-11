@@ -18,15 +18,15 @@ describe("bio links", () => {
     });
   });
 
-  it("sends the experience links to the experience route", () => {
-    expect(BIO_LINKS.amazon.href).toBe("/experience?highlight=amazon");
-    expect(BIO_LINKS.msd.href).toBe("/experience?highlight=msd");
-    expect(BIO_LINKS.criisp.href).toBe("/experience?highlight=criisp");
+  it("sends the experience links to the terminal experience route", () => {
+    expect(BIO_LINKS.amazon.href).toBe("/terminal/experience?highlight=amazon");
+    expect(BIO_LINKS.msd.href).toBe("/terminal/experience?highlight=msd");
+    expect(BIO_LINKS.criisp.href).toBe("/terminal/experience?highlight=criisp");
   });
 
   it("sends the first-principles link to the continuous learning row", () => {
     expect(BIO_LINKS.continuousLearning.href).toBe(
-      "/ethos?highlight=continuous-learning",
+      "/terminal/ethos?highlight=continuous-learning",
     );
   });
 

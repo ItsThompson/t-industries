@@ -62,16 +62,16 @@ describe("BioDescription", () => {
 
     expect(
       findLink(container, "placement at Amazon").getAttribute("href"),
-    ).toBe("/experience?highlight=amazon");
+    ).toBe("/terminal/experience?highlight=amazon");
     expect(findLink(container, "LLMOps at MSD").getAttribute("href")).toBe(
-      "/experience?highlight=msd",
+      "/terminal/experience?highlight=msd",
     );
     expect(
       findLink(
         container,
         "programming research assistant for CRIISP",
       ).getAttribute("href"),
-    ).toBe("/experience?highlight=criisp");
+    ).toBe("/terminal/experience?highlight=criisp");
   });
 
   it("links first-principles curiosity to the continuous learning row", () => {
@@ -81,7 +81,7 @@ describe("BioDescription", () => {
       findLink(container, "systems work from first principles").getAttribute(
         "href",
       ),
-    ).toBe("/ethos?highlight=continuous-learning");
+    ).toBe("/terminal/ethos?highlight=continuous-learning");
   });
 
   it("renders exactly the four interactive links", () => {
@@ -247,9 +247,9 @@ describe("BioDescription", () => {
     expect(ACCENTS.primary).toBe("#FF6363");
   });
 
-  describe("paper mode", () => {
-    function renderPaper() {
-      return render(BioDescription, { props: { mode: "paper" } });
+  describe("canvas mode", () => {
+    function renderCanvas() {
+      return render(BioDescription, { props: { mode: "canvas" } });
     }
 
     function findTrigger(container: HTMLElement, text: string): HTMLElement {
@@ -261,7 +261,7 @@ describe("BioDescription", () => {
     }
 
     it("keeps the bio prose word for word", () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const text = container.textContent ?? "";
 
       expect(text).toContain("year old software engineer");
@@ -271,7 +271,7 @@ describe("BioDescription", () => {
     });
 
     it("keeps the phrases flush with the punctuation after them, cards or not", () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const prose = proseWithoutNotes(container);
 
       expect(prose).toContain("placement at Amazon, and");
@@ -280,7 +280,7 @@ describe("BioDescription", () => {
     });
 
     it("sends each named role to the entry further down the page", () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
 
       expect(findLink(container, "placement at Amazon").getAttribute("href")).toBe(
         "#experience-amazon",
@@ -297,7 +297,7 @@ describe("BioDescription", () => {
     });
 
     it("leaves the role links without a card, since the entry below says the same thing", async () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const link = findLink(container, "placement at Amazon");
 
       expect(link.hasAttribute("aria-describedby")).toBe(false);
@@ -311,16 +311,16 @@ describe("BioDescription", () => {
       expect(open).toHaveLength(0);
     });
 
-    it("leaves the first-principles curiosity pointing at the ethos page, marked as leaving the summary", () => {
-      const { container } = renderPaper();
+    it("leaves the first-principles curiosity pointing at the ethos page, marked as leaving the canvas", () => {
+      const { container } = renderCanvas();
 
       expect(
         findTrigger(container, "systems work from first principles").getAttribute("href"),
-      ).toBe("/ethos?highlight=continuous-learning&from=summary");
+      ).toBe("/terminal/ethos?highlight=continuous-learning&from=canvas");
     });
 
     it("keeps the cities phrase off the map, since the page has no map", () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const trigger = findTrigger(container, "8 different cities");
 
       expect(trigger.tagName).toBe("SPAN");
@@ -329,7 +329,7 @@ describe("BioDescription", () => {
     });
 
     it("names every city in the note, so the phrase still explains itself", async () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const trigger = findTrigger(container, "8 different cities");
 
       await fireEvent.mouseEnter(trigger);
@@ -341,7 +341,7 @@ describe("BioDescription", () => {
     });
 
     it("opens no modal when the cities phrase is clicked", async () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
 
       await fireEvent.click(findTrigger(container, "8 different cities"));
       await tick();
@@ -350,7 +350,7 @@ describe("BioDescription", () => {
     });
 
     it("opens no modal when the experience phrase is clicked", async () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
 
       await fireEvent.click(findTrigger(container, "years of experience"));
       await tick();
@@ -359,7 +359,7 @@ describe("BioDescription", () => {
     });
 
     it("still previews the 2019 screenshot on hover", async () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const trigger = findTrigger(container, "years of experience");
 
       await fireEvent.mouseEnter(trigger);
@@ -369,7 +369,7 @@ describe("BioDescription", () => {
     });
 
     it("paints every phrase as a highlighter band", () => {
-      const { container } = renderPaper();
+      const { container } = renderCanvas();
       const phrases = Array.from(
         container.querySelectorAll<HTMLElement>('a, span[tabindex="0"]'),
       );

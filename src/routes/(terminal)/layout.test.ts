@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup, act, fireEvent } from '@testing-library/svelte';
-import Layout from './(site)/+layout.svelte';
+import Layout from './+layout.svelte';
 import {
 	buildAfterNavigate,
 	getReplaceStateCalls,
@@ -203,12 +203,12 @@ describe('+layout', () => {
 		expect(setScrollTop).toHaveBeenCalledWith(0);
 	});
 
-	describe('summary origin notice', () => {
+	describe('canvas origin notice', () => {
 		beforeEach(() => {
 			clearToasts();
 			resetReplaceState();
-			window.history.replaceState({}, '', '/experience?from=summary');
-			setPageUrl('/experience', '?from=summary');
+			window.history.replaceState({}, '', '/terminal/experience?from=canvas');
+			setPageUrl('/terminal/experience', '?from=canvas');
 		});
 
 		afterEach(() => {
@@ -217,17 +217,17 @@ describe('+layout', () => {
 			clearToasts();
 		});
 
-		it('offers the way back when the reader arrived from the summary', async () => {
+		it('offers the way back when the reader arrived from the canvas', async () => {
 			const { container } = render(Layout);
 			await act();
 
-			expect(container.querySelector('[data-toast="summary-origin"]')).toBeTruthy();
+			expect(container.querySelector('[data-toast="canvas-origin"]')).toBeTruthy();
 			expect(container.textContent).toContain('YOU ARE IN THE TERMINAL.');
 		});
 
 		it('stays quiet on a direct visit', async () => {
-			window.history.replaceState({}, '', '/experience');
-			setPageUrl('/experience');
+			window.history.replaceState({}, '', '/terminal/experience');
+			setPageUrl('/terminal/experience');
 
 			const { container } = render(Layout);
 			await act();
@@ -236,10 +236,10 @@ describe('+layout', () => {
 		});
 
 		it('trusts the address bar over the stored page url, so a dismissed notice stays gone', async () => {
-			// Kit keeps its own copy of the page url, which still names the summary after
+			// Kit keeps its own copy of the page url, which still names the canvas after
 			// a dismissal rewrites the address bar, so the layout must read the address.
-			window.history.replaceState({}, '', '/experience');
-			setPageUrl('/experience', '?from=summary');
+			window.history.replaceState({}, '', '/terminal/experience');
+			setPageUrl('/terminal/experience', '?from=canvas');
 
 			const { container } = render(Layout);
 			await act();
@@ -251,7 +251,7 @@ describe('+layout', () => {
 			const { container } = render(Layout);
 			await act();
 
-			const toast = container.querySelector('[data-toast="summary-origin"]');
+			const toast = container.querySelector('[data-toast="canvas-origin"]');
 
 			expect(getNavbar(container).previousElementSibling?.contains(toast as Node)).toBe(true);
 		});

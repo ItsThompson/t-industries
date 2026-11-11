@@ -6,7 +6,7 @@
     import { bioActionsFor, type BioWorkId } from './bio-actions';
     import { yearsOfExperience } from '$lib/identity';
     import { BIO_OLD_SITE_ACTION } from '$lib/bio-links';
-    import type { PageMode } from '$lib/paper';
+    import type { PageMode } from '$lib/canvas';
 
     let className: string = 'text-sm';
     export { className as class };

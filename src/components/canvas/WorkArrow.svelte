@@ -25,10 +25,10 @@
         endTangent,
         pathData,
         pickFamily,
-    } from '$lib/paper-arrow';
-    import type { Point } from '$lib/paper-arrow';
+    } from '$lib/canvas-arrow';
+    import type { Point } from '$lib/canvas-arrow';
     import { prefersReducedMotion } from '$lib/motion-preference';
-    import { paperBandColor } from '$lib/paper';
+    import { canvasBandColor } from '$lib/canvas';
     import { WIDE_VIEWPORT_MIN_WIDTH_PX } from '$lib/viewport';
 
     const STROKE_WIDTH_PX = 2.25;
@@ -84,7 +84,7 @@
 
         clearArrow();
 
-        const colour = paperBandColor(request.accent);
+        const colour = canvasBandColor(request.accent);
         const flightMs = Math.min(
             FLIGHT_MAX_MS,
             Math.max(FLIGHT_MIN_MS, FLIGHT_BASE_MS * (built.length / FLIGHT_REFERENCE_LENGTH_PX)),

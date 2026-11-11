@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PageMode } from '$lib/paper';
+    import type { PageMode } from '$lib/canvas';
     import { cardAppearanceFor } from './appearance';
     import type { NoteCard } from './types';
 

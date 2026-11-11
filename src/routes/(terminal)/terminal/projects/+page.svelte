@@ -1,9 +1,9 @@
 <script lang="ts">
-    import SectionHeading from '../../../components/industrial/SectionHeading.svelte';
-    import MetadataBar from '../../../components/industrial/MetadataBar.svelte';
-    import Compartment from '../../../components/industrial/Compartment.svelte';
-    import ProjectCard from '../../../components/ProjectCard.svelte';
-    import Seo from '../../../components/Seo.svelte';
+    import SectionHeading from '../../../../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../../../../components/industrial/MetadataBar.svelte';
+    import Compartment from '../../../../components/industrial/Compartment.svelte';
+    import ProjectCard from '../../../../components/ProjectCard.svelte';
+    import Seo from '../../../../components/Seo.svelte';
     import type { PageData } from './$types';
 
     export let data: PageData;

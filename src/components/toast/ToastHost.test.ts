@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup, fireEvent } from '@testing-library/svelte';
 import { get } from 'svelte/store';
 import ToastHost from './ToastHost.svelte';
-import { SUMMARY_ORIGIN_TOAST_KIND, clearToasts, showToast, toasts } from '$lib/toasts';
+import { CANVAS_ORIGIN_TOAST_KIND, clearToasts, showToast, toasts } from '$lib/toasts';
 
 function toastElements(container: HTMLElement): HTMLElement[] {
 	return Array.from(container.querySelectorAll<HTMLElement>('[data-toast]'));
@@ -20,13 +20,13 @@ describe('ToastHost', () => {
 	});
 
 	it('renders the variant registered for the queued kind', () => {
-		showToast(SUMMARY_ORIGIN_TOAST_KIND);
+		showToast(CANVAS_ORIGIN_TOAST_KIND);
 
 		const { container } = render(ToastHost);
 
 		expect(toastElements(container)).toHaveLength(1);
-		expect(toastElements(container)[0]?.dataset.toast).toBe(SUMMARY_ORIGIN_TOAST_KIND);
-		expect(container.textContent).toContain('RETURN TO SUMMARY');
+		expect(toastElements(container)[0]?.dataset.toast).toBe(CANVAS_ORIGIN_TOAST_KIND);
+		expect(container.textContent).toContain('RETURN TO CANVAS');
 	});
 
 	it('renders nothing when the queue is empty', () => {
@@ -44,7 +44,7 @@ describe('ToastHost', () => {
 	});
 
 	it('removes the toast from the queue when the variant asks to dismiss', async () => {
-		showToast(SUMMARY_ORIGIN_TOAST_KIND);
+		showToast(CANVAS_ORIGIN_TOAST_KIND);
 		const { container } = render(ToastHost);
 
 		await fireEvent.click(
@@ -55,7 +55,7 @@ describe('ToastHost', () => {
 	});
 
 	it('dismisses the newest toast on Escape', async () => {
-		showToast(SUMMARY_ORIGIN_TOAST_KIND);
+		showToast(CANVAS_ORIGIN_TOAST_KIND);
 		render(ToastHost);
 
 		await fireEvent.keyDown(window, { key: 'Escape' });
@@ -64,7 +64,7 @@ describe('ToastHost', () => {
 	});
 
 	it('leaves the toast in place for other keys', async () => {
-		showToast(SUMMARY_ORIGIN_TOAST_KIND);
+		showToast(CANVAS_ORIGIN_TOAST_KIND);
 		render(ToastHost);
 
 		await fireEvent.keyDown(window, { key: 'Tab' });
@@ -80,7 +80,7 @@ describe('ToastHost', () => {
 	});
 
 	it('floats in the corner on desktop and stays in flow on mobile', () => {
-		showToast(SUMMARY_ORIGIN_TOAST_KIND);
+		showToast(CANVAS_ORIGIN_TOAST_KIND);
 		const { container } = render(ToastHost);
 		const region = container.firstElementChild as HTMLElement;
 		const toast = toastElements(container)[0];

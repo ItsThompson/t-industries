@@ -4,9 +4,9 @@
     import BioDescription from '../../components/BioDescription.svelte';
     import { InlinePhrase, type PhraseAction } from '../../components/inline-phrase';
     import Seo from '../../components/Seo.svelte';
-    import SocialRow from '../../components/paper/SocialRow.svelte';
-    import WorkArrow from '../../components/paper/WorkArrow.svelte';
-    import WorkEntry from '../../components/paper/WorkEntry.svelte';
+    import SocialRow from '../../components/canvas/SocialRow.svelte';
+    import WorkArrow from '../../components/canvas/WorkArrow.svelte';
+    import WorkEntry from '../../components/canvas/WorkEntry.svelte';
     import type { BioWorkId } from '../../components/bio-actions';
     import { ACCENTS } from '$lib/accents';
     import { highlightHref } from '$lib/deep-links';
@@ -14,13 +14,13 @@
     import { experienceAnchorId, highlights } from '$lib/experiences';
     import { projectPageUrl } from '$lib/github';
     import {
-        GOOGLE_FONTS_ORIGIN,
-        GOOGLE_FONTS_STATIC_ORIGIN,
-        OUTFIT_STYLESHEET_HREF
-    } from '$lib/fonts';
-    import { PAPER_BAND_CLASSES, PAPER_GRAIN_OPACITY, PAPER_PROSE_CLASSES, paperBandStyle } from '$lib/paper';
+        CANVAS_BAND_CLASSES,
+        CANVAS_PROSE_CLASSES,
+        canvasBandStyle
+    } from '$lib/canvas';
     import { proseSeparatorAfter } from '$lib/prose';
-    import { withSummaryOrigin } from '$lib/summary-origin';
+    import { terminalPath, TERMINAL_PATH } from '$lib/routes';
+    import { withCanvasOrigin } from '$lib/canvas-origin';
     import type { PageData } from './$types';
 
     export let data: PageData;
@@ -30,9 +30,9 @@
 
     const terminalPhrase: PhraseAction = {
         kind: 'navigate',
-        target: 'index',
+        target: 'terminal',
         accent: ACCENTS.primary,
-        href: withSummaryOrigin(`${base}/`),
+        href: withCanvasOrigin(`${base}${TERMINAL_PATH}`),
         card: {
             label: 'Thompson Tong / Terminal',
             note: 'Go to terminal.',
@@ -77,53 +77,35 @@
 </script>
 
 <Seo
-    title="Summary | Thompson Tong"
-    description="A single page version of Thompson Tong's site: the bio, three work highlights, and the three principles behind the work."
+    title="Thompson Tong | Software Engineer"
+    description="Thompson Tong is a software engineer and CS + AI student at the University of Bath. Experience at Amazon, MSD, and the CRIISP research group."
+    profilePage
 />
 
-<svelte:head>
-    <link rel="preconnect" href={GOOGLE_FONTS_ORIGIN} />
-    <link rel="preconnect" href={GOOGLE_FONTS_STATIC_ORIGIN} crossorigin="anonymous" />
-    <link href={OUTFIT_STYLESHEET_HREF} rel="stylesheet" />
-    <!-- Painted before hydration, so a prerendered page never flashes the black site. --> 
-    <style>
-        body {
-            background-color: #F4EFE2;
-        }
-    </style>
-</svelte:head>
-
-<div class="relative min-h-dvh bg-paper-base font-outfit text-paper-ink">
-    <div
-        aria-hidden="true"
-        class="pointer-events-none fixed inset-0 mix-blend-multiply"
-        style:background-image="url({base}/grain.svg)"
-        style:opacity={PAPER_GRAIN_OPACITY}
-    ></div>
-
+<div class="relative min-h-dvh bg-canvas-base font-outfit text-canvas-ink">
     <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
-            <span class="font-normal text-paper-muted">Hi, my name is</span>
-            <InlinePhrase action={terminalPhrase} mode="paper">Thompson Tong</InlinePhrase>
+            <span class="font-normal text-canvas-muted">Hi, my name is</span>
+            <InlinePhrase action={terminalPhrase} mode="canvas">Thompson Tong</InlinePhrase>
         </h1>
 
         <div class="space-y-4">
             <BioDescription
-                mode="paper"
-                class={PAPER_PROSE_CLASSES}
+                mode="canvas"
+                class={CANVAS_PROSE_CLASSES}
                 onJumpToWork={handleWorkJump}
             />
             {#if data.projects.length > 0}
-                <p class={PAPER_PROSE_CLASSES}>
+                <p class={CANVAS_PROSE_CLASSES}>
                     I built
                     {#each data.projects as project, index}<a
                             href={projectPageUrl(project)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="underline decoration-primary/55 decoration-2 underline-offset-[3px] transition-colors duration-150 hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-paper-ink"
+                            class="underline decoration-primary/55 decoration-2 underline-offset-[3px] transition-colors duration-150 hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-canvas-ink"
                             >{project.name}<span
                                 aria-hidden="true"
-                                class="ml-[0.12em] text-[0.75em] text-paper-muted">&#8599;</span
+                                class="ml-[0.12em] text-[0.75em] text-canvas-muted">&#8599;</span
                             ></a
                         >{proseSeparatorAfter(index, data.projects.length)}{/each}.
                 </p>
@@ -132,7 +114,7 @@
 
         <section>
             <h2
-                class="mb-4 mt-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-paper-muted"
+                class="mb-4 mt-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-canvas-muted"
             >
                 Work
             </h2>
@@ -140,24 +122,24 @@
                 <WorkEntry {experience} marked={markedId === experience.id} />
             {/each}
             <a
-                href={withSummaryOrigin(`${base}/experience`)}
-                class="mt-2 inline-block border-b-2 border-primary/55 pb-px text-[0.9375rem] font-medium transition-colors duration-150 hover:border-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-paper-ink"
+                href={withCanvasOrigin(`${base}${terminalPath('experience')}`)}
+                class="mt-2 inline-block border-b-2 border-primary/55 pb-px text-[0.9375rem] font-medium transition-colors duration-150 hover:border-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-canvas-ink"
                 >View all experience</a
             >
         </section>
 
         <section>
             <h2
-                class="mb-4 mt-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-paper-muted"
+                class="mb-4 mt-12 text-[10px] font-semibold uppercase tracking-[0.14em] text-canvas-muted"
             >
                 Ethos
             </h2>
-            <p class={PAPER_PROSE_CLASSES}>
+            <p class={CANVAS_PROSE_CLASSES}>
                 My objective function optimizes for
                 {#each ETHOS_ITEMS as item, index}<a
-                        href={withSummaryOrigin(highlightHref('/ethos', item.id))}
-                        class={PAPER_BAND_CLASSES}
-                        style={paperBandStyle(ACCENTS.primary)}>{item.title.toLowerCase()}</a
+                        href={withCanvasOrigin(highlightHref(terminalPath('ethos'), item.id))}
+                        class={CANVAS_BAND_CLASSES}
+                        style={canvasBandStyle(ACCENTS.primary)}>{item.title.toLowerCase()}</a
                     >{proseSeparatorAfter(index, ETHOS_ITEMS.length)}{/each}.
             </p>
         </section>

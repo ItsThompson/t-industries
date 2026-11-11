@@ -1,6 +1,6 @@
 <script lang="ts">
-    import ExperienceSection from '../../../components/ExperienceSection.svelte';
-    import Seo from '../../../components/Seo.svelte';
+    import ExperienceSection from '../../../../components/ExperienceSection.svelte';
+    import Seo from '../../../../components/Seo.svelte';
 </script>
 
 <Seo

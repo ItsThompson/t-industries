@@ -1,8 +1,8 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
 import { fireEvent } from "@testing-library/svelte";
 import WorkArrow from "./WorkArrow.svelte";
-import { FADE_OUT_MS } from "$lib/paper-arrow";
-import { paperBandColor } from "$lib/paper";
+import { FADE_OUT_MS } from "$lib/canvas-arrow";
+import { canvasBandColor } from "$lib/canvas";
 
 type ArrowRequest = Parameters<InstanceType<typeof WorkArrow>["tryDraw"]>[0];
 
@@ -155,7 +155,7 @@ describe("WorkArrow", () => {
 
     component.tryDraw(request(trigger, entry));
 
-    const darkened = paperBandColor(LIGHT_ACCENT);
+    const darkened = canvasBandColor(LIGHT_ACCENT);
     expect(darkened).not.toBe(LIGHT_ACCENT);
     expect(strokePath().getAttribute("stroke")).toBe(darkened);
     expect(headPath().getAttribute("fill")).toBe(darkened);

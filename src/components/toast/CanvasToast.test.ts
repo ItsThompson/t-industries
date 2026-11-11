@@ -2,11 +2,11 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, cleanup, fireEvent } from '@testing-library/svelte';
 import tape from '../../../static/tape.svg?raw';
 import { THEME_COLORS } from '$lib/theme';
-import SummaryToast from './SummaryToast.svelte';
+import CanvasToast from './CanvasToast.svelte';
 
 function renderToast() {
 	const dismissals: number[] = [];
-	const result = render(SummaryToast, {
+	const result = render(CanvasToast, {
 		props: {
 			onDismiss: () => {
 				dismissals.push(1);
@@ -19,13 +19,13 @@ function renderToast() {
 
 function actionOf(container: HTMLElement): HTMLAnchorElement {
 	const action = Array.from(container.querySelectorAll('a')).find((link) =>
-		link.textContent?.includes('RETURN TO SUMMARY')
+		link.textContent?.includes('RETURN TO CANVAS')
 	);
 	if (!action) throw new Error('toast rendered without its action');
 	return action;
 }
 
-describe('SummaryToast', () => {
+describe('CanvasToast', () => {
 	afterEach(() => {
 		cleanup();
 		vi.restoreAllMocks();
@@ -37,10 +37,10 @@ describe('SummaryToast', () => {
 		expect(container.textContent).toContain('YOU ARE IN THE TERMINAL.');
 	});
 
-	it('offers one click back to the summary', () => {
+	it('offers one click back to the canvas', () => {
 		const { container } = renderToast();
 
-		expect(actionOf(container).getAttribute('href')).toBe('/one-pager');
+		expect(actionOf(container).getAttribute('href')).toBe('/');
 	});
 
 	it('dismisses when the reader takes the way back', async () => {
@@ -63,12 +63,12 @@ describe('SummaryToast', () => {
 		expect(dismissals()).toBe(1);
 	});
 
-	it('reads as paper rather than terminal chrome', () => {
+	it('reads as canvas rather than terminal chrome', () => {
 		const { container } = renderToast();
 		const card = container.firstElementChild as HTMLElement;
 
-		expect(card.className).toContain('bg-paper-base');
-		expect(card.className).toContain('text-paper-ink');
+		expect(card.className).toContain('bg-canvas-base');
+		expect(card.className).toContain('text-canvas-ink');
 		expect(card.className).toContain('font-outfit');
 	});
 
@@ -88,7 +88,7 @@ describe('SummaryToast', () => {
 		expect(container.querySelector('svg')).toBeNull();
 	});
 
-	it('loads the paper typeface on the routes that do not carry it', () => {
+	it('loads the canvas typeface on the routes that do not carry it', () => {
 		renderToast();
 
 		const hrefs = Array.from(document.head.querySelectorAll('link')).map((link) =>
@@ -100,8 +100,8 @@ describe('SummaryToast', () => {
 });
 
 describe('the tape asset', () => {
-	it('paints the tape in the raised paper tone the theme declares', () => {
-		expect(tape.toUpperCase()).toContain(`FILL="${THEME_COLORS.paper.raised.toUpperCase()}"`);
+	it('paints the tape in the raised canvas tone the theme declares', () => {
+		expect(tape.toUpperCase()).toContain(`FILL="${THEME_COLORS.canvas.raised.toUpperCase()}"`);
 	});
 
 	it('stays translucent, so the card shows through the strip', () => {
