@@ -29,6 +29,8 @@ const DARKEN_STEP = 0.1;
 export const PAPER_BAND_CLASSES =
   "bg-[rgba(var(--band),var(--band-alpha))] hover:bg-[rgba(var(--band),var(--band-alpha-hover))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] px-[0.18em] py-[0.04em] -mx-[0.02em] rounded-[3px] transition-colors duration-150 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-paper-ink";
 
+export const PAPER_PROSE_CLASSES = "text-[1.1875rem] font-light leading-[1.65]";
+
 export function hexToRgbTriplet(hex: string): string {
   const { r, g, b } = toRgb(requireColor(hex));
   return [r, g, b].map((channel) => Math.round(channel * 255)).join(",");

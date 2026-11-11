@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { fetchPinnedRepos } from './github';
+import { fetchPinnedRepos, projectPageUrl } from './github';
 import type { PinnedProject } from './github';
 
 function createMockResponse(body: unknown, status = 200): Response {
@@ -149,5 +149,30 @@ describe('fetchPinnedRepos', () => {
 		await expect(fetchPinnedRepos('valid-token', mockFetch)).rejects.toThrow(
 			'Network request failed'
 		);
+	});
+});
+
+function pinnedProject(overrides: Partial<PinnedProject> = {}): PinnedProject {
+	return {
+		name: 'my-project',
+		description: '',
+		githubUrl: 'https://github.com/ItsThompson/my-project',
+		homepageUrl: '',
+		primaryLanguage: null,
+		...overrides
+	};
+}
+
+describe('projectPageUrl', () => {
+	it('opens the homepage when the project publishes one', () => {
+		const project = pinnedProject({ homepageUrl: 'https://my-project.dev' });
+
+		expect(projectPageUrl(project)).toBe('https://my-project.dev');
+	});
+
+	it('opens the repository when the project has no homepage', () => {
+		const project = pinnedProject();
+
+		expect(projectPageUrl(project)).toBe(project.githubUrl);
 	});
 });

@@ -29,7 +29,7 @@ const ROUTES: RouteCase[] = [
 	{ component: EthosPage, props: {}, path: '/ethos', expectedHeading: 'ETHOS' },
 	{
 		component: OnePagerPage,
-		props: {},
+		props: { data: { projects: [] } },
 		path: '/one-pager',
 		expectedHeading: BIO_NAME
 	}
