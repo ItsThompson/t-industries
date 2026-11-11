@@ -40,7 +40,7 @@ function navigate(props: { href?: string; card?: NoteCard; onActivate?: Activate
     };
 }
 
-function renderPhrase(action: PhraseAction, mode?: 'terminal' | 'paper') {
+function renderPhrase(action: PhraseAction, mode?: 'terminal' | 'canvas') {
     return render(InlinePhrase, { props: { action, ...(mode ? { mode } : {}) } });
 }
 
@@ -398,20 +398,20 @@ describe('InlinePhrase', () => {
         });
     });
 
-    describe('paper mode', () => {
-        function paperPhrase(action: PhraseAction = reveal()) {
-            return renderPhrase(action, 'paper');
+    describe('canvas mode', () => {
+        function canvasPhrase(action: PhraseAction = reveal()) {
+            return renderPhrase(action, 'canvas');
         }
 
         it('paints a band behind the words instead of a dotted underline', () => {
-            const element = trigger(paperPhrase().container);
+            const element = trigger(canvasPhrase().container);
 
             expect(element.className).toContain('rgba(var(--band)');
             expect(element.className).not.toContain('border-dotted');
         });
 
         it('takes the band color from the accent, without painting the glyphs', () => {
-            const element = trigger(paperPhrase().container);
+            const element = trigger(canvasPhrase().container);
 
             expect(element.style.getPropertyValue('--band')).toBe('255,99,99');
             expect(element.style.getPropertyValue('--band-alpha')).toBe('0.4');
@@ -420,41 +420,41 @@ describe('InlinePhrase', () => {
         });
 
         it('clones the band across lines, so a wrapped phrase keeps its edges', () => {
-            expect(trigger(paperPhrase().container).className).toContain(
+            expect(trigger(canvasPhrase().container).className).toContain(
                 '[box-decoration-break:clone]'
             );
         });
 
-        it('outlines focus in ink, because a light accent is invisible on paper', () => {
-            expect(trigger(paperPhrase().container).className).toContain(
-                'focus-visible:outline-paper-ink'
+        it('outlines focus in ink, because a light accent is invisible on canvas', () => {
+            expect(trigger(canvasPhrase().container).className).toContain(
+                'focus-visible:outline-canvas-ink'
             );
         });
 
-        it('renders the card on a paper card rather than a black one', () => {
-            const { container } = paperPhrase();
+        it('renders the card on a canvas card rather than a black one', () => {
+            const { container } = canvasPhrase();
 
-            expect(cardFor(container).className).toContain('bg-paper-raised');
+            expect(cardFor(container).className).toContain('bg-canvas-raised');
             expect(cardFor(container).className).not.toContain('bg-black');
         });
 
         it('keeps the accent border off the card', () => {
-            const style = cardFor(paperPhrase().container).getAttribute('style') ?? '';
+            const style = cardFor(canvasPhrase().container).getAttribute('style') ?? '';
 
             expect(style).not.toContain('border-color');
             expect(style).not.toContain('undefined');
         });
 
         it('labels the card in ink, so the accent never carries text', () => {
-            const label = cardFor(paperPhrase().container).firstElementChild;
+            const label = cardFor(canvasPhrase().container).firstElementChild;
 
             if (!label) throw new Error('No label rendered');
-            expect(label.className).toContain('text-paper-ink');
+            expect(label.className).toContain('text-canvas-ink');
             expect(label.getAttribute('style')).toBeNull();
         });
 
         it('gives a reveal-only phrase the help cursor, and no destination', () => {
-            const { container } = paperPhrase();
+            const { container } = canvasPhrase();
             const element = trigger(container);
 
             expect(element.tagName).toBe('SPAN');
@@ -465,13 +465,13 @@ describe('InlinePhrase', () => {
         });
 
         it('keeps the navigation cursor on a phrase that goes somewhere', () => {
-            const { container } = paperPhrase(navigate());
+            const { container } = canvasPhrase(navigate());
 
             expect(trigger(container).className).not.toContain('cursor-help');
         });
 
         it('leaves out the hint line when the card names none', async () => {
-            const { container } = paperPhrase(reveal({ label: 'Label / Test' }));
+            const { container } = canvasPhrase(reveal({ label: 'Label / Test' }));
 
             await fireEvent.focus(trigger(container));
             await tick();
@@ -480,7 +480,7 @@ describe('InlinePhrase', () => {
         });
 
         it('still shows the hint line when the card names one', async () => {
-            const { container } = paperPhrase(reveal({ label: 'Label / Test', hint: 'JUMP HERE' }));
+            const { container } = canvasPhrase(reveal({ label: 'Label / Test', hint: 'JUMP HERE' }));
 
             await fireEvent.focus(trigger(container));
             await tick();
@@ -488,8 +488,8 @@ describe('InlinePhrase', () => {
             expect(cardFor(container).textContent).toContain('JUMP HERE');
         });
 
-        it('keeps the card position logic, so a paper card lands on its line', async () => {
-            const { container } = paperPhrase();
+        it('keeps the card position logic, so a canvas card lands on its line', async () => {
+            const { container } = canvasPhrase();
             const element = trigger(container);
             element.getClientRects = () => [new DOMRect(0, 100, 300, 20)] as unknown as DOMRectList;
             element.getBoundingClientRect = () => new DOMRect(0, 100, 300, 20);

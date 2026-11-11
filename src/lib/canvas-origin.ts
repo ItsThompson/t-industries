@@ -2,29 +2,28 @@ import { base } from "$app/paths";
 import { replaceState } from "$app/navigation";
 import { get } from "svelte/store";
 import { page } from "$app/stores";
+import { CANVAS_PATH } from "./routes";
 
 export const ORIGIN_PARAM = "from";
 
-export const SUMMARY_ORIGIN = "summary";
+export const CANVAS_ORIGIN = "canvas";
 
-export const SUMMARY_PATH = "/one-pager";
-
-export function summaryHref(): string {
-  return `${base}${SUMMARY_PATH}`;
+export function canvasHref(): string {
+  return `${base}${CANVAS_PATH}`;
 }
 
-export function withSummaryOrigin(href: string): string {
+export function withCanvasOrigin(href: string): string {
   const separator = href.includes("?") ? "&" : "?";
-  return `${href}${separator}${ORIGIN_PARAM}=${SUMMARY_ORIGIN}`;
+  return `${href}${separator}${ORIGIN_PARAM}=${CANVAS_ORIGIN}`;
 }
 
-export function isFromSummary(url: URL): boolean {
+export function isFromCanvas(url: URL): boolean {
   if (typeof window === "undefined") return false;
 
-  return url.searchParams.get(ORIGIN_PARAM) === SUMMARY_ORIGIN;
+  return url.searchParams.get(ORIGIN_PARAM) === CANVAS_ORIGIN;
 }
 
-export function clearSummaryOrigin(): void {
+export function clearCanvasOrigin(): void {
   if (typeof window === "undefined") return;
 
   const url = new URL(window.location.href);

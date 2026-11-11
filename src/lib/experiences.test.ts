@@ -77,7 +77,7 @@ describe('experiences', () => {
 });
 
 describe('highlights', () => {
-	it('lists at least one entry, so the one-pager work section is never empty', () => {
+	it('lists at least one entry, so the canvas work section is never empty', () => {
 		expect(highlights().length).toBeGreaterThan(0);
 	});
 
@@ -94,7 +94,7 @@ describe('highlights', () => {
 		expect(positions).toEqual([...positions].sort((a, b) => a - b));
 	});
 
-	it('leaves the entries the one-pager does not list out of the result', () => {
+	it('leaves the entries the canvas does not list out of the result', () => {
 		const highlighted = highlights().map((entry) => entry.id);
 
 		experiences

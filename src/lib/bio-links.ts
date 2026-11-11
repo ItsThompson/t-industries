@@ -2,6 +2,7 @@ import { base } from "$app/paths";
 import { ACCENTS } from "./accents";
 import { CITY_COUNT } from "./cities";
 import { highlightHref } from "./deep-links";
+import { terminalPath } from "./routes";
 
 export interface NoteScreenshot {
   staticAssetPathWithDeployBase: string;
@@ -33,28 +34,28 @@ export const BIO_LINKS = {
     target: "amazon",
     label: "Amazon (Veeqo) / Front-End",
     note: "Sep 2025 to Sep 2026. Cut frontend build times by 82% by designing the monolith-to-microservices migration on a website with 50,000+ sellers.",
-    href: highlightHref("/experience", "amazon"),
+    href: highlightHref(terminalPath("experience"), "amazon"),
     accent: ACCENTS.amazon,
   },
   msd: {
     target: "msd",
     label: "MSD / MLOps",
     note: "Jun to Jul 2024. Deployed a RAG pipeline that cut document processing time by 48%.",
-    href: highlightHref("/experience", "msd"),
+    href: highlightHref(terminalPath("experience"), "msd"),
     accent: ACCENTS.msd,
   },
   criisp: {
     target: "criisp",
     label: "University of Bath / CRIISP",
     note: "Aug 2024 to Sep 2025. Cut SEM creation time by 30% for scientists modeling pain perception.",
-    href: highlightHref("/experience", "criisp"),
+    href: highlightHref(terminalPath("experience"), "criisp"),
     accent: ACCENTS.criisp,
   },
   continuousLearning: {
     target: "continuous-learning",
     label: "Ethos / Continuous Learning",
     note: "Standing on the shoulders of giants: read the principle and the evidence behind it.",
-    href: highlightHref("/ethos", "continuous-learning"),
+    href: highlightHref(terminalPath("ethos"), "continuous-learning"),
     accent: ACCENTS.primary,
   },
 } satisfies Record<string, BioLinkSpec>;

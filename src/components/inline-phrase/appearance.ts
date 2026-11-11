@@ -1,4 +1,4 @@
-import { PAPER_BAND_CLASSES, paperBandStyle, type PageMode } from '$lib/paper';
+import { CANVAS_BAND_CLASSES, canvasBandStyle, type PageMode } from '$lib/canvas';
 import type { PhraseKind } from './types';
 
 export interface TriggerAppearance {
@@ -38,9 +38,9 @@ const TRIGGER_BY_MODE: Record<PageMode, (input: TriggerInput) => TriggerAppearan
         style: `color:${accent};border-color:${accent};outline-color:${accent}`,
     }),
 
-    paper: ({ accent, kind }) => ({
-        classes: classes(PAPER_BAND_CLASSES, kind === 'describe' ? 'cursor-help' : ''),
-        style: paperBandStyle(accent),
+    canvas: ({ accent, kind }) => ({
+        classes: classes(CANVAS_BAND_CLASSES, kind === 'describe' ? 'cursor-help' : ''),
+        style: canvasBandStyle(accent),
     }),
 };
 
@@ -54,14 +54,14 @@ const CARD_BY_MODE: Record<PageMode, (input: CardInput) => CardAppearance> = {
         hintClasses: 'label-xs block mt-1 text-secondary-200',
     }),
 
-    paper: () => ({
-        classes: `${CARD_FRAME} bg-paper-raised border border-paper-ink/15 rounded-[5px] p-3 font-outfit shadow-[0_10px_28px_rgba(28,25,23,0.13)]`,
+    canvas: () => ({
+        classes: `${CARD_FRAME} bg-canvas-raised border border-canvas-ink/15 rounded-[5px] p-3 font-outfit shadow-[0_10px_28px_rgba(28,25,23,0.13)]`,
         style: undefined,
         labelClasses:
-            'block mb-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-paper-ink',
+            'block mb-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-canvas-ink',
         labelStyle: undefined,
-        noteClasses: 'block text-[13px] font-light leading-normal text-paper-ink',
-        hintClasses: 'block mt-1.5 text-[9px] uppercase tracking-[0.1em] text-paper-muted',
+        noteClasses: 'block text-[13px] font-light leading-normal text-canvas-ink',
+        hintClasses: 'block mt-1.5 text-[9px] uppercase tracking-[0.1em] text-canvas-muted',
     }),
 };
 

@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup } from '@testing-library/svelte';
 import type { ComponentType } from 'svelte';
-import HomePage from './(site)/+page.svelte';
-import ExperiencePage from './(site)/experience/+page.svelte';
-import ProjectsPage from './(site)/projects/+page.svelte';
-import EthosPage from './(site)/ethos/+page.svelte';
-import OnePagerPage from './one-pager/+page.svelte';
+import CanvasPage from './(canvas)/+page.svelte';
+import TerminalPage from './(terminal)/terminal/+page.svelte';
+import ExperiencePage from './(terminal)/terminal/experience/+page.svelte';
+import ProjectsPage from './(terminal)/terminal/projects/+page.svelte';
+import EthosPage from './(terminal)/terminal/ethos/+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { BIO_NAME } from '$lib/bio';
-import { canonicalUrl } from '$lib/seo';
+import { canonicalUrl, stripRouteGroups } from '$lib/seo';
 
 interface RouteCase {
 	component: ComponentType;
@@ -18,20 +18,35 @@ interface RouteCase {
 }
 
 const ROUTES: RouteCase[] = [
-	{ component: HomePage, props: {}, path: '/', expectedHeading: BIO_NAME },
-	{ component: ExperiencePage, props: {}, path: '/experience', expectedHeading: 'EXPERIENCE' },
+	{
+		component: CanvasPage,
+		props: { data: { projects: [] } },
+		path: '/(canvas)',
+		expectedHeading: BIO_NAME
+	},
+	{
+		component: TerminalPage,
+		props: {},
+		path: '/(terminal)/terminal',
+		expectedHeading: BIO_NAME
+	},
+	{
+		component: ExperiencePage,
+		props: {},
+		path: '/(terminal)/terminal/experience',
+		expectedHeading: 'EXPERIENCE'
+	},
 	{
 		component: ProjectsPage,
 		props: { data: { projects: [] } },
-		path: '/projects',
+		path: '/(terminal)/terminal/projects',
 		expectedHeading: 'PROJECTS'
 	},
-	{ component: EthosPage, props: {}, path: '/ethos', expectedHeading: 'ETHOS' },
 	{
-		component: OnePagerPage,
-		props: { data: { projects: [] } },
-		path: '/one-pager',
-		expectedHeading: BIO_NAME
+		component: EthosPage,
+		props: {},
+		path: '/(terminal)/terminal/ethos',
+		expectedHeading: 'ETHOS'
 	}
 ];
 
@@ -99,7 +114,7 @@ describe('route pages', () => {
 			renderRoute(route);
 
 			expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
-				canonicalUrl(route.path)
+				canonicalUrl(stripRouteGroups(route.path))
 			);
 		});
 	});
@@ -127,7 +142,7 @@ describe('route pages', () => {
 		}
 	});
 
-	it('puts the person first in the home title, so a name query matches it', () => {
+	it('puts the person first in the canvas title, so a name query matches it', () => {
 		const { unmount } = renderRoute(ROUTES[0]);
 
 		expect(document.title.startsWith(BIO_NAME)).toBe(true);

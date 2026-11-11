@@ -3,7 +3,7 @@ import { bioActionsFor, type BioActions, type BioPhraseHandlers } from './bio-ac
 import { BIO_LINKS, BIO_PLACES_ACTION } from '$lib/bio-links';
 import { CITIES } from '$lib/cities';
 import type { PhraseAction } from './inline-phrase';
-import type { PageMode } from '$lib/paper';
+import type { PageMode } from '$lib/canvas';
 
 const WORK_IDS = ['amazon', 'msd', 'criisp'] as const;
 
@@ -15,8 +15,8 @@ function terminal(): BioActions {
     return bioActionsFor('terminal', handlers());
 }
 
-function paper(): BioActions {
-    return bioActionsFor('paper', handlers());
+function canvas(): BioActions {
+    return bioActionsFor('canvas', handlers());
 }
 
 function everyPhrase(actions: BioActions): PhraseAction[] {
@@ -43,7 +43,7 @@ function activateOf(action: PhraseAction) {
 
 describe('bioActionsFor', () => {
     it('names every phrase for both modes, and labels every card they carry', () => {
-        for (const actions of [terminal(), paper()]) {
+        for (const actions of [terminal(), canvas()]) {
             for (const phrase of everyPhrase(actions)) {
                 expect(phrase.target.length).toBeGreaterThan(0);
                 expect(phrase.accent.length).toBeGreaterThan(0);
@@ -53,7 +53,7 @@ describe('bioActionsFor', () => {
     });
 
     it('gives every phrase a unique target, so no two cards share an id', () => {
-        for (const actions of [terminal(), paper()]) {
+        for (const actions of [terminal(), canvas()]) {
             const targets = everyPhrase(actions).map((phrase) => phrase.target);
 
             expect(new Set(targets).size).toBe(targets.length);
@@ -88,7 +88,7 @@ describe('bioActionsFor', () => {
         it('sends the curiosity phrase to the ethos page, unmarked', () => {
             const curiosity = terminal().continuousLearning;
 
-            expect(hrefOf(curiosity)).toBe('/ethos?highlight=continuous-learning');
+            expect(hrefOf(curiosity)).toBe('/terminal/ethos?highlight=continuous-learning');
             expect(activateOf(curiosity)).toBeUndefined();
             expect(cardOf(curiosity).hint).toBe('CLICK TO OPEN');
         });
@@ -109,9 +109,9 @@ describe('bioActionsFor', () => {
         });
     });
 
-    describe('paper mode', () => {
+    describe('canvas mode', () => {
         it('leaves the years phrase revealing its screenshot, with no hint', () => {
-            const years = paper().years;
+            const years = canvas().years;
 
             expect(years.kind).toBe('describe');
             expect(activateOf(years)).toBeUndefined();
@@ -121,7 +121,7 @@ describe('bioActionsFor', () => {
         });
 
         it('keeps the places phrase inert, since the page has no map', () => {
-            const places = paper().places;
+            const places = canvas().places;
 
             expect(places.kind).toBe('describe');
             expect(activateOf(places)).toBeUndefined();
@@ -130,22 +130,22 @@ describe('bioActionsFor', () => {
         });
 
         it('names every city in the places card, so the phrase still explains itself', () => {
-            const note = cardOf(paper().places).note ?? '';
+            const note = cardOf(canvas().places).note ?? '';
 
             for (const city of CITIES) {
                 expect(note).toContain(city.name);
             }
         });
 
-        it('marks the curiosity phrase as leaving the summary', () => {
-            const curiosity = paper().continuousLearning;
+        it('marks the curiosity phrase as leaving the canvas', () => {
+            const curiosity = canvas().continuousLearning;
 
-            expect(hrefOf(curiosity)).toBe('/ethos?highlight=continuous-learning&from=summary');
+            expect(hrefOf(curiosity)).toBe('/terminal/ethos?highlight=continuous-learning&from=canvas');
             expect(cardOf(curiosity).hint).toBe('CLICK TO OPEN');
         });
 
         it('jumps each named role to its highlight without repeating it in a card', () => {
-            const actions = paper();
+            const actions = canvas();
 
             for (const id of WORK_IDS) {
                 const work = actions.work(id);
@@ -158,7 +158,7 @@ describe('bioActionsFor', () => {
 
         it('forwards each work phrase activation to the jump handler with its trigger', () => {
             const jumpToWork = vi.fn();
-            const actions = bioActionsFor('paper', { ...handlers(), jumpToWork });
+            const actions = bioActionsFor('canvas', { ...handlers(), jumpToWork });
             const event = new MouseEvent('click');
             const trigger = document.createElement('a');
 
@@ -174,14 +174,14 @@ describe('bioActionsFor', () => {
         });
 
         it('leaves a role a plain anchor when the page passes no jump handler', () => {
-            const work = bioActionsFor('paper', handlers()).work('amazon');
+            const work = bioActionsFor('canvas', handlers()).work('amazon');
 
             expect(activateOf(work)).toBeUndefined();
         });
     });
 
     it('returns a strategy for every page mode', () => {
-        for (const mode of ['terminal', 'paper'] as PageMode[]) {
+        for (const mode of ['terminal', 'canvas'] as PageMode[]) {
             expect(everyPhrase(bioActionsFor(mode, handlers()))).toHaveLength(6);
         }
     });

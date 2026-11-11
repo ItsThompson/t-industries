@@ -1,18 +1,17 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { render, cleanup, fireEvent } from '@testing-library/svelte';
-import OnePager from './+page.svelte';
+import CanvasPage from './+page.svelte';
 import { resetPageRoute, setPageRoute } from '$lib/__mocks__/app-stores';
 import { ACCENTS } from '$lib/accents';
 import { BIO_NAME } from '$lib/bio';
 import { ETHOS_ITEMS } from '$lib/ethos';
 import { highlights } from '$lib/experiences';
 import type { PinnedProject } from '$lib/github';
-import { PAPER_GRAIN_OPACITY, hexToRgbTriplet, paperBandColor } from '$lib/paper';
-import { THEME_COLORS } from '$lib/theme';
+import { hexToRgbTriplet, canvasBandColor } from '$lib/canvas';
 
 function renderPage(projects: PinnedProject[] = []): ReturnType<typeof render> {
-  setPageRoute('/one-pager');
-  return render(OnePager, { props: { data: { projects } } });
+  setPageRoute('/(canvas)');
+  return render(CanvasPage, { props: { data: { projects } } });
 }
 
 function workHeadings(container: HTMLElement): string[] {
@@ -29,9 +28,9 @@ function ethosLinks(container: HTMLElement): HTMLAnchorElement[] {
   return Array.from(ethosSection?.querySelectorAll('a[href*="?highlight="]') ?? []);
 }
 
-describe('one-pager', () => {
+describe('canvas', () => {
   beforeEach(() => {
-    setPageRoute('/one-pager');
+    setPageRoute('/(canvas)');
   });
 
   afterEach(() => {
@@ -113,17 +112,17 @@ describe('one-pager', () => {
       link.textContent?.includes('View all experience'),
     );
 
-    expect(viewAll?.getAttribute('href')).toBe('/experience?from=summary');
+    expect(viewAll?.getAttribute('href')).toBe('/terminal/experience?from=canvas');
   });
 
-  it('marks every link that leaves the summary, so each one offers the way back', () => {
+  it('marks every link that leaves the canvas, so each one offers the way back', () => {
     const { container } = renderPage();
     const leaving = Array.from(container.querySelectorAll('a')).filter((link) =>
       link.getAttribute('href')?.startsWith('/'),
     );
 
     expect(leaving).toHaveLength(6);
-    leaving.forEach((link) => expect(link.getAttribute('href')).toContain('from=summary'));
+    leaving.forEach((link) => expect(link.getAttribute('href')).toContain('from=canvas'));
   });
 
   it('leaves the on-page anchors unmarked, since the reader never leaves', () => {
@@ -142,21 +141,21 @@ describe('one-pager', () => {
     ETHOS_ITEMS.forEach((item) => {
       expect(
         links.some(
-          (link) => link.getAttribute('href') === `/ethos?highlight=${item.id}&from=summary`,
+          (link) => link.getAttribute('href') === `/terminal/ethos?highlight=${item.id}&from=canvas`,
         ),
       ).toBe(true);
     });
   });
 
-  it('paints every ethos link as a band, matching the other paper highlights', () => {
+  it('paints every ethos link as a band, matching the other canvas highlights', () => {
     const { container } = renderPage();
 
     ethosLinks(container).forEach((link) => {
       expect(link.className).toContain('rgba(var(--band),var(--band-alpha))');
       expect(link.className).toContain('[box-decoration-break:clone]');
-      expect(link.className).toContain('focus-visible:outline-paper-ink');
+      expect(link.className).toContain('focus-visible:outline-canvas-ink');
       expect(link.style.getPropertyValue('--band')).toBe(
-        hexToRgbTriplet(paperBandColor(ACCENTS.primary)),
+        hexToRgbTriplet(canvasBandColor(ACCENTS.primary)),
       );
     });
   });
@@ -198,47 +197,27 @@ describe('one-pager', () => {
     expect(container.querySelector('canvas')).toBeNull();
   });
 
-  it('paints the page on paper', () => {
+  it('paints the page on canvas', () => {
     const { container } = renderPage();
     const wrapper = container.firstElementChild;
 
-    expect(wrapper?.className).toContain('bg-paper-base');
-    expect(wrapper?.className).toContain('text-paper-ink');
+    expect(wrapper?.className).toContain('bg-canvas-base');
+    expect(wrapper?.className).toContain('text-canvas-ink');
     expect(wrapper?.className).toContain('font-outfit');
   });
 
-  it('lays a grain over the paper at a strength that shows', () => {
+  it('lays no grain of its own, since the layout owns the canvas backdrop', () => {
     const { container } = renderPage();
-    const grain = container.querySelector('[aria-hidden="true"]') as HTMLElement;
 
-    expect(grain.style.backgroundImage).toContain('/grain.svg');
-    expect(Number(grain.style.opacity)).toBe(PAPER_GRAIN_OPACITY);
-    expect(grain.className).toContain('mix-blend-multiply');
+    expect(container.querySelector('.mix-blend-multiply')).toBeNull();
   });
 
-  it('paints the body before hydration, so overscroll never shows the black site', () => {
-    renderPage();
-
-    const style = document.head.querySelector('style')?.textContent ?? '';
-    expect(style).toContain(THEME_COLORS.paper.base);
-  });
-
-  it('loads the Outfit family on this route only', () => {
-    renderPage();
-
-    const hrefs = Array.from(document.head.querySelectorAll('link')).map((link) =>
-      link.getAttribute('href'),
-    );
-
-    expect(hrefs.some((href) => href?.includes('family=Outfit'))).toBe(true);
-  });
-
-  it('canonicalises to the one-pager rather than the home page', () => {
+  it('canonicalises to the site root, which is where the canvas lives', () => {
     renderPage();
 
     expect(
       document.head.querySelector('link[rel="canonical"]')?.getAttribute('href'),
-    ).toBe('https://thompsontong.com/one-pager');
+    ).toBe('https://thompsontong.com/');
   });
 });
 
@@ -285,9 +264,9 @@ function spokenText(element: HTMLElement | undefined): string {
   return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
 }
 
-describe('one-pager projects line', () => {
+describe('canvas projects line', () => {
   beforeEach(() => {
-    setPageRoute('/one-pager');
+    setPageRoute('/(canvas)');
   });
 
   afterEach(() => {
@@ -324,7 +303,7 @@ describe('one-pager projects line', () => {
     ]);
   });
 
-  it('opens each project in a new tab, leaving the summary in place', () => {
+  it('opens each project in a new tab, leaving the canvas in place', () => {
     const { container } = renderPage(PROJECTS);
 
     projectLinks(container).forEach((link) => {

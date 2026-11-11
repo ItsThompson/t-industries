@@ -1,6 +1,6 @@
 <script lang="ts">
-    import EthosSection from '../../../components/EthosSection.svelte';
-    import Seo from '../../../components/Seo.svelte';
+    import EthosSection from '../../../../components/EthosSection.svelte';
+    import Seo from '../../../../components/Seo.svelte';
 </script>
 
 <Seo

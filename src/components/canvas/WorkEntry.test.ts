@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/svelte';
 import WorkEntry from './WorkEntry.svelte';
 import { highlights } from '$lib/experiences';
-import { hexToRgbTriplet } from '$lib/paper';
+import { hexToRgbTriplet } from '$lib/canvas';
 
 const EXPERIENCE = highlights()[0];
 
@@ -23,7 +23,7 @@ describe('WorkEntry', () => {
     );
   });
 
-  it('renders the summary line the one-pager promises', () => {
+  it('renders the highlight line the canvas promises', () => {
     const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
 
     expect(container.textContent).toContain(EXPERIENCE.highlightSummary);
@@ -69,7 +69,7 @@ describe('WorkEntry', () => {
   it('keeps the ink colors from the page rather than a fixed color', () => {
     const { container } = render(WorkEntry, { props: { experience: EXPERIENCE } });
 
-    expect(container.querySelector('.text-paper-muted')).toBeTruthy();
+    expect(container.querySelector('.text-canvas-muted')).toBeTruthy();
     expect(container.innerHTML).not.toContain('text-white');
   });
 });

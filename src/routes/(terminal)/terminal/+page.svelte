@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { summaryHref } from '$lib/summary-origin';
-    import Age from '../../components/Age.svelte';
-    import Link from '../../components/Link.svelte';
-    import Compartment from '../../components/industrial/Compartment.svelte';
-    import SectionHeading from '../../components/industrial/SectionHeading.svelte';
-    import MetadataBar from '../../components/industrial/MetadataBar.svelte';
-    import BioDescription from '../../components/BioDescription.svelte';
-    import RndList from '../../components/RndList.svelte';
-    import Seo from '../../components/Seo.svelte';
+    import { canvasHref } from '$lib/canvas-origin';
+    import Age from '../../../components/Age.svelte';
+    import Link from '../../../components/Link.svelte';
+    import Compartment from '../../../components/industrial/Compartment.svelte';
+    import SectionHeading from '../../../components/industrial/SectionHeading.svelte';
+    import MetadataBar from '../../../components/industrial/MetadataBar.svelte';
+    import BioDescription from '../../../components/BioDescription.svelte';
+    import RndList from '../../../components/RndList.svelte';
+    import Seo from '../../../components/Seo.svelte';
     import { getSystemTime } from '$lib/terminal-display';
     import { BIO_NAME, BIO_TITLE, SOCIAL_LINKS } from '$lib/bio';
     import { onMount } from 'svelte';
@@ -24,9 +24,8 @@
 </script>
 
 <Seo
-    title="Thompson Tong | Software Engineer"
-    description="Thompson Tong is a software engineer and CS + AI student at the University of Bath. Experience at Amazon, MSD, and the CRIISP research group."
-    profilePage
+    title="Terminal | Thompson Tong"
+    description="Thompson Tong is a software engineer and CS + AI student at the University of Bath. Experience at Amazon, MSD, and CRIISP. His current interests live here."
 />
 
 <MetadataBar position="top">
@@ -50,8 +49,8 @@
                 <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 pt-2">
                     <p class="label-xs text-secondary-200">AGE: <Age /> YRS</p>
                     <a
-                        href={summaryHref()}
-                        aria-label="Open the summary page"
+                        href={canvasHref()}
+                        aria-label="Open the canvas page"
                         class="label-xs text-primary transition-colors duration-150 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-primary"
                         >ALTER EGO &#8594;</a
                     >

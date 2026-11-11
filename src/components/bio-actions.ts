@@ -2,8 +2,8 @@ import { BIO_LINKS, BIO_OLD_SITE_ACTION, BIO_PLACES_ACTION } from '$lib/bio-link
 import type { BioLinkSpec } from '$lib/bio-links';
 import { citiesNote } from '$lib/cities';
 import { experienceAnchorId } from '$lib/experiences';
-import type { PageMode } from '$lib/paper';
-import { withSummaryOrigin } from '$lib/summary-origin';
+import type { PageMode } from '$lib/canvas';
+import { withCanvasOrigin } from '$lib/canvas-origin';
 import type { NoteCard, PhraseAction } from './inline-phrase';
 
 export type BioWorkId = 'amazon' | 'msd' | 'criisp';
@@ -68,7 +68,7 @@ const ACTIONS_BY_MODE: Record<PageMode, (handlers: BioPhraseHandlers) => BioActi
         }),
     }),
 
-    paper: ({ jumpToWork }) => ({
+    canvas: ({ jumpToWork }) => ({
         years: {
             kind: 'describe',
             target: BIO_OLD_SITE_ACTION.target,
@@ -85,7 +85,7 @@ const ACTIONS_BY_MODE: Record<PageMode, (handlers: BioPhraseHandlers) => BioActi
             kind: 'navigate',
             target: BIO_LINKS.continuousLearning.target,
             accent: BIO_LINKS.continuousLearning.accent,
-            href: withSummaryOrigin(BIO_LINKS.continuousLearning.href),
+            href: withCanvasOrigin(BIO_LINKS.continuousLearning.href),
             card: linkCard(BIO_LINKS.continuousLearning),
         },
         // Each role already sits further down this page with its dates and

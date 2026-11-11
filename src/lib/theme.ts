@@ -8,7 +8,7 @@ export const THEME_COLORS = {
     100: "#E2E2D5",
     200: "#888883",
   },
-  paper: {
+  canvas: {
     base: "#F4EFE2",
     raised: "#FFFEF4",
     ink: "#1C1917",

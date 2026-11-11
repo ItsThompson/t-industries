@@ -1,19 +1,19 @@
 import { describe, it, expect } from 'vitest';
 import { cardAppearanceFor, triggerAppearanceFor } from './appearance';
-import type { PageMode } from '$lib/paper';
+import type { PageMode } from '$lib/canvas';
 import type { PhraseKind } from './types';
 
 const ACCENT = '#FF6363';
 
-const MODES: PageMode[] = ['terminal', 'paper'];
+const MODES: PageMode[] = ['terminal', 'canvas'];
 const KINDS: PhraseKind[] = ['navigate', 'activate', 'describe'];
 
 function terminal(kind: PhraseKind = 'navigate') {
     return triggerAppearanceFor('terminal', { accent: ACCENT, kind });
 }
 
-function paper(kind: PhraseKind = 'navigate') {
-    return triggerAppearanceFor('paper', { accent: ACCENT, kind });
+function canvas(kind: PhraseKind = 'navigate') {
+    return triggerAppearanceFor('canvas', { accent: ACCENT, kind });
 }
 
 describe('triggerAppearanceFor', () => {
@@ -44,35 +44,35 @@ describe('triggerAppearanceFor', () => {
         }
     });
 
-    it('clones a band behind the paper words across wrapped lines', () => {
-        const appearance = paper();
+    it('clones a band behind the canvas words across wrapped lines', () => {
+        const appearance = canvas();
 
         expect(appearance.classes).toContain('rgba(var(--band)');
         expect(appearance.classes).toContain('[box-decoration-break:clone]');
         expect(appearance.classes).not.toContain('border-dotted');
     });
 
-    it('takes the paper band color from the accent, without painting the glyphs', () => {
-        const appearance = paper();
+    it('takes the canvas band color from the accent, without painting the glyphs', () => {
+        const appearance = canvas();
 
         expect(appearance.style).toContain('--band:');
         expect(appearance.style).not.toContain('color:');
     });
 
-    it('outlines paper focus in ink, because a light accent is invisible on paper', () => {
-        expect(paper().classes).toContain('focus-visible:outline-paper-ink');
+    it('outlines canvas focus in ink, because a light accent is invisible on canvas', () => {
+        expect(canvas().classes).toContain('focus-visible:outline-canvas-ink');
     });
 
     it('gives only the reveal-only phrase the help cursor', () => {
-        expect(paper('describe').classes).toContain('cursor-help');
-        expect(paper('navigate').classes).not.toContain('cursor-help');
-        expect(paper('activate').classes).not.toContain('cursor-help');
+        expect(canvas('describe').classes).toContain('cursor-help');
+        expect(canvas('navigate').classes).not.toContain('cursor-help');
+        expect(canvas('activate').classes).not.toContain('cursor-help');
     });
 
     it('leaves no gap where the help cursor would go', () => {
         for (const kind of KINDS) {
-            expect(paper(kind).classes).toBe(paper(kind).classes.trim());
-            expect(paper(kind).classes).not.toContain('  ');
+            expect(canvas(kind).classes).toBe(canvas(kind).classes.trim());
+            expect(canvas(kind).classes).not.toContain('  ');
         }
     });
 });
@@ -82,8 +82,8 @@ describe('cardAppearanceFor', () => {
         return cardAppearanceFor('terminal', { accent: ACCENT });
     }
 
-    function paperCard() {
-        return cardAppearanceFor('paper', { accent: ACCENT });
+    function canvasCard() {
+        return cardAppearanceFor('canvas', { accent: ACCENT });
     }
 
     it('returns every style for each mode', () => {
@@ -109,7 +109,7 @@ describe('cardAppearanceFor', () => {
         const appearance = terminalCard();
 
         expect(appearance.classes).toContain('bg-black');
-        expect(appearance.classes).not.toContain('bg-paper-raised');
+        expect(appearance.classes).not.toContain('bg-canvas-raised');
         expect(appearance.style).toBe(`border-color:${ACCENT}`);
         expect(appearance.labelStyle).toBe(`color:${ACCENT}`);
     });
@@ -122,20 +122,20 @@ describe('cardAppearanceFor', () => {
         expect(appearance.hintClasses).toContain('text-secondary-200');
     });
 
-    it('draws the paper card raised, with no accent edge', () => {
-        const appearance = paperCard();
+    it('draws the canvas card raised, with no accent edge', () => {
+        const appearance = canvasCard();
 
-        expect(appearance.classes).toContain('bg-paper-raised');
+        expect(appearance.classes).toContain('bg-canvas-raised');
         expect(appearance.classes).not.toContain('bg-black');
         expect(appearance.style).toBeUndefined();
     });
 
-    it('labels the paper card in ink, so the accent never carries text', () => {
-        const appearance = paperCard();
+    it('labels the canvas card in ink, so the accent never carries text', () => {
+        const appearance = canvasCard();
 
-        expect(appearance.labelClasses).toContain('text-paper-ink');
-        expect(appearance.noteClasses).toContain('text-paper-ink');
-        expect(appearance.hintClasses).toContain('text-paper-muted');
+        expect(appearance.labelClasses).toContain('text-canvas-ink');
+        expect(appearance.noteClasses).toContain('text-canvas-ink');
+        expect(appearance.hintClasses).toContain('text-canvas-muted');
         expect(appearance.labelStyle).toBeUndefined();
     });
 });

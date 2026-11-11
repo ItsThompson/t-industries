@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
-    import type { PageMode } from '$lib/paper';
+    import type { PageMode } from '$lib/canvas';
     import { triggerAppearanceFor } from './appearance';
     import NoteCardView from './NoteCardView.svelte';
     import { isOffscreen, pickLine, placeCard, type Point, type Rect } from './placement';

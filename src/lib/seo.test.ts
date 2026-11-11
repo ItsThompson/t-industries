@@ -17,11 +17,11 @@ describe('canonicalUrl', () => {
 
 describe('stripRouteGroups', () => {
 	it('drops a layout group from a route id', () => {
-		expect(stripRouteGroups('/(site)/experience')).toBe('/experience');
+		expect(stripRouteGroups('/(terminal)/terminal/ethos')).toBe('/terminal/ethos');
 	});
 
 	it('leaves a route outside any group alone', () => {
-		expect(stripRouteGroups('/one-pager')).toBe('/one-pager');
+		expect(stripRouteGroups('/terminal/projects')).toBe('/terminal/projects');
 	});
 
 	it('keeps the root route as the root', () => {
@@ -29,7 +29,7 @@ describe('stripRouteGroups', () => {
 	});
 
 	it('keeps the root route when it is itself inside the group', () => {
-		expect(stripRouteGroups('/(site)')).toBe('/');
+		expect(stripRouteGroups('/(canvas)')).toBe('/');
 	});
 
 	it('drops every group segment when groups nest', () => {
@@ -53,12 +53,12 @@ describe('routePathFromFile', () => {
 	});
 
 	it('maps a page file inside a layout group to the same URL as one outside it', () => {
-		expect(routePathFromFile('/src/routes/(site)/experience/+page.svelte')).toBe(
-			routePathFromFile('/src/routes/experience/+page.svelte')
+		expect(routePathFromFile('/src/routes/(terminal)/terminal/experience/+page.svelte')).toBe(
+			routePathFromFile('/src/routes/terminal/experience/+page.svelte')
 		);
 	});
 
 	it('maps a root page file inside a layout group to the root URL', () => {
-		expect(routePathFromFile('/src/routes/(site)/+page.svelte')).toBe('/');
+		expect(routePathFromFile('/src/routes/(canvas)/+page.svelte')).toBe('/');
 	});
 });

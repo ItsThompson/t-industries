@@ -1,9 +1,9 @@
 import { get, writable } from "svelte/store";
-import { clearSummaryOrigin, isFromSummary } from "./summary-origin";
+import { clearCanvasOrigin, isFromCanvas } from "./canvas-origin";
 
-export const SUMMARY_ORIGIN_TOAST_KIND = "summary-origin";
+export const CANVAS_ORIGIN_TOAST_KIND = "canvas-origin";
 
-export type ToastKind = typeof SUMMARY_ORIGIN_TOAST_KIND;
+export type ToastKind = typeof CANVAS_ORIGIN_TOAST_KIND;
 
 export interface Toast {
   readonly id: number;
@@ -30,21 +30,21 @@ export function dismissToast(id: number): void {
 
   toastStore.update((current) => current.filter((toast) => toast.id !== id));
 
-  if (dismissed.kind === SUMMARY_ORIGIN_TOAST_KIND) clearSummaryOrigin();
+  if (dismissed.kind === CANVAS_ORIGIN_TOAST_KIND) clearCanvasOrigin();
 }
 
 export function clearToasts(): void {
   toastStore.set([]);
 }
 
-export function syncSummaryOriginToast(url: URL): void {
-  if (isFromSummary(url)) {
-    showToast(SUMMARY_ORIGIN_TOAST_KIND);
+export function syncCanvasOriginToast(url: URL): void {
+  if (isFromCanvas(url)) {
+    showToast(CANVAS_ORIGIN_TOAST_KIND);
     return;
   }
 
   const stale = get(toastStore).filter(
-    (toast) => toast.kind === SUMMARY_ORIGIN_TOAST_KIND,
+    (toast) => toast.kind === CANVAS_ORIGIN_TOAST_KIND,
   );
   for (const toast of stale) dismissToast(toast.id);
 }

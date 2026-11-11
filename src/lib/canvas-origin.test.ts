@@ -1,80 +1,82 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { getReplaceStateCalls, resetReplaceState } from '$lib/__mocks__/app-navigation';
+import { CANVAS_PATH } from './routes';
 import {
 	ORIGIN_PARAM,
-	SUMMARY_ORIGIN,
-	SUMMARY_PATH,
-	clearSummaryOrigin,
-	isFromSummary,
-	summaryHref,
-	withSummaryOrigin
-} from './summary-origin';
+	CANVAS_ORIGIN,
+	clearCanvasOrigin,
+	isFromCanvas,
+	canvasHref,
+	withCanvasOrigin
+} from './canvas-origin';
 
 function pageUrl(search = ''): URL {
-	return new URL(`https://thompsontong.com/ethos${search}`);
+	return new URL(`https://thompsontong.com/terminal/ethos${search}`);
 }
 
 function visit(address: string): void {
 	window.history.replaceState({}, '', address);
 }
 
-describe('summaryHref', () => {
-	it('points at the summary route', () => {
-		expect(summaryHref()).toBe(SUMMARY_PATH);
-		expect(SUMMARY_PATH).toBe('/one-pager');
+describe('canvasHref', () => {
+	it('points at the canvas route', () => {
+		expect(canvasHref()).toBe(CANVAS_PATH);
+		expect(CANVAS_PATH).toBe('/');
 	});
 });
 
-describe('withSummaryOrigin', () => {
+describe('withCanvasOrigin', () => {
 	it('marks a bare path', () => {
-		expect(withSummaryOrigin('/experience')).toBe('/experience?from=summary');
+		expect(withCanvasOrigin('/terminal/experience')).toBe('/terminal/experience?from=canvas');
 	});
 
 	it('keeps a query the destination already carries', () => {
-		expect(withSummaryOrigin('/ethos?highlight=msd')).toBe('/ethos?highlight=msd&from=summary');
+		expect(withCanvasOrigin('/terminal/ethos?highlight=msd')).toBe(
+			'/terminal/ethos?highlight=msd&from=canvas'
+		);
 	});
 
 	it('uses the documented parameter name and value', () => {
 		expect(ORIGIN_PARAM).toBe('from');
-		expect(SUMMARY_ORIGIN).toBe('summary');
+		expect(CANVAS_ORIGIN).toBe('canvas');
 	});
 });
 
-describe('isFromSummary', () => {
+describe('isFromCanvas', () => {
 	afterEach(() => {
 		vi.unstubAllGlobals();
 	});
 
 	it('recognises the marker', () => {
-		expect(isFromSummary(pageUrl('?from=summary'))).toBe(true);
+		expect(isFromCanvas(pageUrl('?from=canvas'))).toBe(true);
 	});
 
 	it('recognises the marker next to another parameter', () => {
-		expect(isFromSummary(pageUrl('?highlight=msd&from=summary'))).toBe(true);
+		expect(isFromCanvas(pageUrl('?highlight=msd&from=canvas'))).toBe(true);
 	});
 
 	it('treats a missing marker as a direct visit', () => {
-		expect(isFromSummary(pageUrl())).toBe(false);
+		expect(isFromCanvas(pageUrl())).toBe(false);
 	});
 
 	it('ignores a marker with another value', () => {
-		expect(isFromSummary(pageUrl('?from=elsewhere'))).toBe(false);
+		expect(isFromCanvas(pageUrl('?from=elsewhere'))).toBe(false);
 	});
 
 	it('reads no marker outside the browser, where prerendered urls throw', () => {
 		vi.stubGlobal('window', undefined);
-		const url = pageUrl('?from=summary');
+		const url = pageUrl('?from=canvas');
 		Object.defineProperty(url, 'searchParams', {
 			get() {
 				throw new Error('Cannot access url.searchParams on a page with prerendering enabled');
 			}
 		});
 
-		expect(isFromSummary(url)).toBe(false);
+		expect(isFromCanvas(url)).toBe(false);
 	});
 });
 
-describe('clearSummaryOrigin', () => {
+describe('clearCanvasOrigin', () => {
 	beforeEach(() => {
 		resetReplaceState();
 	});
@@ -85,27 +87,27 @@ describe('clearSummaryOrigin', () => {
 	});
 
 	it('rewrites the address without the marker', () => {
-		visit('/experience?from=summary');
+		visit('/terminal/experience?from=canvas');
 
-		clearSummaryOrigin();
+		clearCanvasOrigin();
 
 		const [call] = getReplaceStateCalls();
-		expect(call?.url).toContain('/experience');
+		expect(call?.url).toContain('/terminal/experience');
 		expect(call?.url).not.toContain(`${ORIGIN_PARAM}=`);
 	});
 
 	it('leaves the other parameters alone', () => {
-		visit('/ethos?highlight=msd&from=summary');
+		visit('/terminal/ethos?highlight=msd&from=canvas');
 
-		clearSummaryOrigin();
+		clearCanvasOrigin();
 
 		expect(getReplaceStateCalls()[0]?.url).toContain('highlight=msd');
 	});
 
 	it('rewrites nothing when the marker is already gone', () => {
-		visit('/experience');
+		visit('/terminal/experience');
 
-		clearSummaryOrigin();
+		clearCanvasOrigin();
 
 		expect(getReplaceStateCalls()).toHaveLength(0);
 	});

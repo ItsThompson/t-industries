@@ -7,7 +7,8 @@
     import CRTBackground from "../../components/shader/CRTBackground.svelte";
     import PipesBackground from "../../components/PipesBackground.svelte";
     import { observeViewportWidth } from "$lib/viewport";
-    import { syncSummaryOriginToast } from "$lib/toasts";
+    import { syncCanvasOriginToast } from "$lib/toasts";
+    import "../../terminal.css";
 
     let scrollRegion: HTMLDivElement;
 
@@ -29,8 +30,8 @@
     // The origin parameter lives in the URL, so arriving and leaving both sync here.
     // It is read from the address bar, not `$page.url`: history navigation restores a
     // stored page url that still carries a marker the reader already dismissed.
-    afterNavigate(() => syncSummaryOriginToast(new URL(window.location.href)));
-    onMount(() => syncSummaryOriginToast(new URL(window.location.href)));
+    afterNavigate(() => syncCanvasOriginToast(new URL(window.location.href)));
+    onMount(() => syncCanvasOriginToast(new URL(window.location.href)));
 </script>
 
 {#if isWideViewport}

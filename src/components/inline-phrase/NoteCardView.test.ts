@@ -152,22 +152,22 @@ describe('NoteCardView', () => {
             expect(element.getAttribute('style')).toContain('border-color');
         });
 
-        it('draws the paper card raised, with no accent edge', () => {
-            const element = card(renderCard({ mode: 'paper' }).container);
+        it('draws the canvas card raised, with no accent edge', () => {
+            const element = card(renderCard({ mode: 'canvas' }).container);
             const style = element.getAttribute('style') ?? '';
 
-            expect(element.className).toContain('bg-paper-raised');
+            expect(element.className).toContain('bg-canvas-raised');
             expect(element.className).not.toContain('bg-black');
             expect(style).not.toContain('border-color');
             expect(style).not.toContain('undefined');
         });
 
-        it('labels the paper card in ink, so the accent never carries text', () => {
-            const element = card(renderCard({ mode: 'paper' }).container);
+        it('labels the canvas card in ink, so the accent never carries text', () => {
+            const element = card(renderCard({ mode: 'canvas' }).container);
             const label = element.firstElementChild;
 
             if (!label) throw new Error('No label rendered');
-            expect(label.className).toContain('text-paper-ink');
+            expect(label.className).toContain('text-canvas-ink');
             expect(label.getAttribute('style')).toBeNull();
         });
     });
