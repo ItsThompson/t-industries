@@ -26,7 +26,7 @@ function renderCard(props: Props = {}) {
     return render(NoteCardView, {
         props: {
             card: CARD,
-            tone: 'terminal',
+            mode: 'terminal',
             accent: ACCENT,
             id: 'bio-note-test',
             activatable: true,
@@ -144,7 +144,7 @@ describe('NoteCardView', () => {
         });
     });
 
-    describe('tone', () => {
+    describe('mode', () => {
         it('draws the terminal card on black, edged in the accent', () => {
             const element = card(renderCard().container);
 
@@ -153,7 +153,7 @@ describe('NoteCardView', () => {
         });
 
         it('draws the paper card raised, with no accent edge', () => {
-            const element = card(renderCard({ tone: 'paper' }).container);
+            const element = card(renderCard({ mode: 'paper' }).container);
             const style = element.getAttribute('style') ?? '';
 
             expect(element.className).toContain('bg-paper-raised');
@@ -163,7 +163,7 @@ describe('NoteCardView', () => {
         });
 
         it('labels the paper card in ink, so the accent never carries text', () => {
-            const element = card(renderCard({ tone: 'paper' }).container);
+            const element = card(renderCard({ mode: 'paper' }).container);
             const label = element.firstElementChild;
 
             if (!label) throw new Error('No label rendered');

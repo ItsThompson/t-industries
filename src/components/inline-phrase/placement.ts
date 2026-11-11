@@ -1,8 +1,3 @@
-/**
- * Card geometry, free of the DOM so the arithmetic is testable without a
- * browser. Callers pass plain rectangles in from `getClientRects`.
- */
-
 export interface Point {
     x: number;
     y: number;
@@ -45,10 +40,10 @@ export function isOffscreen(anchor: Rect, viewportHeight: number): boolean {
 }
 
 /**
- * A phrase that wraps has one rect per line, and the union of them spans the
- * whole paragraph, so centring on it drops the card somewhere unrelated. Pick
- * the line the reader points at, or the nearest one when the pointer sits past
- * every line. Returns `null` when no line reported a size, which leaves the
+ * A wrapped phrase reports one rect per line, and the union of them spans the
+ * whole paragraph, so centring on it would drop the card somewhere unrelated.
+ * Pick the line the reader points at, or the nearest one when the pointer sits
+ * past every line. Returns `null` when no line reported a size, which leaves the
  * caller to fall back to the phrase's bounding box.
  */
 export function pickLine(lines: Rect[], pointer: Point | null): Rect | null {

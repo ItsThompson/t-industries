@@ -3,7 +3,7 @@ import { bioActionsFor, type BioActions, type BioPhraseHandlers } from './bio-ac
 import { BIO_LINKS, BIO_PLACES_ACTION } from '$lib/bio-links';
 import { CITIES } from '$lib/cities';
 import type { PhraseAction } from './inline-phrase';
-import type { PageTone } from '$lib/paper';
+import type { PageMode } from '$lib/paper';
 
 const WORK_IDS = ['amazon', 'msd', 'criisp'] as const;
 
@@ -42,7 +42,7 @@ function activateOf(action: PhraseAction) {
 }
 
 describe('bioActionsFor', () => {
-    it('names every phrase for both tones, and labels every card they carry', () => {
+    it('names every phrase for both modes, and labels every card they carry', () => {
         for (const actions of [terminal(), paper()]) {
             for (const phrase of everyPhrase(actions)) {
                 expect(phrase.target.length).toBeGreaterThan(0);
@@ -60,7 +60,7 @@ describe('bioActionsFor', () => {
         }
     });
 
-    describe('terminal tone', () => {
+    describe('terminal mode', () => {
         it('opens the old site from the years phrase, in place', () => {
             const openOldSite = vi.fn();
             const actions = bioActionsFor('terminal', { openMap: vi.fn(), openOldSite });
@@ -109,7 +109,7 @@ describe('bioActionsFor', () => {
         });
     });
 
-    describe('paper tone', () => {
+    describe('paper mode', () => {
         it('leaves the years phrase revealing its screenshot, with no hint', () => {
             const years = paper().years;
 
@@ -180,9 +180,9 @@ describe('bioActionsFor', () => {
         });
     });
 
-    it('returns a strategy for every page tone', () => {
-        for (const tone of ['terminal', 'paper'] as PageTone[]) {
-            expect(everyPhrase(bioActionsFor(tone, handlers()))).toHaveLength(6);
+    it('returns a strategy for every page mode', () => {
+        for (const mode of ['terminal', 'paper'] as PageMode[]) {
+            expect(everyPhrase(bioActionsFor(mode, handlers()))).toHaveLength(6);
         }
     });
 });

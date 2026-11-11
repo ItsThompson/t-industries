@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { cardAppearanceFor, triggerAppearanceFor } from './appearance';
-import type { PageTone } from '$lib/paper';
+import type { PageMode } from '$lib/paper';
 import type { PhraseKind } from './types';
 
 const ACCENT = '#FF6363';
 
-const TONES: PageTone[] = ['terminal', 'paper'];
+const MODES: PageMode[] = ['terminal', 'paper'];
 const KINDS: PhraseKind[] = ['navigate', 'activate', 'describe'];
 
 function terminal(kind: PhraseKind = 'navigate') {
@@ -17,10 +17,10 @@ function paper(kind: PhraseKind = 'navigate') {
 }
 
 describe('triggerAppearanceFor', () => {
-    it('returns every style for each tone, so the component never branches itself', () => {
-        for (const tone of TONES) {
+    it('returns every style for each mode, so the component never branches itself', () => {
+        for (const mode of MODES) {
             for (const kind of KINDS) {
-                const appearance = triggerAppearanceFor(tone, { accent: ACCENT, kind });
+                const appearance = triggerAppearanceFor(mode, { accent: ACCENT, kind });
 
                 expect(appearance.classes.length).toBeGreaterThan(0);
                 expect(appearance.style.length).toBeGreaterThan(0);
@@ -38,7 +38,7 @@ describe('triggerAppearanceFor', () => {
         );
     });
 
-    it('offers no help cursor in the terminal tone, because every phrase does something', () => {
+    it('offers no help cursor in the terminal mode, because every phrase does something', () => {
         for (const kind of KINDS) {
             expect(terminal(kind).classes).not.toContain('cursor-help');
         }
@@ -86,9 +86,9 @@ describe('cardAppearanceFor', () => {
         return cardAppearanceFor('paper', { accent: ACCENT });
     }
 
-    it('returns every style for each tone', () => {
-        for (const tone of TONES) {
-            const appearance = cardAppearanceFor(tone, { accent: ACCENT });
+    it('returns every style for each mode', () => {
+        for (const mode of MODES) {
+            const appearance = cardAppearanceFor(mode, { accent: ACCENT });
 
             expect(appearance.classes.length).toBeGreaterThan(0);
             expect(appearance.labelClasses.length).toBeGreaterThan(0);
@@ -98,8 +98,8 @@ describe('cardAppearanceFor', () => {
     });
 
     it('leaves the open state to the caller', () => {
-        for (const tone of TONES) {
-            const appearance = cardAppearanceFor(tone, { accent: ACCENT });
+        for (const mode of MODES) {
+            const appearance = cardAppearanceFor(mode, { accent: ACCENT });
 
             expect(appearance.classes).not.toContain('visible');
         }

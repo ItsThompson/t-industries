@@ -2,7 +2,7 @@ import { BIO_LINKS, BIO_OLD_SITE_ACTION, BIO_PLACES_ACTION } from '$lib/bio-link
 import type { BioLinkSpec } from '$lib/bio-links';
 import { citiesNote } from '$lib/cities';
 import { experienceAnchorId } from '$lib/experiences';
-import type { PageTone } from '$lib/paper';
+import type { PageMode } from '$lib/paper';
 import { withSummaryOrigin } from '$lib/summary-origin';
 import type { NoteCard, PhraseAction } from './inline-phrase';
 
@@ -28,7 +28,7 @@ function linkCard(spec: BioLinkSpec): NoteCard {
     return { label: spec.label, note: spec.note, hint: OPEN_HINT };
 }
 
-const ACTIONS_BY_TONE: Record<PageTone, (handlers: BioPhraseHandlers) => BioActions> = {
+const ACTIONS_BY_MODE: Record<PageMode, (handlers: BioPhraseHandlers) => BioActions> = {
     terminal: ({ openMap, openOldSite }) => ({
         years: {
             kind: 'activate',
@@ -102,6 +102,6 @@ const ACTIONS_BY_TONE: Record<PageTone, (handlers: BioPhraseHandlers) => BioActi
     }),
 };
 
-export function bioActionsFor(tone: PageTone, handlers: BioPhraseHandlers): BioActions {
-    return ACTIONS_BY_TONE[tone](handlers);
+export function bioActionsFor(mode: PageMode, handlers: BioPhraseHandlers): BioActions {
+    return ACTIONS_BY_MODE[mode](handlers);
 }

@@ -40,8 +40,8 @@ function navigate(props: { href?: string; card?: NoteCard; onActivate?: Activate
     };
 }
 
-function renderPhrase(action: PhraseAction, tone?: 'terminal' | 'paper') {
-    return render(InlinePhrase, { props: { action, ...(tone ? { tone } : {}) } });
+function renderPhrase(action: PhraseAction, mode?: 'terminal' | 'paper') {
+    return render(InlinePhrase, { props: { action, ...(mode ? { mode } : {}) } });
 }
 
 function trigger(container: HTMLElement): HTMLElement {
@@ -398,7 +398,7 @@ describe('InlinePhrase', () => {
         });
     });
 
-    describe('paper tone', () => {
+    describe('paper mode', () => {
         function paperPhrase(action: PhraseAction = reveal()) {
             return renderPhrase(action, 'paper');
         }

@@ -104,7 +104,7 @@
     <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
             <span class="font-normal text-paper-muted">Hi, my name is</span>
-            <InlinePhrase action={terminalPhrase} tone="paper">Thompson Tong</InlinePhrase>
+            <InlinePhrase action={terminalPhrase} mode="paper">Thompson Tong</InlinePhrase>
         </h1>
 
         <div class="space-y-4">

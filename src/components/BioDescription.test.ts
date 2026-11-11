@@ -47,7 +47,7 @@ describe("BioDescription", () => {
     expect(text).toContain("University of Bath");
   });
 
-  it("leaves no gap between a link and the punctuation after it", () => {
+  it("keeps every phrase flush with the punctuation that follows it, card or no card", () => {
     const { container } = render(BioDescription);
     const prose = proseWithoutNotes(container);
 
@@ -268,6 +268,15 @@ describe("BioDescription", () => {
       expect(text).toContain("years of experience");
       expect(text).toContain("8 different cities across 3 continents");
       expect(text).toContain("University of Bath");
+    });
+
+    it("keeps the phrases flush with the punctuation after them, cards or not", () => {
+      const { container } = renderPaper();
+      const prose = proseWithoutNotes(container);
+
+      expect(prose).toContain("placement at Amazon, and");
+      expect(prose).toContain("3 continents, which");
+      expect(prose).not.toMatch(/ [,.;:]/);
     });
 
     it("sends each named role to the entry further down the page", () => {

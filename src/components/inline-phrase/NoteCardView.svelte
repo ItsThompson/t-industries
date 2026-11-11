@@ -1,13 +1,12 @@
 <script lang="ts">
-    import type { PageTone } from '$lib/paper';
+    import type { PageMode } from '$lib/paper';
     import { cardAppearanceFor } from './appearance';
     import type { NoteCard } from './types';
 
     export let card: NoteCard;
-    export let tone: PageTone = 'terminal';
+    export let mode: PageMode = 'terminal';
     export let accent: string;
     export let id: string;
-    /* Drives the return symbol, which only a phrase that opens something earns. */
     export let activatable: boolean;
     export let open: boolean;
     export let left: number;
@@ -15,10 +14,9 @@
 
     let root: HTMLElement;
 
-    $: appearance = cardAppearanceFor(tone, { accent });
+    $: appearance = cardAppearanceFor(mode, { accent });
     $: classes = `${appearance.classes} ${open ? 'visible' : 'invisible'}`;
 
-    /** The card reports its own size, so placement stays out of this component. */
     export function measure(): DOMRect {
         return root.getBoundingClientRect();
     }

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, tick } from 'svelte';
-    import type { PageTone } from '$lib/paper';
+    import type { PageMode } from '$lib/paper';
     import { triggerAppearanceFor } from './appearance';
     import NoteCardView from './NoteCardView.svelte';
     import { isOffscreen, pickLine, placeCard, type Point, type Rect } from './placement';
@@ -11,7 +11,7 @@
     const MARGIN = 8;
 
     export let action: PhraseAction;
-    export let tone: PageTone = 'terminal';
+    export let mode: PageMode = 'terminal';
 
     let triggerElement: HTMLElement;
     let cardView: NoteCardView;
@@ -22,7 +22,7 @@
     let frameRequested = false;
 
     $: trigger = triggerFor(action);
-    $: appearance = triggerAppearanceFor(tone, { accent: action.accent, kind: action.kind });
+    $: appearance = triggerAppearanceFor(mode, { accent: action.accent, kind: action.kind });
     $: card = action.card ?? null;
     $: cardId = `bio-note-${action.target}`;
     $: activatable = action.kind !== 'describe';
@@ -127,11 +127,7 @@
     });
 </script>
 
-<!-- The element carries native semantics: an anchor when the phrase navigates, a button when it acts in place. -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<!-- The phrase and its card sit flush against each other: a whitespace text node
-     between them or after the card would render as a space before whatever
-     punctuation follows the phrase in prose. -->
 <svelte:element
     this={trigger.element}
     bind:this={triggerElement}
@@ -151,7 +147,7 @@
         bind:this={cardView}
         id={cardId}
         {card}
-        {tone}
+        {mode}
         accent={action.accent}
         {activatable}
         {open}

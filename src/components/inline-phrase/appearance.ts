@@ -1,10 +1,5 @@
-import { PAPER_BAND_CLASSES, paperBandStyle, type PageTone } from '$lib/paper';
+import { PAPER_BAND_CLASSES, paperBandStyle, type PageMode } from '$lib/paper';
 import type { PhraseKind } from './types';
-
-/**
- * Every tone-dependent style, split by the element that renders it, so the
- * trigger and the card each receive only the classes they apply.
- */
 
 export interface TriggerAppearance {
     classes: string;
@@ -37,21 +32,19 @@ function classes(...values: string[]): string {
     return values.filter(Boolean).join(' ');
 }
 
-const TRIGGER_BY_TONE: Record<PageTone, (input: TriggerInput) => TriggerAppearance> = {
+const TRIGGER_BY_MODE: Record<PageMode, (input: TriggerInput) => TriggerAppearance> = {
     terminal: ({ accent }) => ({
         classes: `border-b border-dotted hover:border-solid transition-colors duration-150 ${FOCUS_CLASSES}`,
         style: `color:${accent};border-color:${accent};outline-color:${accent}`,
     }),
 
-    // The paper band carries the accent at low alpha behind ink glyphs. Text in
-    // the raw accent is 1.3:1 to 3.3:1 on paper, so it never carries a glyph.
     paper: ({ accent, kind }) => ({
         classes: classes(PAPER_BAND_CLASSES, kind === 'describe' ? 'cursor-help' : ''),
         style: paperBandStyle(accent),
     }),
 };
 
-const CARD_BY_TONE: Record<PageTone, (input: CardInput) => CardAppearance> = {
+const CARD_BY_MODE: Record<PageMode, (input: CardInput) => CardAppearance> = {
     terminal: ({ accent }) => ({
         classes: `${CARD_FRAME} bg-black border p-2`,
         style: `border-color:${accent}`,
@@ -72,10 +65,10 @@ const CARD_BY_TONE: Record<PageTone, (input: CardInput) => CardAppearance> = {
     }),
 };
 
-export function triggerAppearanceFor(tone: PageTone, input: TriggerInput): TriggerAppearance {
-    return TRIGGER_BY_TONE[tone](input);
+export function triggerAppearanceFor(mode: PageMode, input: TriggerInput): TriggerAppearance {
+    return TRIGGER_BY_MODE[mode](input);
 }
 
-export function cardAppearanceFor(tone: PageTone, input: CardInput): CardAppearance {
-    return CARD_BY_TONE[tone](input);
+export function cardAppearanceFor(mode: PageMode, input: CardInput): CardAppearance {
+    return CARD_BY_MODE[mode](input);
 }
