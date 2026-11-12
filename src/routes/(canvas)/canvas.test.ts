@@ -197,13 +197,13 @@ describe('canvas', () => {
     expect(container.querySelector('canvas')).toBeNull();
   });
 
-  it('paints the page on canvas', () => {
+  it('leaves the backdrop to the layout, so the ripples can sit under the text', () => {
     const { container } = renderPage();
     const wrapper = container.firstElementChild;
 
-    expect(wrapper?.className).toContain('bg-canvas-base');
     expect(wrapper?.className).toContain('text-canvas-ink');
     expect(wrapper?.className).toContain('font-outfit');
+    expect(wrapper?.className).not.toContain('bg-canvas-base');
   });
 
   it('lays no grain of its own, since the layout owns the canvas backdrop', () => {

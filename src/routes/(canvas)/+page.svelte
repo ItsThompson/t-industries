@@ -82,7 +82,7 @@
     profilePage
 />
 
-<div class="relative min-h-dvh bg-canvas-base font-outfit text-canvas-ink">
+<div class="relative min-h-dvh font-outfit text-canvas-ink">
     <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
         <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
             <span class="font-normal text-canvas-muted">Hi, my name is</span>

@@ -6,6 +6,7 @@
         GOOGLE_FONTS_STATIC_ORIGIN,
         OUTFIT_STYLESHEET_HREF
     } from '$lib/fonts';
+    import { RippleBackground } from '../../components/ripple';
 </script>
 
 <svelte:head>
@@ -20,11 +21,15 @@
     </style>
 </svelte:head>
 
+<!-- The layout owns the backdrop, painted in this order: body colour, grain, ripples,
+     then the route content. Every layer stays z-auto so the DOM decides the order. -->
 <div
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 mix-blend-multiply"
     style:background-image="url({base}/grain.svg)"
     style:opacity={CANVAS_GRAIN_OPACITY}
 ></div>
+
+<RippleBackground />
 
 <slot />
