@@ -6,6 +6,7 @@
         GOOGLE_FONTS_STATIC_ORIGIN,
         OUTFIT_STYLESHEET_HREF
     } from '$lib/fonts';
+    import { RippleBackground } from '../../components/ripple';
 </script>
 
 <svelte:head>
@@ -26,5 +27,7 @@
     style:background-image="url({base}/grain.svg)"
     style:opacity={CANVAS_GRAIN_OPACITY}
 ></div>
+
+<RippleBackground />
 
 <slot />
