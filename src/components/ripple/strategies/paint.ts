@@ -50,11 +50,7 @@ export function paintBand(
 	ctx.fill();
 }
 
-/**
- * Strokes the current path in layered passes: wide and faint outside, narrow and
- * solid inside, so the edge reads as shading instead of a border.
- */
-export function strokeSoft(
+export function strokeShadedEdge(
 	ctx: CanvasRenderingContext2D,
 	ripple: Ripple,
 	widthPx: number,

@@ -1,4 +1,4 @@
-import { TAU, easedRadiusPx, fadeOut, hsla, strokeSoft } from './paint';
+import { TAU, easedRadiusPx, fadeOut, hsla, strokeShadedEdge } from './paint';
 import type { Ripple, RippleStrategy } from '../types';
 
 const FADE_POWER = 1.2;
@@ -65,7 +65,7 @@ export const causticStrategy: RippleStrategy = {
 		ctx.fillStyle = gradient;
 		ctx.fill();
 
-		strokeSoft(
+		strokeShadedEdge(
 			ctx,
 			ripple,
 			Math.max(OUTER_STROKE_FLOOR_PX, ripple.strokeWidthPx * OUTER_STROKE_SCALE),
@@ -73,7 +73,7 @@ export const causticStrategy: RippleStrategy = {
 		);
 
 		causticPath(ctx, ripple, radiusPx, progress, 1);
-		strokeSoft(
+		strokeShadedEdge(
 			ctx,
 			ripple,
 			Math.max(INNER_STROKE_FLOOR_PX, ripple.strokeWidthPx * INNER_STROKE_SCALE),

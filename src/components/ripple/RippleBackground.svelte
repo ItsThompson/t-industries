@@ -14,8 +14,6 @@
 	);
 </script>
 
-<!-- No z-index: paint order comes from the DOM, which keeps the ripples above the
-     grain and below the page text. -->
 {#if motionAllowed}
 	<canvas use:rippleBackdrop class="pointer-events-none fixed inset-0" aria-hidden="true" />
 {/if}

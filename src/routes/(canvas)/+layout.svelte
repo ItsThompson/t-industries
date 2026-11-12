@@ -21,8 +21,6 @@
     </style>
 </svelte:head>
 
-<!-- The layout owns the backdrop, painted in this order: body colour, grain, ripples,
-     then the route content. Every layer stays z-auto so the DOM decides the order. -->
 <div
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 mix-blend-multiply"
