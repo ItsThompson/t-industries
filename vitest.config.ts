@@ -18,6 +18,8 @@ export default defineConfig({
 	},
 	test: {
 		environment: 'jsdom',
+		// Vitest returns an empty string for CSS imports unless the file is listed here.
+		css: { include: [/terminal\.css/] },
 		include: ['src/**/*.test.ts']
 	}
 });
