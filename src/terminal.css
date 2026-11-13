@@ -1,13 +1,3 @@
-html {
-  @apply text-white;
-  @apply font-mono;
-  scroll-behavior: smooth;
-}
-
-body {
-  @apply bg-black;
-}
-
 .display-xl {
   font-family: 'VT323', monospace;
   font-size: 3rem;

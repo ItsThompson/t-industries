@@ -34,13 +34,22 @@
     onMount(() => syncCanvasOriginToast(new URL(window.location.href)));
 </script>
 
+<svelte:head>
+    <!-- Painted before hydration, so a prerendered terminal page never flashes the cream canvas behind it. -->
+    <style>
+        body {
+            background-color: #000;
+        }
+    </style>
+</svelte:head>
+
 {#if isWideViewport}
     <CRTBackground />
     <PipesBackground />
 {/if}
 
 <div
-    class="relative z-10 h-dvh w-full flex flex-col justify-start md:justify-center items-center overflow-hidden py-8"
+    class="relative z-10 h-dvh w-full flex flex-col justify-start md:justify-center items-center overflow-hidden py-8 font-mono text-white"
 >
     <div
         bind:this={scrollRegion}

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, cleanup, act, fireEvent } from '@testing-library/svelte';
 import Layout from './+layout.svelte';
+import terminalCss from '../../terminal.css?raw';
 import {
 	buildAfterNavigate,
 	getReplaceStateCalls,
@@ -95,6 +96,35 @@ function getBackgroundCanvases(container: HTMLElement): HTMLCanvasElement[] {
 	return Array.from(container.querySelectorAll<HTMLCanvasElement>('canvas'));
 }
 
+function getHeadStyle(): string {
+	return Array.from(document.head.querySelectorAll('style'))
+		.map((style) => style.textContent ?? '')
+		.join('\n');
+}
+
+function stylesheetSelectors(css: string): string[] {
+	const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+	const selectors: string[] = [];
+	let remaining = withoutComments;
+
+	while (true) {
+		const open = remaining.indexOf('{');
+		const close = open === -1 ? -1 : remaining.indexOf('}', open);
+		if (close === -1) return selectors;
+
+		selectors.push(
+			...remaining
+				.slice(0, open)
+				.split(',')
+				.map((selector) => selector.trim())
+				.filter((selector) => selector.length > 0)
+		);
+		remaining = remaining.slice(close + 1);
+	}
+}
+
+const PAGE_LEVEL_SELECTOR = /^(:root|html|body)\b/;
+
 describe('+layout', () => {
 	beforeEach(() => {
 		vi.stubGlobal(
@@ -124,6 +154,30 @@ describe('+layout', () => {
 		expect(root.classList.contains('h-dvh')).toBe(true);
 		expect(root.classList.contains('flex-col')).toBe(true);
 		expect(root.classList.contains('overflow-hidden')).toBe(true);
+	});
+
+	it('paints the page background before hydration', async () => {
+		render(Layout);
+		await act();
+
+		expect(getHeadStyle()).toContain('background-color: #000');
+	});
+
+	it('leaves the content layer to the page background', async () => {
+		const { container } = render(Layout);
+		await act();
+
+		const root = getRoot(container);
+		expect(root.classList.contains('bg-black')).toBe(false);
+		expect(root.classList.contains('z-10')).toBe(true);
+	});
+
+	it('keeps page-level selectors out of the terminal stylesheet', () => {
+		const pageLevelSelectors = stylesheetSelectors(terminalCss).filter((selector) =>
+			PAGE_LEVEL_SELECTOR.test(selector)
+		);
+
+		expect(pageLevelSelectors).toEqual([]);
 	});
 
 	it('hugs its content so the page centers while it fits, and shrinks to scroll when it does not', async () => {
@@ -287,6 +341,16 @@ describe('+layout', () => {
 			expect(canvases).toHaveLength(2);
 			expect(canvases.some((canvas) => canvas.classList.contains('z-0'))).toBe(true);
 			expect(canvases.some((canvas) => canvas.classList.contains('z-[1]'))).toBe(true);
+		});
+
+		it('keeps the background effects out of the content layer', async () => {
+			stubViewportWidth(true);
+
+			const { container } = render(Layout);
+			await act();
+
+			expect(getBackgroundCanvases(getRoot(container))).toHaveLength(0);
+			expect(getBackgroundCanvases(container)).toHaveLength(2);
 		});
 
 		it('mounts the backgrounds when the viewport grows past the threshold', async () => {
