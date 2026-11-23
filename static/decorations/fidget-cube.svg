@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Fidget cube / Soft ink</title>
+    <style>
+        .a{fill:#DCA18A}.b{fill:#9AB8A5}.c{fill:#B9A6CB}
+        .p{fill:#FFF9EB}.d{fill:#AA786B}.k{fill:#554A43}
+        .line{fill:none;stroke:#66544B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+        .a,.b,.c,.p,.d{stroke:#66544B;stroke-width:2;stroke-linejoin:round}
+    </style>
+
+        <path class="c" d="M25 47L79 21L136 45L83 75Z"/>
+        <path class="a" d="M25 47L83 75L82 139L26 110Z"/>
+        <path class="b" d="M83 75L136 45L135 109L82 139Z"/>
+        <path class="p" d="M58 45L79 35L101 44L80 55Z"/>
+        <ellipse class="d" cx="80" cy="45" rx="9" ry="4"/>
+        <g class="p"><ellipse cx="40" cy="72" rx="5" ry="6"/><ellipse cx="64" cy="84" rx="5" ry="6"/><ellipse cx="52" cy="94" rx="5" ry="6"/><ellipse cx="39" cy="103" rx="5" ry="6"/><ellipse cx="64" cy="115" rx="5" ry="6"/></g>
+        <path class="p" d="M100 82L121 71L121 104L100 116Z"/>
+        <path class="d" d="M103 86L117 78L117 90L103 98Z"/>
+</svg>

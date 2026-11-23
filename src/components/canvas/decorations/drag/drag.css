@@ -1,0 +1,32 @@
+.canvas-decoration {
+  translate: var(--drag-x, 0px) var(--drag-y, 0px);
+  z-index: 0;
+}
+
+.canvas-decoration[data-drag-enabled] {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.canvas-decoration[data-dragging] {
+  cursor: grabbing;
+  z-index: 1;
+}
+
+.canvas-decoration[data-rejected] {
+  animation: canvas-decoration-reject 280ms ease-in-out;
+}
+
+@keyframes canvas-decoration-reject {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -12deg; }
+  40% { rotate: 10deg; }
+  60% { rotate: -7deg; }
+  80% { rotate: 4deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-decoration[data-rejected] {
+    animation: none;
+  }
+}

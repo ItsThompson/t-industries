@@ -4,6 +4,7 @@
     import BioDescription from '../../components/BioDescription.svelte';
     import { InlinePhrase, type PhraseAction } from '../../components/inline-phrase';
     import Seo from '../../components/Seo.svelte';
+    import { OpeningComposition, MarginObjects } from '../../components/canvas/decorations';
     import SocialRow from '../../components/canvas/SocialRow.svelte';
     import WorkArrow from '../../components/canvas/WorkArrow.svelte';
     import WorkEntry from '../../components/canvas/WorkEntry.svelte';
@@ -82,14 +83,16 @@
     profilePage
 />
 
-<div class="relative min-h-dvh font-outfit text-canvas-ink">
-    <div class="relative mx-auto max-w-3xl px-6 py-16 md:py-24">
-        <h1 class="mb-8 text-4xl font-medium leading-tight tracking-[-0.012em]">
-            <span class="font-normal text-canvas-muted">Hi, my name is</span>
-            <InlinePhrase action={terminalPhrase} mode="canvas">Thompson Tong</InlinePhrase>
-        </h1>
+<div data-decoration-page class="relative isolate min-h-dvh font-outfit text-canvas-ink">
+    <div class="canvas-content mx-auto max-w-3xl px-6">
+        <OpeningComposition>
+            <h1 class="intro-heading text-4xl font-medium leading-tight tracking-[-0.012em]">
+                <span class="block font-normal text-canvas-muted">Hi, my name is</span>
+                <InlinePhrase action={terminalPhrase} mode="canvas">Thompson Tong</InlinePhrase>
+            </h1>
+        </OpeningComposition>
 
-        <div class="space-y-4">
+        <div class="canvas-text space-y-4">
             <BioDescription
                 mode="canvas"
                 class={CANVAS_PROSE_CLASSES}
@@ -111,6 +114,8 @@
                 </p>
             {/if}
         </div>
+
+        <MarginObjects />
 
         <section>
             <h2
@@ -144,8 +149,37 @@
             </p>
         </section>
 
-        <SocialRow />
+        <div class="canvas-text"><SocialRow /></div>
     </div>
 
     <WorkArrow bind:this={workArrow} />
 </div>
+
+<style>
+    .canvas-content {
+        padding-top: 52px;
+        padding-bottom: 94px;
+    }
+
+    section, .canvas-text {
+        position: relative;
+        z-index: 2;
+    }
+
+    .intro-heading {
+        position: relative;
+        z-index: 2;
+        max-width: 370px;
+        text-align: center;
+    }
+
+    @media (max-width: 720px) {
+        .canvas-content { padding: 30px 26px 60px; }
+        .intro-heading { max-width: 320px; font-size: 33px; }
+    }
+
+    @media (max-width: 390px) {
+        .canvas-content { padding-inline: 20px; }
+        .intro-heading { font-size: 28px; }
+    }
+</style>

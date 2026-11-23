@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Skateboard / Soft ink</title>
+    <style>
+        .a{fill:#95B5C3}.b{fill:#D8BC7D}.c{fill:#BBABA0}
+        .p{fill:#FFF9EB}.d{fill:#678B99}.k{fill:#554A43}
+        .line{fill:none;stroke:#66544B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+        .a,.b,.c,.p,.d{stroke:#66544B;stroke-width:2;stroke-linejoin:round}
+    </style>
+
+        <g transform="rotate(-28 80 80)">
+        <path class="c" d="M37 87L50 87L49 104L38 103ZM109 87L122 87L121 104L110 103Z"/>
+        <ellipse class="b wheel" cx="43" cy="107" rx="10" ry="12"/>
+        <ellipse class="b wheel" cx="117" cy="107" rx="10" ry="12"/>
+        <ellipse class="p" cx="44" cy="107" rx="3" ry="4"/>
+        <ellipse class="p" cx="118" cy="107" rx="3" ry="4"/>
+        <path class="d" d="M12 78Q11 91 28 97L118 97Q137 97 146 79L147 69Q143 84 127 89L28 89Q15 89 12 78Z"/>
+        <path class="a deck" d="M32 54L126 54Q145 54 147 67Q148 79 135 87Q129 92 118 92L28 92Q11 92 12 80Q12 65 25 57Q28 55 32 54Z"/>
+        </g>
+</svg>

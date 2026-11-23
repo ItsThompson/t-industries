@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">MacBook / Soft ink</title>
+    <style>
+        .a{fill:#B4A3CC}.b{fill:#94B6A7}.c{fill:#DAA08A}
+        .p{fill:#FFF9EB}.d{fill:#817597}.k{fill:#554A43}
+        .line{fill:none;stroke:#66544B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+        .a,.b,.c,.p,.d{stroke:#66544B;stroke-width:2;stroke-linejoin:round}
+    </style>
+
+        <path class="a" d="M28 34Q28 29 35 29L127 31Q133 31 132 39L128 111L29 109Z"/>
+        <path class="p" d="M37 39L123 40L120 98L38 98Z"/>
+        <path class="b" d="M48 53L76 52L76 59L48 60ZM48 66L99 66L99 72L48 73ZM49 80L88 79L88 85L49 86Z"/>
+        <path class="c" d="M101 49L115 49L115 59L101 59Z"/>
+        <path class="a" d="M29 108L128 110L147 128Q149 134 139 135L21 132Q13 132 15 126Z"/>
+        <path class="d" d="M15 127Q58 131 147 128L144 134L20 134Q14 133 15 127Z"/>
+        <path class="p" d="M66 115L95 116L100 123L62 122Z"/>
+        <path class="line" d="M34 105L124 106"/>
+</svg>

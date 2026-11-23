@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Electric guitar / Paper cut</title>
+    <style>
+        .a{fill:#D99A89}.b{fill:#D6BE83}.c{fill:#9BB7A4}
+        .p{fill:#FFF9EB}.d{fill:#A77364}.k{fill:#554A43}
+        .line{fill:none;stroke:#A77364;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+
+    </style>
+
+        <g transform="rotate(25 80 80)">
+        <path class="b" d="M72 14L89 11L94 34L86 43L85 95L74 95L75 42Z"/>
+        <path class="a" d="M74 80Q55 66 53 85Q51 95 38 105Q23 120 38 137Q50 153 77 150Q107 151 121 132Q132 115 115 101Q103 92 105 78Q105 67 96 72Q90 78 85 88L85 98L73 98Z"/>
+        <path class="p" d="M73 92Q61 85 59 96Q54 106 50 111Q44 126 64 131L87 128L97 107L85 97Z"/>
+        <path class="d" d="M67 123L91 123L91 130L67 130Z"/>
+        <path class="line" d="M78 38L77 122M83 38L83 122M74 51L85 51M74 62L85 62M74 74L85 74M73 103L85 103M72 111L85 111"/>
+        <circle class="b" cx="104" cy="122" r="4"/><circle class="b" cx="99" cy="134" r="3"/>
+        </g>
+</svg>

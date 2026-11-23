@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Keyboard / Paper cut</title>
+    <style>
+        .a{fill:#9CB9C4}.b{fill:#B4A0C7}.c{fill:#D7AF92}
+        .p{fill:#FFF9EB}.d{fill:#718E9E}.k{fill:#554A43}
+        .line{fill:none;stroke:#718E9E;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+
+    </style>
+
+        <path class="a" d="M23 41L137 42Q148 42 148 52L147 114Q147 122 137 122L23 121Q13 121 14 111L14 51Q14 42 23 41Z"/>
+        <path class="p key-white" d="M22 50L38 50L38 113L23 112Z"/>
+        <path class="p key-white" d="M39 50L55 50L55 114L39 114Z"/>
+        <path class="p key-white" d="M56 50L72 50L72 114L56 113Z"/>
+        <path class="p key-white" d="M73 50L89 50L89 114L73 114Z"/>
+        <path class="p key-white" d="M90 50L106 50L106 113L90 114Z"/>
+        <path class="p key-white" d="M107 50L123 50L123 114L107 113Z"/>
+        <path class="p key-white" d="M124 50L140 51L139 113L124 114Z"/>
+        <path class="d key-black" d="M33 50L43 50L43 84Q43 87 40 87L35 87Q33 87 33 84Z"/>
+        <path class="d key-black" d="M50 50L60 50L60 84Q60 87 57 87L52 87Q50 87 50 84Z"/>
+        <path class="d key-black" d="M84 50L94 50L94 84Q94 87 91 87L86 87Q84 87 84 84Z"/>
+        <path class="d key-black" d="M101 50L111 50L111 84Q111 87 108 87L103 87Q101 87 101 84Z"/>
+        <path class="d key-black" d="M118 50L128 50L128 84Q128 87 125 87L120 87Q118 87 118 84Z"/>
+</svg>

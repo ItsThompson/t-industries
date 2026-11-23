@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Headphones / Paper cut</title>
+    <style>
+        .a{fill:#D9BD7D}.b{fill:#BD9DC1}.c{fill:#E0CFA6}
+        .p{fill:#FFF9EB}.d{fill:#9C8052}.k{fill:#554A43}
+        .line{fill:none;stroke:#9C8052;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+
+    </style>
+
+        <path class="a" d="M29 101L28 77Q27 23 79 21Q133 20 133 76L131 101L116 100L117 76Q117 38 80 38Q43 38 44 77L45 101Z"/>
+        <path class="c" d="M43 66Q46 38 79 37Q111 37 117 65L111 68Q105 46 80 46Q55 46 50 69Z"/>
+        <path class="b" d="M27 82Q23 79 20 86L20 116Q20 125 29 126L43 128Q52 127 52 118L51 91Q51 83 43 83Z"/>
+        <path class="b" d="M119 83Q110 83 109 91L109 119Q110 127 118 128L132 125Q140 124 140 116L140 88Q140 81 132 82Z"/>
+        <path class="d" d="M42 87Q49 87 49 94L49 117Q49 123 42 123ZM118 87L118 123Q111 123 112 116L112 94Q112 88 118 87Z"/>
+</svg>

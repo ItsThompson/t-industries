@@ -24,7 +24,7 @@ export const experiences: Experience[] = [
     endDate: "Sep 2026",
     highlight: true,
     highlightSummary:
-      "Cut frontend build times by 82% and page latency by 75%, shipping 5 React settings pages to 50,000+ sellers with zero rollbacks.",
+      "Cut frontend build times by 82% and page latency by 75%. Delivered 5 React settings pages to 50,000+ sellers with zero rollbacks.",
     description:
       "Reduced frontend build times by ~82% and page latency by ~75% by designing the monolith-to-microservices migration architecture, shipping 5 React settings pages to 50,000+ sellers with zero rollbacks. Owned features end-to-end from Figma to post-launch analytics, achieving 76% user retention on Custom Bookmarks and building an AI-powered changelog pipeline eliminating manual work for support/sales teams.",
   },
@@ -37,7 +37,7 @@ export const experiences: Experience[] = [
     endDate: "Sep 2025",
     highlight: true,
     highlightSummary:
-      "Cut SEM creation time by 30% by rebuilding academic paper retrieval from Firebase.",
+      "Cut SEM creation time by 30% by improving academic paper retrieval UX and optimizing Firebase queries.",
     description:
       "Reduced SEM creation time by 30% by improving retrieval of academic paper summaries from Firebase, building software that helps scientists visually model the factors influencing pain perception.",
   },
@@ -50,7 +50,7 @@ export const experiences: Experience[] = [
     endDate: "Jul 2024",
     highlight: true,
     highlightSummary:
-      "Cut document processing time by 48% with a RAG pipeline processing 10,000 documents concurrently.",
+      "Cut document processing time by 48% with a RAG pipeline capable of processing 10,000 documents concurrently.",
     description:
       "Reduced document processing time by 48% by deploying a scalable RAG pipeline using AWS Step Functions and Lambda, capable of concurrently processing 10,000 documents through an optimized ingestion, embedding, and storage architecture.",
   },
