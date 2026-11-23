@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Brain / Paper cut</title>
+    <style>
+        .a{fill:#DCA09D}.b{fill:#EDC2B2}.c{fill:#C78B95}
+        .p{fill:#FFF9EB}.d{fill:#AC737B}.k{fill:#554A43}
+        .line{fill:none;stroke:#AC737B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+
+    </style>
+
+        <path class="a" d="M80 29Q67 19 56 31Q37 25 32 44Q13 47 19 68Q6 82 22 99Q21 116 40 122Q45 141 64 133Q72 141 81 133Q93 143 103 131Q121 137 128 119Q149 114 140 96Q154 78 141 63Q145 43 125 40Q118 23 101 30Q88 18 80 29Z"/>
+        <path class="line" d="M80 32Q73 48 80 63Q87 78 80 96Q73 111 81 132M55 33Q49 46 60 52Q70 56 66 69M33 46Q43 48 43 62Q46 74 60 72M20 71Q29 67 36 77Q42 87 57 84M24 98Q41 101 40 117M48 127Q46 111 62 106Q69 104 67 94M103 33Q111 48 98 56Q92 60 95 71M126 43Q115 50 119 65Q121 75 108 77M140 67Q125 70 130 86Q131 96 117 100M126 116Q113 112 108 122M96 91Q104 103 97 114Q94 120 97 132"/>
+</svg>

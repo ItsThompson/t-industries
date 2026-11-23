@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Rubik’s cube / Soft ink</title>
+    <style>
+        .a{fill:#D8B979}.b{fill:#A9A0CA}.c{fill:#98B5A5}
+        .p{fill:#FFF9EB}.d{fill:#8C8A80}.k{fill:#554A43}
+        .line{fill:none;stroke:#66544B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+        .a,.b,.c,.p,.d{stroke:#66544B;stroke-width:2;stroke-linejoin:round}
+    </style>
+
+        <path class="b" d="M24 46L78 20L136 46L81 75Z"/>
+        <path class="a" d="M24 46L81 75L81 139L25 110Z"/>
+        <path class="c" d="M81 75L136 46L135 111L81 139Z"/>
+        <path class="c" d="M42 37L60 29L80 38L62 47ZM81 56L100 47L117 55L99 65Z"/>
+        <path class="a" d="M78 21L98 29L80 38L60 29Z"/>
+        <path class="b" d="M25 67L43 76L44 98L25 89ZM62 108L81 118L81 139L62 129Z"/>
+        <path class="a" d="M100 86L118 77L118 99L100 108Z"/>
+        <path class="p" d="M43 76L62 86L62 108L44 98ZM117 56L136 46L136 68L118 77Z"/>
+        <path class="line" d="M42 37L99 65M60 29L117 55M42 55L98 29M62 65L117 38M43 56L44 120M62 65L62 129M25 67L81 96M25 89L81 118M100 65L100 129M118 56L118 120M81 96L136 68M81 118L135 90"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Dumbbell / Soft ink</title>
+    <style>
+        .a{fill:#93AF96}.b{fill:#D3BA7C}.c{fill:#B3C6A4}
+        .p{fill:#FFF9EB}.d{fill:#657E69}.k{fill:#554A43}
+        .line{fill:none;stroke:#66544B;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+        .a,.b,.c,.p,.d{stroke:#66544B;stroke-width:2;stroke-linejoin:round}
+    </style>
+
+        <path class="b" d="M44 70L115 68L116 91L43 92Z"/>
+        <path class="a" d="M29 46Q28 40 36 40L49 41Q55 41 55 49L55 111Q54 118 46 118L32 117Q27 117 28 109Z"/>
+        <path class="c" d="M15 59Q15 53 21 53L32 53L32 106L20 106Q14 105 14 99Z"/>
+        <path class="a" d="M107 46Q106 40 114 40L128 42Q134 43 133 50L132 112Q132 119 123 118L111 117Q106 117 106 109Z"/>
+        <path class="c" d="M130 55L141 56Q148 56 147 64L147 100Q147 106 140 106L131 105Z"/>
+        <path class="line" d="M66 76L66 85M76 76L76 85M86 76L86 85M96 76L96 85"/>
+</svg>

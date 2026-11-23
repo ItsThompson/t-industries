@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+    <title id="title">Beagle face / Playful geometry</title>
+    <style>
+        .a{fill:#C6906E}.b{fill:#E5C6A3}.c{fill:#A57459}
+        .p{fill:#FFF9EB}.d{fill:#795B48}.k{fill:#554A43}
+        .line{fill:none;stroke:#795B48;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+    </style>
+
+        <path class="a" d="M37 36Q13 36 17 72L24 119Q28 134 43 119L59 49ZM123 36Q147 36 143 72L136 119Q132 134 117 119L101 49Z"/>
+        <path class="b" d="M40 39Q80 12 120 39V87Q120 123 80 140Q40 123 40 87Z"/>
+        <path class="a" d="M40 40L73 29L65 86L40 94ZM120 40L87 29L95 86L120 94Z"/>
+        <path class="p" d="M76 28H84L88 80L108 107Q100 130 80 137Q60 130 52 107L72 80Z"/>
+        <circle class="k" cx="59" cy="76" r="5"/><circle class="k" cx="101" cy="76" r="5"/>
+        <path class="k" d="M68 99Q80 94 92 99L80 112Z"/>
+        <path class="line" d="M80 111V121M70 121H90"/>
+</svg>

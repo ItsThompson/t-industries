@@ -9,7 +9,7 @@ import { highlights } from '$lib/experiences';
 import type { PinnedProject } from '$lib/github';
 import { hexToRgbTriplet, canvasBandColor } from '$lib/canvas';
 
-function renderPage(projects: PinnedProject[] = []): ReturnType<typeof render> {
+function renderPage(projects: PinnedProject[] = []) {
   setPageRoute('/(canvas)');
   return render(CanvasPage, { props: { data: { projects } } });
 }
@@ -46,6 +46,34 @@ describe('canvas', () => {
 
     expect(headings).toHaveLength(1);
     expect(headings[0].textContent).toContain(BIO_NAME);
+  });
+
+  it('frames the heading with five objects and places five more after the bio', () => {
+    const { container } = renderPage(PROJECTS);
+    const opening = container.querySelector('.intro-composition');
+    const margins = container.querySelector('.margin-objects');
+    const bio = projectSentence(container);
+    const work = container.querySelector('section');
+
+    expect(opening?.querySelector('h1')?.textContent).toContain(BIO_NAME);
+    expect(opening?.querySelectorAll('img')).toHaveLength(5);
+    expect(margins?.querySelectorAll('img')).toHaveLength(5);
+    expect(container.querySelectorAll('img[src*="/decorations/"]')).toHaveLength(10);
+    expect(bio?.compareDocumentPosition(margins!)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(margins?.compareDocumentPosition(work!)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+
+  it('keeps the introduction and work usable when decorative images do not load', async () => {
+    const { container, getByRole } = renderPage();
+    for (const image of container.querySelectorAll('img[src*="/decorations/"]')) {
+      await fireEvent.error(image);
+    }
+
+    expect(getByRole('heading', { level: 1 }).textContent).toContain(BIO_NAME);
+    expect(getByRole('link', { name: 'View all experience' }).getAttribute('href')).toBe(
+      '/terminal/experience?from=canvas',
+    );
+    expect(workHeadings(container)).toHaveLength(3);
   });
 
   it('greets the reader once, so the page does not say hello twice', () => {
