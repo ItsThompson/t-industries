@@ -1,14 +1,16 @@
 <script lang="ts">
     import { base } from '$app/paths';
+    import { DECORATION_SPRINGS, draggableDecoration } from './drag';
 
-    const objectIds = ['macbook', 'dumbbell', 'beagle', 'brain', 'headphones'];
+    const objectIds = ['macbook', 'dumbbell', 'beagle', 'brain', 'headphones'] as const;
 </script>
 
 <div class="intro-composition">
     <div class="opening-objects" aria-hidden="true">
         {#each objectIds as objectId (objectId)}
             <img
-                class={objectId}
+                class="canvas-decoration {objectId}"
+                use:draggableDecoration={DECORATION_SPRINGS[objectId]}
                 src="{base}/decorations/{objectId}.svg"
                 alt=""
                 width="160"

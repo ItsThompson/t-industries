@@ -83,7 +83,7 @@
     profilePage
 />
 
-<div class="relative min-h-dvh font-outfit text-canvas-ink">
+<div data-decoration-page class="relative isolate min-h-dvh font-outfit text-canvas-ink">
     <div class="canvas-content mx-auto max-w-3xl px-6">
         <OpeningComposition>
             <h1 class="intro-heading text-4xl font-medium leading-tight tracking-[-0.012em]">
@@ -92,7 +92,7 @@
             </h1>
         </OpeningComposition>
 
-        <div class="space-y-4">
+        <div class="canvas-text space-y-4">
             <BioDescription
                 mode="canvas"
                 class={CANVAS_PROSE_CLASSES}
@@ -149,7 +149,7 @@
             </p>
         </section>
 
-        <SocialRow />
+        <div class="canvas-text"><SocialRow /></div>
     </div>
 
     <WorkArrow bind:this={workArrow} />
@@ -161,9 +161,14 @@
         padding-bottom: 94px;
     }
 
+    section, .canvas-text {
+        position: relative;
+        z-index: 2;
+    }
+
     .intro-heading {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         max-width: 370px;
         text-align: center;
     }
